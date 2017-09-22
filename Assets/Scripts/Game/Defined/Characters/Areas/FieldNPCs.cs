@@ -32,7 +32,7 @@ namespace Scripts.Game.Defined.Characters {
                 new Stats(2, 1, 1, 1, 2),
                 new Look(
                     "Ghost",
-                    "haunting",
+                    "villager",
                     "A villager who didn't make it.",
                     Breed.SPIRIT
                     ),
@@ -44,8 +44,8 @@ namespace Scripts.Game.Defined.Characters {
             return CharacterUtil.StandardEnemy(
                 new Stats(3, 1, 2, 2, 5),
                 new Look(
-                    "Spectre",
-                    "spectre",
+                    "Knight",
+                    "knight",
                     "A knight who didn't make it. May be armed.",
                     Breed.SPIRIT
                     ),
@@ -58,7 +58,7 @@ namespace Scripts.Game.Defined.Characters {
                 new Stats(3, 10, 2, 2, 15),
                 new Look(
                     "Big Knight",
-                    "spectre",
+                    "big-knight",
                     "It's a big guy.",
                     Breed.SPIRIT
                     ),
@@ -67,12 +67,26 @@ namespace Scripts.Game.Defined.Characters {
                 .AddSpells(new SetupCounter());
         }
 
+        public static Character BlackShuck() {
+            return CharacterUtil.StandardEnemy(
+                new Stats(3, 10, 2, 2, 10),
+                new Look(
+                    "Black Shuck",
+                    "spectre",
+                    "Its growl sends a shiver down your spine",
+                    Breed.BEAST
+                    ),
+                new BlackShuck())
+                .AddStats(new Skill())
+                .AddSpells(new SetupCounter());
+        }
+
         public static Character Healer() {
             return CharacterUtil.StandardEnemy(
                 new Stats(3, 1, 5, 5, 1),
                 new Look(
-                    "Spirit Healer",
-                    "health-normal",
+                    "Healer",
+                    "white-mage",
                     "Healer in life. Healer in death.",
                     Breed.SPIRIT
                     ),
@@ -94,24 +108,34 @@ namespace Scripts.Game.Defined.Characters {
                 .AddSpells(new Blackout());
         }
 
-        private static Look ReplicantLook() {
+        public static Look ReplicantLook() {
             return new Look(
-                    "Replika",
-                    "spectre",
-                    string.Empty,
-                    Breed.SPIRIT,
+                    "Xirdneth",
+                    "replicant",
+                    "Its form is incomprehensible.",
+                    Breed.UNKNOWN,
                     Color.magenta
                     );
+        }
+
+        private static Look ReplicantDisguisedLook() {
+            return new Look(
+                "Irdne",
+                "villager",
+                "An innocent villager.",
+                Breed.SPIRIT,
+                Color.magenta
+                );
         }
 
         public static Character Replicant() {
             return CharacterUtil.StandardEnemy(
                 new Stats(10, 2, 5, 10, 30),
-                ReplicantLook(),
+                ReplicantDisguisedLook(),
                 new Replicant()
                 )
             .AddFlags(Model.Characters.Flag.PERSISTS_AFTER_DEFEAT)
-            .AddSpells(new ReflectiveClone(), new SetupCounter());
+            .AddSpells(new ReflectiveClone(), new RevealTrueForm());
         }
     }
 }

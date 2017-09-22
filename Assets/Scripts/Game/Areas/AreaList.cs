@@ -50,7 +50,7 @@ namespace Scripts.Game.Areas {
                             "Restoration",
                             () => new Encounter[] {
                                 new Encounter(FieldNPCs.Healer(), FieldNPCs.Healer()),
-                                new Encounter(FieldNPCs.Healer(), FieldNPCs.Knight())
+                                new Encounter(FieldNPCs.Healer(), FieldNPCs.Knight(), FieldNPCs.BlackShuck())
                             }),
                         new BattleStage(
                             "VS " + FieldNPCs.BigKnight().Look.Name,
@@ -58,9 +58,9 @@ namespace Scripts.Game.Areas {
                                 new Encounter(Music.BOSS, FieldNPCs.Healer(), FieldNPCs.BigKnight(), FieldNPCs.Healer())
                             }),
                         new BattleStage(
-                            "VS " + FieldNPCs.Replicant().Look.Name,
+                            "The Replicant",
                             () => new Encounter[] {
-                                new Encounter(Music.BOSS, FieldNPCs.Healer(), FieldNPCs.Replicant(), FieldNPCs.Healer())
+                                new Encounter(Music.CREEPY, FieldNPCs.Healer(), FieldNPCs.Replicant(), FieldNPCs.Healer())
                             }),
                     },
                     new PageGroup[] { FieldNPCs.AppleDealer(camp, flags, party) }
