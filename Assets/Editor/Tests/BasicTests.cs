@@ -417,7 +417,7 @@ public class BasicTests {
         }
 
         [Test]
-        public void SaveLoadMaintainsEquipmentBonusesForNonPartyMemberCastedBuffs() {
+        public void SaveLoadMaintainsBonusesFromEquipmentAndBuffsForNonPartyMemberCastedBuffs() {
             Party party = new Party();
             Character dummy = CharacterList.TestEnemy();
             Character buffCaster = CharacterList.TestEnemy();
@@ -443,7 +443,7 @@ public class BasicTests {
             party2.InitFromSaveObject(retrieved);
 
             int spoofedStrength = party2.Collection.ToArray()[2].Buffs.ToArray()[0].BuffCaster.GetEquipmentBonus(StatType.STRENGTH);
-            Assert.AreEqual(spoofedStrength, (new BrokenSword()).Stats[StatType.STRENGTH]);
+            Assert.AreEqual(spoofedStrength, (new BrokenSword()).StatBonuses[StatType.STRENGTH]);
             Debug.Log("" + spoofedStrength);
         }
     }
@@ -508,7 +508,7 @@ public class BasicTests {
         private string GetSpellDetails(Spell spell) {
             return string.Format(
                 "Caster agility: {0}/Spell priority: {1}",
-                spell.MySpell.Caster.Stats.GetStatCount(Stats.Get.MOD_AND_EQUIP, StatType.AGILITY),
+                spell.MySpell.Caster.Stats.GetStatCount(Stats.Get.TOTAL, StatType.AGILITY),
                 spell.MySpell.Book.Priority
                 );
         }

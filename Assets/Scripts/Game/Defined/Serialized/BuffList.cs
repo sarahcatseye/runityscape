@@ -89,7 +89,7 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
 
         protected override IList<SpellEffect> OnEndOfTurnHelper(Model.Characters.Stats owner) {
             return new SpellEffect[] {
-                new AddToModStat(owner, StatType.HEALTH, BuffCaster.GetStatCount(Stats.Get.MOD_AND_EQUIP, StatType.STRENGTH))
+                new AddToModStat(owner, StatType.HEALTH, BuffCaster.GetStatCount(Stats.Get.TOTAL, StatType.STRENGTH))
             };
         }
     }
@@ -203,6 +203,19 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
                 new AddToModStat(
                     spellToReactTo.Caster.Stats, StatType.HEALTH, damageToReflect)
                 );
+        }
+    }
+
+    public class Restore : Buff {
+        private const int REGEN_PER_TURN = 1;
+
+        public Restore() : base(Util.GetSprite("health-normal"), "Restore", String.Format("Restores {0} health each turn.", REGEN_PER_TURN), false) {
+        }
+
+        protected override IList<SpellEffect> OnEndOfTurnHelper(Model.Characters.Stats owner) {
+            return new SpellEffect[] {
+                new AddToModStat(owner, StatType.HEALTH, REGEN_PER_TURN)
+            };
         }
     }
 }
