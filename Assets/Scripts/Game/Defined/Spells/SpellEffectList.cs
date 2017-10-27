@@ -37,7 +37,7 @@ namespace Scripts.Game.Defined.Spells {
 
     public class RestoreMissingStatPercent : AddToModStat {
 
-        public RestoreMissingStatPercent(Stats target, StatType type, int missingHealthRestorationPercent) : base(target, type, (int)(target.GetMissingStatCount(StatType.HEALTH) * missingHealthRestorationPercent.ConvertToPercent())) {
+        public RestoreMissingStatPercent(Stats target, StatType type, int missingHealthRestorationPercent) : base(target, type, (int)(target.GetMissingStatCount(type) * missingHealthRestorationPercent.ConvertToPercent())) {
         }
     }
 
