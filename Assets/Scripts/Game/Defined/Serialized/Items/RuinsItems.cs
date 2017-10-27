@@ -69,8 +69,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
         }
 
         public override IList<SpellEffect> GetEffects(Character caster, Character target) {
-            return new SpellEffect[] { new AddToModStat(target.Stats, StatType.HEALTH, HEALING_AMOUNT)};
-
+            return new SpellEffect[] { new AddToModStat(target.Stats, StatType.HEALTH, HEALING_AMOUNT) };
         }
     }
 
@@ -92,7 +91,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
             : base(500,
                   TargetType.ONE_ALLY,
                   "Revival Seed",
-                  string.Format("Use on an ally to restore them to {0}% {1}. Can be used on fallen allies.",
+                  string.Format("Use on an ally to restore them by {0}% of their missing {1}. Can be used on fallen allies.",
                       HEALTH_RECOVERY_PERCENTAGE,
                       StatType.HEALTH.ColoredName)) {
         }
@@ -102,24 +101,32 @@ namespace Scripts.Game.Defined.Serialized.Items {
                 new RestoreMissingStatPercent(target.Stats, StatType.HEALTH, HEALTH_RECOVERY_PERCENTAGE)
             };
         }
+
+        protected override bool IsMeetOtherRequirements(Character caster, Character target) {
+            return true;
+        }
     }
 
     public class MinorVitalityTrinket : SingleStatTrinket {
+
         public MinorVitalityTrinket() : base(StatType.VITALITY, 1, "vitality", 5) {
         }
     }
 
     public class MinorAgilityTrinket : SingleStatTrinket {
+
         public MinorAgilityTrinket() : base(StatType.AGILITY, 1, "agility", 5) {
         }
     }
 
     public class MinorIntellectTrinket : SingleStatTrinket {
+
         public MinorIntellectTrinket() : base(StatType.INTELLECT, 1, "intellect", 5) {
         }
     }
 
     public class MinorStrengthTrinket : SingleStatTrinket {
+
         public MinorStrengthTrinket() : base(StatType.STRENGTH, 1, "strength", 5) {
         }
     }
