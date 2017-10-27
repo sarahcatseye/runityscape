@@ -289,6 +289,10 @@ namespace Scripts.Game.Defined.Serialized.Spells {
                 new RestoreMissingStatPercent(target.Stats, StatType.MANA, MISSING_MANA_RESTORATION_PERCENT)
             };
         }
+
+        protected override bool IsMeetCastRequirements(Character caster, Character target) {
+            return target.Stats.HasStat(StatType.MANA);
+        }
     }
 
     public class PlayerHeal : BasicSpellbook {
