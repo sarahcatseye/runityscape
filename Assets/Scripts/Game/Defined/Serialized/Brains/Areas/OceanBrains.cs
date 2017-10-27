@@ -76,10 +76,29 @@ namespace Scripts.Game.Serialized.Brains {
     }
 
     public class DreadSinger : PriorityBrain {
+        private const float ANTI_HEAL_THRESHOLD = .50f;
 
         protected override IList<Spell> GetPriorityPlays() {
+            SpellBook advancedSpellToCast = null;
+            Func<Character, int> characterSorter = null;
+
+            // Cast nullify healing on targets with low HP
+            if (foes.Any(c => c.Stats.GetStatPercent(StatType.HEALTH) < ANTI_HEAL_THRESHOLD)) {
+                advancedSpellToCast = new NullifyHealing();
+
+                //
+                characterSorter = (c => {
+                    return (int)(c.Stats.GetStatPercent(StatType.HEALTH) * 100);
+                });
+            } else { // Cast Death on targets with highest hp
+                advancedSpellToCast = new CastDelayedEternalDeath();
+                characterSorter = (c => {
+                    return -c.Stats.GetStatCount(Stats.Get.MOD, StatType.HEALTH);
+                });
+            }
+
             return new Spell[] {
-                CastOnRandom(new CastDelayedEternalDeath()),
+                CastOnLeastTarget(advancedSpellToCast, characterSorter),
                 CastOnRandom(new CastDelayedDeath()),
                 CastOnRandom(new Attack())
             };

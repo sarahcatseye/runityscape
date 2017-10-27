@@ -214,5 +214,30 @@ namespace Scripts.Game.Defined.Characters {
                     .AddItem(new Money(), Util.RandomRange(5, 10));
             }
         }
+
+        public static class Final {
+
+            private static Character PlayerClone(Stats stats, Look look, Brain brain) {
+                return CharacterUtil.StandardEnemy(stats, look, brain)
+                    .RemoveFlags(Flag.DROPS_ITEMS, Flag.GIVES_EXPERIENCE)
+                    .AddFlags(Flag.PERSISTS_AFTER_DEFEAT);
+            }
+
+            public static Character HeroClone() {
+                return PlayerClone(
+                    new Stats(20, 20, 40, 40, 40),
+                    new Look("Anomaly A", "player", "An anomaly in a familiar form.", Breed.PROGRAMMER),
+                    new Attacker()
+                    );
+            }
+
+            public static Character PartnerClone() {
+                return PlayerClone(
+                    new Stats(20, 30, 50, 30, 40),
+                    new Look("Anomaly B", "partner", "An anomaly in a familiar form.", Breed.HUMAN),
+                    new Attacker()
+                    );
+            }
+        }
     }
 }

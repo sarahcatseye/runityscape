@@ -242,6 +242,10 @@ namespace Scripts.Model.Characters {
             flags.Add(flagToAdd);
         }
 
+        public void RemoveFlag(Flag flagToRemove) {
+            flags.Remove(flagToRemove);
+        }
+
         /// <summary>
         /// Determines whether the character has the specified flag.
         /// </summary>

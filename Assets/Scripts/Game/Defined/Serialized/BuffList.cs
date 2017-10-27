@@ -13,7 +13,7 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
 
     public class AntiHeal : Buff {
 
-        public AntiHeal() : base(3, Util.GetSprite("skull-crossed-bones"), "Heal Buff", "Healing targeting this unit is doubled.", false) {
+        public AntiHeal() : base(8, Util.GetSprite("skull-crossed-bones"), "Antiheal", "Healing on this unit is nullified.", false) {
         }
 
         public override bool IsReact(SingleSpell spellToReactTo, Stats owner) {
@@ -318,7 +318,7 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
     public class DelayedHyperDeath : DelayedEffectSong {
         private static readonly StatType AFFECTED_STAT = StatType.VITALITY;
 
-        public DelayedHyperDeath() : base(8, "skull-crossed-bones", AFFECTED_STAT, "Curse: Hyperdeath") {
+        public DelayedHyperDeath() : base(5, "skull-crossed-bones", AFFECTED_STAT, "Curse: Hyperdeath") {
         }
     }
 

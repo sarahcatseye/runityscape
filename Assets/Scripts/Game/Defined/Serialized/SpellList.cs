@@ -818,4 +818,10 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
         public GiveOverwhelmingPower() : base(TargetType.SELF, SpellType.BOOST, PriorityType.LOW) {
         }
     }
+
+    public class NullifyHealing : BuffAdder<AntiHeal> {
+
+        public NullifyHealing() : base(TargetType.ONE_FOE, SpellType.OFFENSE, PriorityType.NORMAL) {
+        }
+    }
 }

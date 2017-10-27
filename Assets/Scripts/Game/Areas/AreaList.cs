@@ -161,7 +161,7 @@ namespace Scripts.Game.Areas {
             return new Area(AreaType.LAB,
                 new Stage[] {
                     new BattleStage(
-                        "Disbelief",
+                        "Adventure's End",
                         () => new Encounter[] {
                             new Encounter(LabNPCs.Ruins.Cultist(), LabNPCs.Ruins.Cultist(), LabNPCs.Ruins.Cultist()),
                             new Encounter(LabNPCs.Ruins.Enforcer()),
@@ -169,7 +169,7 @@ namespace Scripts.Game.Areas {
                             new Encounter(LabNPCs.Ruins.BigKnightA())
                         }),
                     new BattleStage(
-                        "Denial",
+                        "Maleficent Magicks",
                         () => new Encounter[] {
                             new Encounter(LabNPCs.Ruins.Cleric(), LabNPCs.Ruins.Enforcer()),
                             new Encounter(LabNPCs.Ruins.Cleric(), LabNPCs.Ruins.Enforcer(), LabNPCs.Ruins.Cleric(), LabNPCs.Ruins.Enforcer()),
@@ -179,32 +179,48 @@ namespace Scripts.Game.Areas {
                             new Encounter(LabNPCs.Ruins.BigKnightB())
                         }),
                     new BattleStage(
-                        "Bargaining",
+                        "Determination",
                         () => new Encounter[] {
                             new Encounter(Music.BOSS, LabNPCs.Ruins.BigKnightA(), LabNPCs.Ruins.BigKnightB())
                         }),
                     new BattleStage(
-                        "Guilt",
+                        "Sharp Sea",
                         () => new Encounter[] {
-                            new Encounter(LabNPCs.Ocean.Shark())
+                            new Encounter(LabNPCs.Ocean.Shark(), LabNPCs.Ocean.Shark()),
+                            new Encounter(LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm()),
+                            new Encounter(LabNPCs.Ocean.Shark(), LabNPCs.Ocean.Shark(), LabNPCs.Ocean.Shark(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm())
                         }),
                     new BattleStage(
-                        "Anger",
+                        "Sirens' Trench",
                         () => new Encounter[] {
+                            new Encounter(LabNPCs.Ocean.Siren(), LabNPCs.Ocean.Siren()),
+                            new Encounter(LabNPCs.Ocean.DreadSinger()),
+                            new Encounter(LabNPCs.Ocean.Elemental()),
+                            new Encounter(LabNPCs.Ocean.Siren(), LabNPCs.Ocean.Siren(), LabNPCs.Ocean.DreadSinger(), LabNPCs.Ocean.Elemental())
                         }),
                     new BattleStage(
-                        "Depression",
+                        "Affinity",
                         () => new Encounter[] {
                             new Encounter(LabNPCs.Ocean.Tentacle(), LabNPCs.Ocean.Tentacle()),
                             new Encounter(Music.BOSS, LabNPCs.Ocean.Kraken())
                         }),
                     new BattleStage(
-                        "Acceptance",
+                        "Premonition II",
                         () => new Encounter[] {
+                            new Encounter(LabNPCs.Ruins.Cultist(), LabNPCs.Ruins.Cultist(), LabNPCs.Ruins.Cultist()),
+                            new Encounter(LabNPCs.Ruins.Enforcer(), LabNPCs.Ruins.Enforcer(), LabNPCs.Ruins.Enforcer()),
+                            new Encounter(LabNPCs.Ruins.Cleric(), LabNPCs.Ruins.Enforcer(), LabNPCs.Ruins.Cleric(), LabNPCs.Ruins.Enforcer()),
+                            new Encounter(LabNPCs.Ruins.Cleric(), LabNPCs.Ruins.Mage(), LabNPCs.Ruins.Mage(), LabNPCs.Ruins.Cleric()),
+                            new Encounter(LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm()),
+                            new Encounter(LabNPCs.Ocean.Shark(), LabNPCs.Ocean.Shark(), LabNPCs.Ocean.Shark(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm()),
+                            new Encounter(LabNPCs.Ocean.Siren(), LabNPCs.Ocean.Siren(), LabNPCs.Ocean.DreadSinger(), LabNPCs.Ocean.Elemental())
                         }),
                     new BattleStage(
-                        "Respite",
+                        "System's Exit",
                         () => new Encounter[] {
+                            new Encounter(Music.BOSS, LabNPCs.Final.HeroClone()),
+                            new Encounter(Music.BOSS, LabNPCs.Final.PartnerClone()),
+                            new Encounter(Music.BOSS, LabNPCs.Final.HeroClone(), LabNPCs.Final.PartnerClone())
                         })
                 },
                 new PageGroup[] { LabNPCs.Trainer(camp, party) }
