@@ -246,9 +246,9 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
 
     public class Defend : Buff {
         public const string DEFEND_NAME = "Guard";
-        private const int DAMAGE_REDUCTION_PERCENT = 75;
+        private const int DAMAGE_REDUCTION_PERCENT = 80;
 
-        private const float DAMAGE_REDUCTION = DAMAGE_REDUCTION_PERCENT / 100f;
+        private const float DAMAGE_REDUCTION = (100 - DAMAGE_REDUCTION_PERCENT) / 100f;
 
         public Defend()
             : base(1,
