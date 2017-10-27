@@ -150,6 +150,7 @@ namespace Scripts.Game.Defined.Serialized.Spells {
     }
 
     public class QuickAttack : BasicSpellbook {
+        public const int INTELLECT_TO_DAMAGE = 1;
 
         public QuickAttack() : base("Lightning Strike", Util.GetSprite("power-lightning"), TargetType.ONE_FOE, SpellType.OFFENSE, PriorityType.HIGH) {
             AddCost(StatType.SKILL, 2);
@@ -159,9 +160,16 @@ namespace Scripts.Game.Defined.Serialized.Spells {
             return "A faster-than-usual attack that can never miss.";
         }
 
+        protected override IList<IEnumerator> GetHitSFX(Character caster, Character target) {
+            return new IEnumerator[] { SFX.DoMeleeEffect(caster, target, 0.2f, "Slash_0") };
+        }
+
         protected override IList<SpellEffect> GetHitEffects(Page page, Character caster, Character target) {
             return new SpellEffect[] {
-                new AddToModStat(target.Stats, StatType.HEALTH, -caster.Stats.GetStatCount(Stats.Get.TOTAL, StatType.INTELLECT))
+                new AddToModStat(
+                    target.Stats,
+                    StatType.HEALTH,
+                    -caster.Stats.GetStatCount(Stats.Get.TOTAL, StatType.INTELLECT) * INTELLECT_TO_DAMAGE)
             };
         }
     }
@@ -261,7 +269,7 @@ namespace Scripts.Game.Defined.Serialized.Spells {
     }
 
     public class Revive : BasicSpellbook {
-        private const int MANA_COST = 50;
+        public const int MANA_COST = 50;
         private const int REVIVAL_HEALTH_PERCENT = 20;
 
         public Revive() : base("Revive", Util.GetSprite("beams-aura"), TargetType.ONE_ALLY, SpellType.BOOST, PriorityType.LOW, true) {
@@ -284,7 +292,7 @@ namespace Scripts.Game.Defined.Serialized.Spells {
         private const int MISSING_MANA_RESTORATION_PERCENT = 50;
         private const int SKILL_COST = 1;
 
-        public Inspire() : base("Inspire", Util.GetSprite("beams-aura"), TargetType.ONE_ALLY, SpellType.BOOST) {
+        public Inspire() : base("Inspire", Util.GetSprite("fire"), TargetType.ONE_ALLY, SpellType.BOOST) {
             AddCost(StatType.SKILL, SKILL_COST);
             isUsableOutOfCombat = true;
         }
@@ -352,9 +360,9 @@ namespace Scripts.Game.Defined.Serialized.Spells {
         }
     }
 
-    public class Arraystrike : BasicSpellbook {
+    public class Multistrike : BasicSpellbook {
 
-        public Arraystrike() : base("Arraystrike", Util.GetSprite("sword-array"), TargetType.ALL_FOE, SpellType.OFFENSE, PriorityType.LOW) {
+        public Multistrike() : base("Multistrike", Util.GetSprite("sword-array"), TargetType.ALL_FOE, SpellType.OFFENSE, PriorityType.LOW) {
             AddCost(StatType.SKILL, 3);
         }
 

@@ -55,5 +55,14 @@ namespace Scripts.Model.Spells {
                 current.AddText(spellMessage);
             }
         }
+
+        public override bool IsTarget(Character targetToCheck) {
+            foreach (Character target in book.TargetType.GetTargets(caster, current)) {
+                if (target == targetToCheck) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

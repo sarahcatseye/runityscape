@@ -118,4 +118,63 @@ namespace Scripts.Game.Serialized.Brains {
     // Ocean enemies
 
     // Lab-unique enemies
+    public class Partner : PriorityBrain {
+
+        // TODO put these into an array for quicker adding to LabNPCs?
+        private static readonly SpellBook QUICK_ATTACK = new QuickAttack();
+
+        private static readonly SpellBook MEDITATE = new SelfHeal();
+        private static readonly SpellBook INSPIRE = new Inspire();
+        private static readonly SpellBook DEFEND = new SetupDefend();
+        private static readonly SpellBook CRUSH = new CrushingBlow();
+        private static readonly SpellBook MULTI_STRIKE = new Multistrike();
+        private static readonly SpellBook ATTACK = new Attack();
+
+        protected override IList<Spell> GetPriorityPlays() {
+            return new Spell[] {
+                CastQuickAttackToKill(),
+                CastOnRandom(MEDITATE, () => brainOwner.Stats.GetStatPercent(StatType.HEALTH) < .50f),
+                CastOnTargetMeetingCondition(INSPIRE, c => c.Stats.GetStatCount(Stats.Get.MOD, StatType.MANA) < Revive.MANA_COST),
+                CastOnRandom(DEFEND, () => currentBattle.IsFoeWillUnleashSpellNextTurnOnTarget<CrushingBlow>(brainOwner)),
+                CastOnTargetMeetingCondition(CRUSH, c => c.Stats.GetStatPercent(StatType.HEALTH) < .50f),
+                CastOnRandom(MULTI_STRIKE),
+                CastOnRandom(ATTACK)
+            };
+        }
+
+        private Spell CastQuickAttackToKill() {
+            return CastOnTarget(
+                QUICK_ATTACK,
+                foes => {
+                    foreach (Character foe in foes) {
+                        if (foe.Stats.GetStatCount(Stats.Get.MOD, StatType.HEALTH)
+                        <= brainOwner.Stats.GetStatCount(Stats.Get.TOTAL, StatType.INTELLECT) * QuickAttack.INTELLECT_TO_DAMAGE) {
+                            return foe;
+                        }
+                    }
+                    return null;
+                });
+        }
+    }
+
+    public class Hero : PriorityBrain {
+
+        // TODO put these into an array for quicker adding to LabNPCs?
+        private static readonly SpellBook REVIVE = new Revive();
+
+        private static readonly SpellBook HEAL = new PlayerHeal();
+        private static readonly SpellBook DEFEND = new SetupDefend();
+        private static readonly SpellBook MISSILE = new MagicMissile();
+        private static readonly SpellBook ATTACK = new Attack();
+
+        protected override IList<Spell> GetPriorityPlays() {
+            return new Spell[] {
+                CastOnTargetMeetingCondition(REVIVE, c => c.Stats.State == State.DEAD),
+                CastOnTargetMeetingCondition(HEAL, c => c.Stats.GetStatPercent(StatType.HEALTH) < .50f),
+                CastOnRandom(DEFEND, () => currentBattle.IsFoeWillUnleashSpellNextTurnOnTarget<CrushingBlow>(brainOwner)),
+                CastOnRandom(MISSILE),
+                CastOnRandom(ATTACK)
+            };
+        }
+    }
 }

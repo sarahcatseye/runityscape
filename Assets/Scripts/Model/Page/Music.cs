@@ -16,6 +16,12 @@ namespace Scripts.Model.Pages {
         [Description("enchanted tiki 86")]
         BOSS,
 
+        [Description("Flicker")]
+        FINAL_BOSS,
+
+        [Description("chiptune-police loop")]
+        FINAL_STAGE,
+
         [Description("Evil5 - Whispers From Beyond")]
         CREEPY,
 

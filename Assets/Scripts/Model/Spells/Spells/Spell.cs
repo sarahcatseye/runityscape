@@ -61,6 +61,12 @@ namespace Scripts.Model.Spells {
             }
         }
 
+        public int TurnsUntilCast {
+            get {
+                return turnsUntilCast;
+            }
+        }
+
         public TextBox ChargingText {
             get {
                 string returnString = string.Empty;
@@ -162,6 +168,8 @@ namespace Scripts.Model.Spells {
         public IEnumerator Play(Page current, bool isAddCastText) {
             yield return Cast(current, isAddCastText);
         }
+
+        public abstract bool IsTarget(Character targetToCheck);
 
         protected abstract IEnumerator Cast(Page current, bool isAddCastText);
     }

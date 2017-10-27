@@ -41,7 +41,7 @@ namespace Scripts.Game.Defined.Characters {
                     new PurchasedSpell(100, new Purge()),
                     new PurchasedSpell(100, new CrushingBlow()),
                     new PurchasedSpell(200, new MassCheck()),
-                    new PurchasedSpell(200, new Arraystrike())
+                    new PurchasedSpell(200, new Multistrike())
                 );
         }
 

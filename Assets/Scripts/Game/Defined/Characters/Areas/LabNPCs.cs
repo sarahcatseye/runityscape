@@ -197,6 +197,7 @@ namespace Scripts.Game.Defined.Characters {
                             Breed.FISH
                             ),
                         new DreadSinger())
+                        .AddSpells(new NullifyHealing())
                         .AddSpells(new CastDelayedEternalDeath())
                         .AddItem(new Cleansing(), 1);
             }
@@ -225,18 +226,33 @@ namespace Scripts.Game.Defined.Characters {
 
             public static Character HeroClone() {
                 return PlayerClone(
-                    new Stats(20, 20, 40, 40, 40),
-                    new Look("Anomaly A", "player", "An anomaly in a familiar form.", Breed.PROGRAMMER),
-                    new Attacker()
+                    new Stats(15, 15, 30, 30, 30),
+                    new Look("Anomaly P", "player", "An anomaly in a familiar form.", Breed.PROGRAMMER),
+                    new Hero()
+                    )
+                    .AddStats(new Mana())
+                    .AddSpells(
+                        new Revive(),
+                        new PlayerHeal(),
+                        new SetupDefend(),
+                        new MagicMissile()
                     );
             }
 
             public static Character PartnerClone() {
                 return PlayerClone(
-                    new Stats(20, 30, 50, 30, 40),
-                    new Look("Anomaly B", "partner", "An anomaly in a familiar form.", Breed.HUMAN),
-                    new Attacker()
-                    );
+                    new Stats(15, 20, 30, 20, 35),
+                    new Look("Anomaly K", "partner", "An anomaly in a familiar form.", Breed.HUMAN),
+                    new Partner()
+                    )
+                    .AddStats(new Skill())
+                    .AddSpells(
+                        new QuickAttack(),
+                        new SelfHeal(),
+                        new Inspire(),
+                        new SetupDefend(),
+                        new CrushingBlow(),
+                        new Multistrike());
             }
         }
     }

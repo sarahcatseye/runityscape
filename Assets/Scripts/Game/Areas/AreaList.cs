@@ -218,9 +218,9 @@ namespace Scripts.Game.Areas {
                     new BattleStage(
                         "System's Exit",
                         () => new Encounter[] {
-                            new Encounter(Music.BOSS, LabNPCs.Final.HeroClone()),
-                            new Encounter(Music.BOSS, LabNPCs.Final.PartnerClone()),
-                            new Encounter(Music.BOSS, LabNPCs.Final.HeroClone(), LabNPCs.Final.PartnerClone())
+                            new Encounter(Music.FINAL_STAGE, LabNPCs.Final.HeroClone()),
+                            new Encounter(Music.FINAL_STAGE, LabNPCs.Final.PartnerClone()),
+                            new Encounter(Music.FINAL_BOSS, LabNPCs.Final.HeroClone(), LabNPCs.Final.PartnerClone())
                         })
                 },
                 new PageGroup[] { LabNPCs.Trainer(camp, party) }

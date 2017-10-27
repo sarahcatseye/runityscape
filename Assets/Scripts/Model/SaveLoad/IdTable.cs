@@ -106,7 +106,7 @@ namespace Scripts.Model.SaveLoad {
             Add<Purge>("purge");
             Add<Revive>("revive");
             Add<Inspire>("inspire");
-            Add<Arraystrike>("arraystrike");
+            Add<Multistrike>("arraystrike");
         }
 
         private void Items() {
