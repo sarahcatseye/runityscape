@@ -218,7 +218,7 @@ namespace Scripts.Model.Pages {
         public bool IsFoeWillUnleashSpellNextTurnOnTarget<T>(Character target) where T : SpellBook {
             return
                 GetFoes(target).Any(foe =>
-                    IsChargingSpell(target)
+                    IsChargingSpell(foe)
                     && charactersChargingSpells[foe].IsTarget(target)
                     && charactersChargingSpells[foe].IsSpellCharged
                     && charactersChargingSpells[foe].SpellBook is T);
