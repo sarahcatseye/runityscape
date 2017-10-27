@@ -133,7 +133,7 @@ namespace Scripts.Game.Serialized.Brains {
         protected override IList<Spell> GetPriorityPlays() {
             return new Spell[] {
                 CastQuickAttackToKill(),
-                CastOnRandom(MEDITATE, () => brainOwner.Stats.GetStatPercent(StatType.HEALTH) < .50f),
+                CastOnRandom(MEDITATE, () => brainOwner.Stats.GetStatPercent(StatType.HEALTH) < .25f),
                 CastOnTargetMeetingCondition(INSPIRE, c => c.Stats.GetStatCount(Stats.Get.MOD, StatType.MANA) < Revive.MANA_COST),
                 CastOnRandom(DEFEND, () => currentBattle.IsFoeWillUnleashSpellNextTurnOnTarget<CrushingBlow>(brainOwner)),
                 CastOnTargetMeetingCondition(CRUSH, c => c.Stats.GetStatPercent(StatType.HEALTH) < .50f),

@@ -107,6 +107,10 @@ namespace Scripts.Model.SaveLoad {
             Add<Revive>("revive");
             Add<Inspire>("inspire");
             Add<Multistrike>("arraystrike");
+            Add<MagicMissile>("magicMissile");
+            Add<MassCheck>("massCheck");
+            Add<SelfHeal>("selfHeal");
+            Add<QuickAttack>("quickAttack");
         }
 
         private void Items() {
@@ -129,8 +133,15 @@ namespace Scripts.Model.SaveLoad {
             Add<DefendTome>("defendTome");
             Add<Inventory1x6>("6pack");
             Add<Cleansing>("cleansing");
-            Add<HalfLife>("hl3");
-            Add<InstaKill>("kill");
+            Add<SharkFin>("sharkFin");
+            Add<VitalityTrinket>("vitTrinket");
+            Add<AgilityTrinket>("agiTrinket");
+            Add<IntellectTrinket>("intTrinket");
+            Add<StrengthTrinket>("strTrinket");
+            Add<MinorVitalityTrinket>("minVitTrinket");
+            Add<MinorAgilityTrinket>("minAgiTrinket");
+            Add<MinorIntellectTrinket>("minIntTrinket");
+            Add<MinorStrengthTrinket>("minStrTrinket");
         }
 
         private void Buffs() {
@@ -151,6 +162,14 @@ namespace Scripts.Model.SaveLoad {
             Add<IntellectSirenSong>("intellectSong");
             Add<DelayedDeath>("delayedDeath");
             Add<DelayedHyperDeath>("delayedHyperdeath");
+            Add<AntiHeal>("antiHeal");
+            Add<HealBoost>("healBoost");
+            Add<PermanantIgnited>("permanantIgnite");
+            Add<SuperCheck>("superCheck");
+            Add<CalmedMind>("calmedMind");
+            Add<StrengthBoost>("strengthBoost");
+            Add<HalfLife>("hl3");
+            Add<InstaKill>("kill");
         }
 
         private void Brains() {

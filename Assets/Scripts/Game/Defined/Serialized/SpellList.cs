@@ -132,23 +132,6 @@ namespace Scripts.Game.Defined.Serialized.Spells {
         }
     }
 
-    public class Charge : BasicSpellbook {
-        private const int SKILL_INCREASE = 1;
-
-        public Charge() : base("Charge", Util.GetSprite("beams-aura"), TargetType.SELF, SpellType.BOOST) {
-        }
-
-        protected override string CreateDescriptionHelper() {
-            return string.Format("Restore {0} {1}.", SKILL_INCREASE, StatType.SKILL.ColoredName);
-        }
-
-        protected override IList<SpellEffect> GetHitEffects(Page page, Character caster, Character target) {
-            return new SpellEffect[] {
-                new AddToModStat(target.Stats, StatType.SKILL, SKILL_INCREASE),
-            };
-        }
-    }
-
     public class QuickAttack : BasicSpellbook {
         public const int INTELLECT_TO_DAMAGE = 1;
 
@@ -523,7 +506,7 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
                 () => {
                     Character c = new Character(
                         new Stats(caster.Stats.Level, 0, caster.Stats.GetStatCount(Stats.Get.TOTAL, StatType.AGILITY), 1, 1),
-                        new Look(caster.Look.Name, caster.Look.Sprite, caster.Look.Tooltip, caster.Look.Breed, caster.Look.TextColor),
+                        new Look(caster.Look.Name, caster.Look.SpriteLoc, caster.Look.Tooltip, caster.Look.Breed, caster.Look.TextColor),
                         new ReplicantClone());
                     c.AddFlag(Model.Characters.Flag.IS_CLONE);
                     c.Buffs.AddBuff(new ReflectAttack(), c);
