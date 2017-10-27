@@ -27,8 +27,6 @@ namespace Scripts.Game.Serialized.Brains {
                 };
         }
 
-
-
         public override string StartOfRoundDialogue() {
             if (currentBattle.TurnCount == 0 && !hasSaidIntroduction) {
                 initialEnemiesPresent = allies.Count;
@@ -94,6 +92,7 @@ namespace Scripts.Game.Serialized.Brains {
 
         protected override IList<Spell> GetPriorityPlays() {
             return new Spell[] {
+                CastOnRandom(new SpawnLashers(), () => (currentBattle.TurnCount % TURNS_BETWEEN_TENTACLE_SUMMONS) == 0),
                 CastOnRandom(new SpawnTentacles(), () => (currentBattle.TurnCount % TURNS_BETWEEN_TENTACLE_SUMMONS) == 0),
                 CastOnRandom(new CrushingBlow(), () => (brainOwner.Stats.GetStatPercent(StatType.HEALTH) < LOW_HEALTH_PERCENTAGE)),
                 CastOnRandom(new Attack())

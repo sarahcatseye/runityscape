@@ -12,6 +12,7 @@ using UnityEngine;
 namespace Scripts.Game.Defined.Serialized.Buffs {
 
     public class AntiHeal : Buff {
+
         public AntiHeal() : base(3, Util.GetSprite("skull-crossed-bones"), "Heal Buff", "Healing targeting this unit is doubled.", false) {
         }
 
@@ -677,6 +678,39 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
         private const int STANDARD_DURATION = 20;
 
         public StandardCountdown() : base(STANDARD_DURATION) {
+        }
+    }
+
+    public abstract class OnlyAffectedByCharacterWithStat : Buff {
+        private readonly StatType statThatCanAffect;
+
+        public OnlyAffectedByCharacterWithStat(StatType statThatCanAffect, string buffName)
+             : base(Util.GetSprite("shield"),
+                    buffName,
+                    string.Format("Only casters with the {0} resource can affect this unit.", statThatCanAffect),
+                    false) {
+            Util.Assert(StatType.RESOURCES.Contains(statThatCanAffect), "Stat is not a resource!");
+            this.statThatCanAffect = statThatCanAffect;
+        }
+
+        public override bool IsReact(SingleSpell incomingSpell, Stats ownerOfThisBuff) {
+            return incomingSpell.Target.Stats == ownerOfThisBuff && !incomingSpell.Caster.Stats.HasStat(statThatCanAffect);
+        }
+
+        protected override void ReactHelper(SingleSpell spellCast, Stats ownerOfThisBuff) {
+            spellCast.Result.Effects.Clear();
+        }
+    }
+
+    public class OnlyAffectedByHero : OnlyAffectedByCharacterWithStat {
+
+        public OnlyAffectedByHero() : base(StatType.MANA, "Magical Affinity") {
+        }
+    }
+
+    public class OnlyAffectedByPartner : OnlyAffectedByCharacterWithStat {
+
+        public OnlyAffectedByPartner() : base(StatType.SKILL, "Heroic Affinity") {
         }
     }
 }

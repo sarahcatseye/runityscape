@@ -603,13 +603,20 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
         }
     }
 
-    public class SpawnTentacles : BasicSpellbook {
+    public abstract class AbstractSpawnTentacles : BasicSpellbook {
+        private readonly Func<Character> tentacleSpawnFunction;
 
-        public SpawnTentacles() : base("Tentacle Eruption", Util.GetSprite("shark"), TargetType.SELF, SpellType.BOOST, PriorityType.LOWEST) {
+        public AbstractSpawnTentacles(string spellName, Func<Character> tentacleToSpawn)
+            : base(spellName,
+                  Util.GetSprite("at-sea"),
+                  TargetType.SELF,
+                  SpellType.BOOST,
+                  PriorityType.LOWEST) {
+            this.tentacleSpawnFunction = tentacleToSpawn;
         }
 
         protected override string CreateDescriptionHelper() {
-            return string.Format("Spawns Tentacles to defend the caster. Tentacles intercept all attacks. Number increases with missing health.");
+            return string.Format("Spawns Tentacles to defend the caster. Number increases with missing health.");
         }
 
         protected override IList<SpellEffect> GetHitEffects(Page page, Character caster, Character target) {
@@ -635,6 +642,18 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
             return new SpellEffect[] {
                 new SummonEffect(page.GetSide(target), page, summonTentacleFunc, tentaclesToSummon)
             };
+        }
+    }
+
+    public class SpawnTentacles : AbstractSpawnTentacles {
+
+        public SpawnTentacles() : base("Tentacle Sprout", () => OceanNPCs.Tentacle()) {
+        }
+    }
+
+    public class SpawnLashers : AbstractSpawnTentacles {
+
+        public SpawnLashers() : base("Lasher Eruption", () => LabNPCs.Ocean.Tentacle()) {
         }
     }
 

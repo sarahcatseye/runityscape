@@ -137,31 +137,36 @@ namespace Scripts.Game.Defined.Characters {
             }
 
             public static Character Tentacle() {
-                return CharacterUtil.StandardEnemy(
+                Character c = CharacterUtil.StandardEnemy(
                         new Stats(7, 3, 25, 1, 20),
                         new Look(
                             "Lasher",
-                            "shark",
-                            "Tentacle belonging to a Kraken.",
+                            "tentacle",
+                            "Tentacle belonging to a Leviathan.",
                             Breed.FISH
                             ),
                         new Attacker()
-                    )
-                    .AddBuff(new RoughestSkin());
+                    );
+                if (Util.IsChance(.50)) {
+                    c.AddBuff(new OnlyAffectedByHero());
+                } else {
+                    c.AddBuff(new OnlyAffectedByPartner());
+                }
+                return c;
             }
 
             public static Character Kraken() {
                 return CharacterUtil.StandardEnemy(
                         new Stats(8, 10, 10, 20, 200),
                         new Look(
-                            "Octavio",
-                            "shark",
-                            "Giant squid thing. Commonly mistaken for a DJ.",
+                            "Leviathan",
+                            "kraken",
+                            "Even bigger squid thing.",
                             Breed.FISH
                             ),
                         new Kraken()
                     )
-                    .AddSpells(new SpawnTentacles())
+                    .AddSpells(new SpawnLashers())
                     .AddSpells(new CrushingBlow())
                     .AddBuff(new StandardCountdown())
                     .AddStats(new Skill());
