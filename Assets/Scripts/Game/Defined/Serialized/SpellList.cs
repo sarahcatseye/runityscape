@@ -106,8 +106,9 @@ namespace Scripts.Game.Defined.Serialized.Spells {
 
     public class MassCheck : BuffAdder<SuperCheck> {
 
-        public MassCheck() : base(TargetType.ALL_FOE, SpellType.OFFENSE, PriorityType.LOW) {
+        public MassCheck() : base(TargetType.ALL_FOE, SpellType.OFFENSE, "Clairvoyance", PriorityType.NORMAL) {
             this.isBuffUnique = true;
+            AddCost(StatType.MANA, 10);
         }
     }
 
@@ -115,7 +116,7 @@ namespace Scripts.Game.Defined.Serialized.Spells {
         private const int MISSING_HEALTH_HEAL_AMOUNT = 50;
         private const int SKILL_COST = 3;
 
-        public SelfHeal() : base("Meditate", Util.GetSprite("beams-aura"), TargetType.SELF, SpellType.DEFENSE) {
+        public SelfHeal() : base("Meditate", Util.GetSprite("prayer"), TargetType.SELF, SpellType.DEFENSE) {
             AddCost(StatType.SKILL, SKILL_COST);
             isUsableOutOfCombat = true;
         }
@@ -173,7 +174,7 @@ namespace Scripts.Game.Defined.Serialized.Spells {
         private static readonly BasicChecked DUMMY = new BasicChecked();
 
         public Check() : base("Check", Util.GetSprite("magnifying-glass"), TargetType.ANY, SpellType.BOOST) {
-            AddCost(StatType.MANA, 10);
+            AddCost(StatType.MANA, 1);
         }
 
         protected override string CreateDescriptionHelper() {
@@ -189,7 +190,7 @@ namespace Scripts.Game.Defined.Serialized.Spells {
         }
 
         protected override bool IsMeetCastRequirements(Character caster, Character target) {
-            return target.Buffs.HasBuff<BasicChecked>();
+            return !target.Buffs.HasBuff<BasicChecked>();
         }
 
         private static string CheckText(Character target) {

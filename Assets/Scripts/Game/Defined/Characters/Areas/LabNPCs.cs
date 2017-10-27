@@ -102,6 +102,7 @@ namespace Scripts.Game.Defined.Characters {
                         ),
                     new LabBigKnight()
                     ).AddFlags(Flag.PERSISTS_AFTER_DEFEAT)
+                    .AddBuff(new StandardCountdown())
                     .AddSpells(new UnholyRevival());
             }
         }
@@ -162,6 +163,7 @@ namespace Scripts.Game.Defined.Characters {
                     )
                     .AddSpells(new SpawnTentacles())
                     .AddSpells(new CrushingBlow())
+                    .AddBuff(new StandardCountdown())
                     .AddStats(new Skill());
             }
 

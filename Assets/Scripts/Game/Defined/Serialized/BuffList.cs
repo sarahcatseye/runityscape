@@ -595,4 +595,30 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
             };
         }
     }
+
+    public abstract class Countdown : Buff {
+        private const int STRENGTH_BOOST = 1000;
+
+        public Countdown(int turnsUntilEnrage)
+            : base(
+                  turnsUntilEnrage,
+                  Util.GetSprite("dragon-head"),
+                  "Countdown",
+                  string.Format("On expiration, unit gains {0}% increased {1}.", STRENGTH_BOOST, StatType.STRENGTH),
+                  false) {
+        }
+
+        protected override IList<SpellEffect> OnTimeOutHelper(Stats ownerOfThisBuff) {
+            return new SpellEffect[] {
+                new AddToModStat(ownerOfThisBuff, StatType.STRENGTH, STRENGTH_BOOST)
+            };
+        }
+    }
+
+    public class StandardCountdown : Countdown {
+        private const int STANDARD_DURATION = 20;
+
+        public StandardCountdown() : base(STANDARD_DURATION) {
+        }
+    }
 }

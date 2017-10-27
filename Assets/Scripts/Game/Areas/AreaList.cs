@@ -195,6 +195,7 @@ namespace Scripts.Game.Areas {
                     new BattleStage(
                         "Depression",
                         () => new Encounter[] {
+                            new Encounter(LabNPCs.Ocean.Tentacle(), LabNPCs.Ocean.Tentacle()),
                             new Encounter(Music.BOSS, LabNPCs.Ocean.Kraken())
                         }),
                     new BattleStage(
