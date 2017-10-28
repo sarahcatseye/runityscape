@@ -15,8 +15,10 @@ namespace Scripts.Game.Defined.Characters {
     public static class CharacterUtil {
         private const float MONEY_VARIANCE = .25f;
 
-        public static Character RemoveFlag(this Character c, Model.Characters.Flag flag) {
-            c.RemoveFlag(flag);
+        public static Character RemoveFlags(this Character c, params Model.Characters.Flag[] flags) {
+            foreach (Model.Characters.Flag flag in flags) {
+                c.RemoveFlag(flag);
+            }
             return c;
         }
 
@@ -133,8 +135,7 @@ namespace Scripts.Game.Defined.Characters {
                 new Player())
                 .AddFlags(Model.Characters.Flag.PLAYER, Model.Characters.Flag.PERSISTS_AFTER_DEFEAT, Model.Characters.Flag.HERO)
                 .AddStats(new Experience())
-                .AddStats(new Mana())
-                .AddSpells(new InstaKill(), new HalfLife());
+                .AddStats(new Mana());
         }
 
         public static Character Partner(string name) {
@@ -143,14 +144,13 @@ namespace Scripts.Game.Defined.Characters {
                 new Look(
                     name,
                     "partner",
-                    "Legendary knight, sworn to defeat to dark lord.",
+                    "Legendary knight.",
                     Breed.HUMAN
                     ),
                 new Player())
                 .AddFlags(Model.Characters.Flag.PLAYER, Model.Characters.Flag.PERSISTS_AFTER_DEFEAT, Model.Characters.Flag.PARTNER)
                 .AddStats(new Experience())
-                .AddStats(new Skill())
-                .AddSpells(new InstaKill(), new HalfLife());
+                .AddStats(new Skill());
         }
 
         public static Character TestEnemy() {

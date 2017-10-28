@@ -16,7 +16,7 @@ using UnityEngine.UI;
 /// This class holds various helper methods that don't fit anywhere else
 /// </summary>
 public static class Util {
-    public static readonly bool IS_DEBUG = true && Application.isEditor;
+    public static readonly bool IS_DEBUG = false && Application.isEditor;
     private static char RANDOM_STRING_DELIMITER = '/';
 
     public static string PickRandom(string big) {
@@ -169,23 +169,6 @@ public static class Util {
 
     public static Sprite TextureToSprite(Texture2D texture) {
         return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-    }
-
-    // Store sprites for easy post-first-call retrieval
-    private static IDictionary<string, Sprite> sprites = new Dictionary<string, Sprite>();
-
-    public static Sprite LoadIcon(string name) {
-        if (string.IsNullOrEmpty(name)) {
-            return null;
-        }
-
-        if (!sprites.ContainsKey(name)) {
-            sprites.Add(name, Resources.Load<Sprite>(string.Format("Images/Icons/{0}", name)));
-        }
-        Sprite icon;
-        sprites.TryGetValue(name, out icon);
-        Util.Assert(icon != null, string.Format("Unable to find icon \"{0}\" in sprite dictionary!", name));
-        return icon;
     }
 
     public static bool IsChance(double probability) {
@@ -341,6 +324,10 @@ public static class Util {
             ((int)(alpha <= 1 ? alpha * 255 : alpha)).ToString("X2")));
     }
 
+    public static T ChooseRandom<T>(params T[] items) {
+        return items.ChooseRandom();
+    }
+
     public static T ChooseRandom<T>(this IEnumerable<T> source) {
         if (source.Count() > 0) {
             return source.ElementAt(rng.Next(0, source.Count()));
@@ -352,7 +339,10 @@ public static class Util {
     private static readonly System.Random rng = new System.Random();
 
     public static Sprite GetSprite(string name) {
-        Sprite sprite = Resources.Load<Sprite>(string.Format("Images/Icons/{0}", name)); ;
+        Sprite sprite = Resources.Load<Sprite>(string.Format("Images/Vector/{0}", name));
+        if (sprite == null) {
+            sprite = Resources.Load<Sprite>(string.Format("Images/Pixel/{0}", name));
+        }
         Util.Assert(sprite != null, "Sprite from: " + name + " was null.");
         return sprite;
     }

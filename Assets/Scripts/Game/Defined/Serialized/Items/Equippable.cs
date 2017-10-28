@@ -8,7 +8,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
 
     public class PoisonArmor : EquippableItem {
 
-        public PoisonArmor() : base(EquipType.ARMOR, 10, "Poisoned Armor", "This doesn't look safe.") {
+        public PoisonArmor() : base(EquipType.ARMOR.Sprite, EquipType.ARMOR, 10, "Poisoned Armor", "This doesn't look safe.") {
             AddFlatStatBonus(StatType.VITALITY, 3);
             AddFlatStatBonus(StatType.AGILITY, -1);
         }
@@ -35,8 +35,18 @@ namespace Scripts.Game.Defined.Unserialized.Items {
 
     public class SingleStatTrinket : EquippableItem {
 
-        public SingleStatTrinket(StatType stat, int amount, string statName, int price) : base(Util.GetSprite("gem-pendant"), EquipType.TRINKET, price, statName + " trinket", "A trinket that boosts " + statName) {
-            AddFlatStatBonus(stat, amount);
+        public SingleStatTrinket(
+            StatType stat,
+            int price,
+            int statIncreaseAmount,
+            string name)
+            : base(
+                  Util.GetSprite("gem-pendant"),
+                  EquipType.TRINKET,
+                  price,
+                  string.Format("Pendant of {0}", name),
+                  string.Format("A magical pendant that boosts {0}.", stat)) {
+            AddFlatStatBonus(stat, statIncreaseAmount);
         }
     }
 }

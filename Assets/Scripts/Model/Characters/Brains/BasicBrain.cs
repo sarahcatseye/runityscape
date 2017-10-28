@@ -83,6 +83,10 @@ namespace Scripts.Model.Characters {
             return CastOnTarget(spellToCast, (characters) => characters.OrderBy(c => sorter(c)).FirstOrDefault(), defaultSpell);
         }
 
+        protected Spell CastOnTarget(SpellBook spellToCast, Func<IEnumerable<Character>, Character> singleCharacterChooser) {
+            return CastOnTarget(spellToCast, singleCharacterChooser, DEFAULT_SPELL);
+        }
+
         protected Spell CastOnTarget(SpellBook spellToCast, Func<IEnumerable<Character>, Character> singleCharacterChooser, SpellBook defaultSpell) {
             Util.Assert(spellToCast.TargetType.TargetCount == TargetCount.SINGLE_TARGET, "Spell is not single target.");
 

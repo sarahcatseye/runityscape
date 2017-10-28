@@ -35,8 +35,6 @@ namespace Scripts.Game.Serialized.Brains {
                 };
         }
 
-
-
         public override string StartOfRoundDialogue() {
             if (currentBattle.TurnCount == 0 && !hasSaidIntroduction) {
                 initialEnemiesPresent = allies.Count;
@@ -86,9 +84,29 @@ namespace Scripts.Game.Serialized.Brains {
     }
 
     public class DreadSinger : PriorityBrain {
+        private const float ANTI_HEAL_THRESHOLD = .50f;
 
         protected override IList<Spell> GetPriorityPlays() {
+            SpellBook advancedSpellToCast = null;
+            Func<Character, int> characterSorter = null;
+
+            // Cast nullify healing on targets with low HP
+            if (foes.Any(c => c.Stats.GetStatPercent(StatType.HEALTH) < ANTI_HEAL_THRESHOLD)) {
+                advancedSpellToCast = new NullifyHealing();
+
+                //
+                characterSorter = (c => {
+                    return (int)(c.Stats.GetStatPercent(StatType.HEALTH) * 100);
+                });
+            } else { // Cast Death on targets with highest hp
+                advancedSpellToCast = new CastDelayedEternalDeath();
+                characterSorter = (c => {
+                    return -c.Stats.GetStatCount(Stats.Get.MOD, StatType.HEALTH);
+                });
+            }
+
             return new Spell[] {
+                CastOnLeastTarget(advancedSpellToCast, characterSorter),
                 CastOnRandom(new CastDelayedDeath()),
                 CastOnRandom(new Attack())
             };
@@ -101,6 +119,7 @@ namespace Scripts.Game.Serialized.Brains {
 
         protected override IList<Spell> GetPriorityPlays() {
             return new Spell[] {
+                CastOnRandom(new SpawnLashers(), () => (currentBattle.TurnCount % TURNS_BETWEEN_TENTACLE_SUMMONS) == 0),
                 CastOnRandom(new SpawnTentacles(), () => (currentBattle.TurnCount % TURNS_BETWEEN_TENTACLE_SUMMONS) == 0),
                 CastOnRandom(new CrushingBlow(), () => (brainOwner.Stats.GetStatPercent(StatType.HEALTH) < LOW_HEALTH_PERCENTAGE)),
                 CastOnRandom(new Attack())

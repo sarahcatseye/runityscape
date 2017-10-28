@@ -106,8 +106,9 @@ namespace Scripts.Game.Defined.Serialized.Spells {
 
     public class MassCheck : BuffAdder<SuperCheck> {
 
-        public MassCheck() : base(TargetType.ALL_FOE, SpellType.OFFENSE, PriorityType.LOW) {
+        public MassCheck() : base(TargetType.ALL_FOE, SpellType.OFFENSE, "Clairvoyance", PriorityType.NORMAL) {
             this.isBuffUnique = true;
+            AddCost(StatType.MANA, 10);
         }
     }
 
@@ -115,13 +116,13 @@ namespace Scripts.Game.Defined.Serialized.Spells {
         private const int MISSING_HEALTH_HEAL_AMOUNT = 50;
         private const int SKILL_COST = 3;
 
-        public SelfHeal() : base("Meditate", Util.GetSprite("beams-aura"), TargetType.SELF, SpellType.DEFENSE) {
+        public SelfHeal() : base("Meditate", Util.GetSprite("prayer"), TargetType.SELF, SpellType.DEFENSE) {
             AddCost(StatType.SKILL, SKILL_COST);
             isUsableOutOfCombat = true;
         }
 
         protected override string CreateDescriptionHelper() {
-            return string.Format("Restore {0} of your missing {1}", MISSING_HEALTH_HEAL_AMOUNT, StatType.HEALTH);
+            return string.Format("Restore {0} of your missing {1}.", MISSING_HEALTH_HEAL_AMOUNT, StatType.HEALTH);
         }
 
         protected override IList<SpellEffect> GetHitEffects(Page page, Character caster, Character target) {
@@ -131,31 +132,8 @@ namespace Scripts.Game.Defined.Serialized.Spells {
         }
     }
 
-    public class CalmMind : BasicSpellbook {
-        private const int SKILL_INCREASE = 1;
-        private static readonly Buff DUMMY = new CalmedMind();
-
-        public CalmMind() : base("Calm Mind", Util.GetSprite("beams-aura"), TargetType.SELF, SpellType.BOOST) {
-        }
-
-        protected override string CreateDescriptionHelper() {
-            return string.Format("Restore {0} {1}. {2}", SKILL_INCREASE, StatType.SKILL.ColoredName, BuffAdder<CalmedMind>.CreateBuffDescription(TargetType.SELF, DUMMY));
-        }
-
-        protected override IList<SpellEffect> GetHitEffects(Page page, Character caster, Character target) {
-            return new SpellEffect[] {
-                new DispelBuff<CalmedMind>(target.Buffs),
-                new AddToModStat(target.Stats, StatType.SKILL, SKILL_INCREASE),
-                new AddBuff(new BuffParams(caster.Stats, caster.Id), target.Buffs, new CalmedMind())
-            };
-        }
-
-        protected override bool IsMeetCastRequirements(Character caster, Character target) {
-            return !target.Buffs.HasBuff<CalmedMind>();
-        }
-    }
-
     public class QuickAttack : BasicSpellbook {
+        public const int INTELLECT_TO_DAMAGE = 1;
 
         public QuickAttack() : base("Lightning Strike", Util.GetSprite("power-lightning"), TargetType.ONE_FOE, SpellType.OFFENSE, PriorityType.HIGH) {
             AddCost(StatType.SKILL, 2);
@@ -165,9 +143,16 @@ namespace Scripts.Game.Defined.Serialized.Spells {
             return "A faster-than-usual attack that can never miss.";
         }
 
+        protected override IList<IEnumerator> GetHitSFX(Character caster, Character target) {
+            return new IEnumerator[] { SFX.DoMeleeEffect(caster, target, 0.2f, "Slash_0") };
+        }
+
         protected override IList<SpellEffect> GetHitEffects(Page page, Character caster, Character target) {
             return new SpellEffect[] {
-                new AddToModStat(target.Stats, StatType.HEALTH, -caster.Stats.GetStatCount(Stats.Get.TOTAL, StatType.INTELLECT))
+                new AddToModStat(
+                    target.Stats,
+                    StatType.HEALTH,
+                    -caster.Stats.GetStatCount(Stats.Get.TOTAL, StatType.INTELLECT) * INTELLECT_TO_DAMAGE)
             };
         }
     }
@@ -180,7 +165,7 @@ namespace Scripts.Game.Defined.Serialized.Spells {
         private static readonly BasicChecked DUMMY = new BasicChecked();
 
         public Check() : base("Check", Util.GetSprite("magnifying-glass"), TargetType.ANY, SpellType.BOOST) {
-            AddCost(StatType.MANA, 10);
+            AddCost(StatType.MANA, 1);
         }
 
         protected override string CreateDescriptionHelper() {
@@ -196,7 +181,7 @@ namespace Scripts.Game.Defined.Serialized.Spells {
         }
 
         protected override bool IsMeetCastRequirements(Character caster, Character target) {
-            return target.Buffs.HasBuff<BasicChecked>();
+            return !target.Buffs.HasBuff<BasicChecked>();
         }
 
         private static string CheckText(Character target) {
@@ -267,7 +252,7 @@ namespace Scripts.Game.Defined.Serialized.Spells {
     }
 
     public class Revive : BasicSpellbook {
-        private const int MANA_COST = 50;
+        public const int MANA_COST = 50;
         private const int REVIVAL_HEALTH_PERCENT = 20;
 
         public Revive() : base("Revive", Util.GetSprite("beams-aura"), TargetType.ONE_ALLY, SpellType.BOOST, PriorityType.LOW, true) {
@@ -290,7 +275,7 @@ namespace Scripts.Game.Defined.Serialized.Spells {
         private const int MISSING_MANA_RESTORATION_PERCENT = 50;
         private const int SKILL_COST = 1;
 
-        public Inspire() : base("Inspire", Util.GetSprite("beams-aura"), TargetType.ONE_ALLY, SpellType.BOOST) {
+        public Inspire() : base("Inspire", Util.GetSprite("fire"), TargetType.ONE_ALLY, SpellType.BOOST) {
             AddCost(StatType.SKILL, SKILL_COST);
             isUsableOutOfCombat = true;
         }
@@ -303,6 +288,10 @@ namespace Scripts.Game.Defined.Serialized.Spells {
             return new SpellEffect[] {
                 new RestoreMissingStatPercent(target.Stats, StatType.MANA, MISSING_MANA_RESTORATION_PERCENT)
             };
+        }
+
+        protected override bool IsMeetCastRequirements(Character caster, Character target) {
+            return target.Stats.HasStat(StatType.MANA);
         }
     }
 
@@ -358,10 +347,10 @@ namespace Scripts.Game.Defined.Serialized.Spells {
         }
     }
 
-    public class Arraystrike : BasicSpellbook {
+    public class Multistrike : BasicSpellbook {
 
-        public Arraystrike() : base("Arraystrike", Util.GetSprite("sword-array"), TargetType.ALL_FOE, SpellType.OFFENSE, PriorityType.LOW) {
-            AddCost(StatType.SKILL, 5);
+        public Multistrike() : base("Multistrike", Util.GetSprite("sword-array"), TargetType.ALL_FOE, SpellType.OFFENSE, PriorityType.LOW) {
+            AddCost(StatType.SKILL, 3);
         }
 
         protected override string CreateDescriptionHelper() {
@@ -521,7 +510,7 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
                 () => {
                     Character c = new Character(
                         new Stats(caster.Stats.Level, 0, caster.Stats.GetStatCount(Stats.Get.TOTAL, StatType.AGILITY), 1, 1),
-                        new Look(caster.Look.Name, caster.Look.Sprite, caster.Look.Tooltip, caster.Look.Breed, caster.Look.TextColor),
+                        new Look(caster.Look.Name, caster.Look.SpriteLoc, caster.Look.Tooltip, caster.Look.Breed, caster.Look.TextColor),
                         new ReplicantClone());
                     c.AddFlag(Model.Characters.Flag.IS_CLONE);
                     c.Buffs.AddBuff(new ReflectAttack(), c);
@@ -609,13 +598,20 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
         }
     }
 
-    public class SpawnTentacles : BasicSpellbook {
+    public abstract class AbstractSpawnTentacles : BasicSpellbook {
+        private readonly Func<Character> tentacleSpawnFunction;
 
-        public SpawnTentacles() : base("Tentacle Eruption", Util.GetSprite("shark"), TargetType.SELF, SpellType.BOOST, PriorityType.LOWEST) {
+        public AbstractSpawnTentacles(string spellName, Func<Character> tentacleToSpawn)
+            : base(spellName,
+                  Util.GetSprite("at-sea"),
+                  TargetType.SELF,
+                  SpellType.BOOST,
+                  PriorityType.LOWEST) {
+            this.tentacleSpawnFunction = tentacleToSpawn;
         }
 
         protected override string CreateDescriptionHelper() {
-            return string.Format("Spawns Tentacles to defend the caster. Tentacles intercept all attacks. Number increases with missing health.");
+            return string.Format("Spawns Tentacles to defend the caster. Number increases with missing health.");
         }
 
         protected override IList<SpellEffect> GetHitEffects(Page page, Character caster, Character target) {
@@ -641,6 +637,18 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
             return new SpellEffect[] {
                 new SummonEffect(page.GetSide(target), page, summonTentacleFunc, tentaclesToSummon)
             };
+        }
+    }
+
+    public class SpawnTentacles : AbstractSpawnTentacles {
+
+        public SpawnTentacles() : base("Tentacle Sprout", () => OceanNPCs.Tentacle()) {
+        }
+    }
+
+    public class SpawnLashers : AbstractSpawnTentacles {
+
+        public SpawnLashers() : base("Lasher Eruption", () => LabNPCs.Ocean.Tentacle()) {
         }
     }
 
@@ -806,4 +814,9 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
         }
     }
 
+    public class NullifyHealing : BuffAdder<AntiHeal> {
+
+        public NullifyHealing() : base(TargetType.ONE_FOE, SpellType.OFFENSE, PriorityType.NORMAL) {
+        }
+    }
 }

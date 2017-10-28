@@ -41,7 +41,7 @@ namespace Scripts.Game.Defined.Characters {
                     new PurchasedSpell(100, new Purge()),
                     new PurchasedSpell(100, new CrushingBlow()),
                     new PurchasedSpell(200, new MassCheck()),
-                    new PurchasedSpell(200, new Arraystrike())
+                    new PurchasedSpell(200, new Multistrike())
                 );
         }
 
@@ -104,7 +104,7 @@ namespace Scripts.Game.Defined.Characters {
                     new Stats(7, 3, 5, 1, 5),
                     new Look(
                         "Tentacle",
-                        "shark",
+                        "tentacle",
                         "Tentacle belonging to a Kraken.",
                         Breed.FISH
                         ),
@@ -117,7 +117,7 @@ namespace Scripts.Game.Defined.Characters {
                     new Stats(8, 5, 10, 20, 100),
                     new Look(
                         "Kracko",
-                        "shark",
+                        "kraken",
                         "Giant squid thing. Commonly mistaken for a cloud.",
                         Breed.FISH
                         ),
@@ -146,7 +146,7 @@ namespace Scripts.Game.Defined.Characters {
             return CharacterUtil.StandardEnemy(
                 new Stats(9, 5, 20, 15, 20),
                 new Look(
-                    "Undine",
+                    "Elemental",
                     "villager",
                     "Sea elemental.",
                     Breed.FISH

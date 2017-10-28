@@ -215,6 +215,15 @@ namespace Scripts.Model.Pages {
             return charactersChargingSpells.ContainsKey(character);
         }
 
+        public bool IsFoeWillUnleashSpellNextTurnOnTarget<T>(Character target) where T : SpellBook {
+            return
+                GetFoes(target).Any(foe =>
+                    IsChargingSpell(foe)
+                    && charactersChargingSpells[foe].IsTarget(target)
+                    && charactersChargingSpells[foe].IsSpellCharged
+                    && charactersChargingSpells[foe].SpellBook is T);
+        }
+
         private static void AddEquipmentToLoot(IDictionary<Item, int> loot, Equipment equipment) {
             List<EquippableItem> equipmentItems = ((IEnumerable<EquippableItem>)equipment).ToList();
             foreach (EquippableItem item in equipmentItems) {

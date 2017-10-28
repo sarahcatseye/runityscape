@@ -12,7 +12,8 @@ using UnityEngine;
 namespace Scripts.Game.Defined.Serialized.Buffs {
 
     public class AntiHeal : Buff {
-        public AntiHeal() : base(3, Util.GetSprite("skull-crossed-bones"), "Heal Buff", "Healing targeting this unit is doubled.", false) {
+
+        public AntiHeal() : base(8, Util.GetSprite("skull-crossed-bones"), "Antiheal", "Healing on this unit is nullified.", false) {
         }
 
         public override bool IsReact(SingleSpell spellToReactTo, Stats owner) {
@@ -245,9 +246,9 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
 
     public class Defend : Buff {
         public const string DEFEND_NAME = "Guard";
-        private const int DAMAGE_REDUCTION_PERCENT = 75;
+        private const int DAMAGE_REDUCTION_PERCENT = 80;
 
-        private const float DAMAGE_REDUCTION = DAMAGE_REDUCTION_PERCENT / 100f;
+        private const float DAMAGE_REDUCTION = (100 - DAMAGE_REDUCTION_PERCENT) / 100f;
 
         public Defend()
             : base(1,
@@ -317,7 +318,7 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
     public class DelayedHyperDeath : DelayedEffectSong {
         private static readonly StatType AFFECTED_STAT = StatType.VITALITY;
 
-        public DelayedHyperDeath() : base(8, "skull-crossed-bones", AFFECTED_STAT, "Curse: Hyperdeath") {
+        public DelayedHyperDeath() : base(5, "skull-crossed-bones", AFFECTED_STAT, "Curse: Hyperdeath") {
         }
     }
 
@@ -634,6 +635,12 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
         }
     }
 
+    public class RoughestSkin : Thorns {
+
+        public RoughestSkin() : base(10, "Roughest Skin") {
+        }
+    }
+
     public abstract class ManaRegen : Buff {
         private readonly int manaRecoveryPerTurn;
 
@@ -645,6 +652,65 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
             return new SpellEffect[] {
                 new AddToModStat(owner, StatType.MANA, manaRecoveryPerTurn)
             };
+        }
+    }
+
+    public abstract class Countdown : Buff {
+        private const int STRENGTH_BOOST = 1000;
+
+        public Countdown(int turnsUntilEnrage)
+            : base(
+                  turnsUntilEnrage,
+                  Util.GetSprite("dragon-head"),
+                  "Countdown",
+                  string.Format("On expiration, unit gains {0}% increased {1}.", STRENGTH_BOOST, StatType.STRENGTH),
+                  false) {
+        }
+
+        protected override IList<SpellEffect> OnTimeOutHelper(Stats ownerOfThisBuff) {
+            return new SpellEffect[] {
+                new AddToModStat(ownerOfThisBuff, StatType.STRENGTH, STRENGTH_BOOST)
+            };
+        }
+    }
+
+    public class StandardCountdown : Countdown {
+        private const int STANDARD_DURATION = 20;
+
+        public StandardCountdown() : base(STANDARD_DURATION) {
+        }
+    }
+
+    public abstract class OnlyAffectedByCharacterWithStat : Buff {
+        private readonly StatType statThatCanAffect;
+
+        public OnlyAffectedByCharacterWithStat(StatType statThatCanAffect, string buffName)
+             : base(Util.GetSprite("shield"),
+                    buffName,
+                    string.Format("Only casters with the {0} resource can affect this unit.", statThatCanAffect),
+                    false) {
+            Util.Assert(StatType.RESOURCES.Contains(statThatCanAffect), "Stat is not a resource!");
+            this.statThatCanAffect = statThatCanAffect;
+        }
+
+        public override bool IsReact(SingleSpell incomingSpell, Stats ownerOfThisBuff) {
+            return incomingSpell.Target.Stats == ownerOfThisBuff && !incomingSpell.Caster.Stats.HasStat(statThatCanAffect);
+        }
+
+        protected override void ReactHelper(SingleSpell spellCast, Stats ownerOfThisBuff) {
+            spellCast.Result.Effects.Clear();
+        }
+    }
+
+    public class OnlyAffectedByHero : OnlyAffectedByCharacterWithStat {
+
+        public OnlyAffectedByHero() : base(StatType.MANA, "Magical Affinity") {
+        }
+    }
+
+    public class OnlyAffectedByPartner : OnlyAffectedByCharacterWithStat {
+
+        public OnlyAffectedByPartner() : base(StatType.SKILL, "Heroic Affinity") {
         }
     }
 }

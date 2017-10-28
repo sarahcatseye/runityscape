@@ -104,5 +104,9 @@ namespace Scripts.Model.Spells {
                 }
             }
         }
+
+        public override bool IsTarget(Character targetToCheck) {
+            return target == targetToCheck;
+        }
     }
 }
