@@ -132,6 +132,7 @@ namespace Scripts.Model.SaveLoad {
             Add<HealTome>("healTome");
             Add<DefendTome>("defendTome");
             Add<Cleansing>("cleansing");
+            Add<SharkBait>("sharkBait");
             Add<SharkFin>("sharkFin");
             Add<VitalityTrinket>("vitTrinket");
             Add<AgilityTrinket>("agiTrinket");

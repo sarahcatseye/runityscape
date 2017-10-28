@@ -17,12 +17,11 @@ namespace Scripts.Game.Defined.Serialized.Items {
 
     public class SharkBait : ConsumableItem {
 
-        public SharkBait() : base(100, TargetType.NONE, "Shark Bait", "Creates a decoy that sharks just can't help but to target!") {
-
+        public SharkBait() : base("food-chain", 100, TargetType.NONE, "Shark Bait", "Creates a decoy that sharks just can't help but to target!") {
         }
 
         public override IList<SpellEffect> GetEffects(Character caster, Character target) {
-            if(caster.HasFlag(Model.Characters.Flag.HAS_SHARK_MINION)) {
+            if (caster.HasFlag(Model.Characters.Flag.HAS_SHARK_MINION)) {
                 return new SpellEffect[] { };
             }
             Page page = null; //TODO: fix this. +
