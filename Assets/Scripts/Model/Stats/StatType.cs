@@ -116,7 +116,7 @@ namespace Scripts.Model.Stats {
             attributeBounds.TryGetValue(boundType, out Bounds);
             this.StatPointIncreaseAmount = statPointIncreaseAmount;
             this.Name = name;
-            this.Sprite = Util.LoadIcon(spriteLoc);
+            this.Sprite = Util.GetSprite(spriteLoc);
             this.Description = description;
             this.Color = color;
             this.order = orderCounter++;

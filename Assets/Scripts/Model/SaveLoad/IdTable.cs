@@ -131,7 +131,6 @@ namespace Scripts.Model.SaveLoad {
             Add<CrushingBlowTome>("crushTome");
             Add<HealTome>("healTome");
             Add<DefendTome>("defendTome");
-            Add<Inventory1x6>("6pack");
             Add<Cleansing>("cleansing");
             Add<SharkFin>("sharkFin");
             Add<VitalityTrinket>("vitTrinket");
@@ -142,6 +141,19 @@ namespace Scripts.Model.SaveLoad {
             Add<MinorAgilityTrinket>("minAgiTrinket");
             Add<MinorIntellectTrinket>("minIntTrinket");
             Add<MinorStrengthTrinket>("minStrTrinket");
+            Add<SpiritRobes>("spiritRobes");
+            Add<IllusionOrb>("illusionOrb");
+            Add<GhastlyDefender>("ghastlyDefender");
+            Add<BigSword>("bigSword");
+            Add<BigArmor>("bigArmor");
+            Add<WornDagger>("wornDagger");
+            Add<RealKnife>("realKnife");
+            Add<UsedBandage>("usedBandage");
+            Add<CleanBandage>("cleanBandage");
+            Add<SpiritOrb>("spiritOrb");
+            Add<SpiritDust>("spiritDust");
+            Add<BetterWand>("betterWand");
+            Add<HorrorEmblem>("horrorEmblem");
         }
 
         private void Buffs() {

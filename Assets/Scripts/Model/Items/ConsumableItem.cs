@@ -38,6 +38,10 @@ namespace Scripts.Model.Items {
             this.book = new UseItem(this);
         }
 
+        public ConsumableItem(string spriteLoc, int basePrice, TargetType target, string name, string description)
+            : this(Util.GetSprite(spriteLoc), basePrice, target, name, description) {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsumableItem"/> class.
         /// </summary>
@@ -45,7 +49,7 @@ namespace Scripts.Model.Items {
         /// <param name="target">The types of characters this item can target.</param>
         /// <param name="name">The name of this item<param>
         /// <param name="description">The description of this item.</param>
-        public ConsumableItem(int basePrice, TargetType target, string name, string description)
+        private ConsumableItem(int basePrice, TargetType target, string name, string description)
             : this(DEFAULT_SPRITE, basePrice, target, name, description) { }
 
         /// <summary>

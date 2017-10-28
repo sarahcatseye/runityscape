@@ -49,6 +49,10 @@ namespace Scripts.Model.Items {
             this.book = new CastEquipItem(this);
         }
 
+        public EquippableItem(string spriteLoc, EquipType type, int basePrice, string name, string description)
+            : this(Util.GetSprite(spriteLoc), type, basePrice, name, description) {
+        }
+
         /// <summary>
         /// Spriteless constructor.
         /// </summary>
@@ -56,7 +60,7 @@ namespace Scripts.Model.Items {
         /// <param name="basePrice">The base price.</param>
         /// <param name="name">The name.</param>
         /// <param name="description">The description.</param>
-        public EquippableItem(EquipType type, int basePrice, string name, string description)
+        private EquippableItem(EquipType type, int basePrice, string name, string description)
             : this(GetDefaultSprite(type), type, basePrice, name, description) { }
 
         public ReadOnlyDictionary<StatType, int> StatBonuses {

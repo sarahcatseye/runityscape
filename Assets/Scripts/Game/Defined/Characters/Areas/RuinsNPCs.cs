@@ -31,11 +31,7 @@ namespace Scripts.Game.Defined.Characters {
                     new Apple(),
                     new IdentifyScroll(),
                     new RevivalSeed(),
-                    new RegenArmor(),
-                    new MinorVitalityTrinket(),
-                    new MinorIntellectTrinket(),
-                    new MinorStrengthTrinket(),
-                    new MinorAgilityTrinket()
+                    new RegenArmor()
                     );
         }
 
@@ -72,6 +68,8 @@ namespace Scripts.Game.Defined.Characters {
                     Breed.SPIRIT
                     ),
                 new Attacker())
+                .AddItem(new WornDagger(), .20f)
+                .AddItem(new RealKnife(), .05f)
                 .AddMoney(5);
         }
 
@@ -85,8 +83,9 @@ namespace Scripts.Game.Defined.Characters {
                     Breed.SPIRIT
                     ),
                 new Attacker())
-                .AddEquip(new BrokenSword(), .25f)
-                .AddEquip(new GhostArmor(), .05f)
+                .AddEquip(new BrokenSword(), .20f)
+                .AddEquip(new GhostArmor(), .20f)
+                .AddItem(new SilverBoot(), .05f)
                 .AddMoney(10);
         }
 
@@ -104,6 +103,14 @@ namespace Scripts.Game.Defined.Characters {
                 .AddSpells(new SetupCounter())
                 .AddEquip(new GhostArmor())
                 .AddEquip(new BrokenSword())
+                .AddItem(new BigArmor(), .20f)
+                .AddItem(new BigSword(), .20f)
+                .AddItem(
+                Util.ChooseRandom<Item>(
+                    new MinorAgilityTrinket(),
+                    new MinorIntellectTrinket(),
+                    new MinorStrengthTrinket(),
+                    new MinorVitalityTrinket()))
                 .AddMoney(20);
         }
 
@@ -120,9 +127,11 @@ namespace Scripts.Game.Defined.Characters {
                 .AddStats(new Mana())
                 .AddSpells(new Ignite())
                 .AddBuff(new Insight())
-                .AddEquip(new Wand(), .25f)
-                .AddItem(new IdentifyScroll(), .25f)
-                .AddMoney(15);
+                .AddEquip(new Wand(), .20f)
+                .AddItem(new IdentifyScroll(), .20f)
+                .AddItem(new SpiritDust(), .50f)
+                .AddItem(new SpiritOrb(), .05f)
+                .AddMoney(20);
         }
 
         public static Character Healer() {
@@ -138,7 +147,12 @@ namespace Scripts.Game.Defined.Characters {
                 .AddSpells(new EnemyHeal())
                 .AddEquip(new Wand(), .25f)
                 .AddItem(new Apple(), .25f)
-                .AddMoney(15);
+                .AddItem(new SpiritDust(), .50f)
+                .AddItem(new SpiritOrb(), .10f)
+                .AddItem(new RevivalSeed(), .01f)
+                .AddItem(new UsedBandage(), .50f)
+                .AddItem(new CleanBandage(), .20f)
+                .AddMoney(20);
         }
 
         public static Character Illusionist() {
@@ -152,8 +166,10 @@ namespace Scripts.Game.Defined.Characters {
                     ),
                 new Illusionist())
                 .AddSpells(new Blackout())
-                .AddItem(new IdentifyScroll(), 1f)
-                .AddMoney(20);
+                .AddEquip(new BetterWand())
+                .AddItem(new SpiritDust())
+                .AddItem(new IdentifyScroll())
+                .AddMoney(40);
         }
 
         public static Look ReplicantLook() {
@@ -184,7 +200,7 @@ namespace Scripts.Game.Defined.Characters {
                 )
             .AddFlags(Model.Characters.Flag.PERSISTS_AFTER_DEFEAT)
             .AddSpells(new ReflectiveClone(), new RevealTrueForm())
-            .AddItem(new MadnessStaff())
+            .AddItem(new Item[] { new MadnessStaff(), new HorrorEmblem() }.ChooseRandom())
             .AddMoney(50);
         }
     }
