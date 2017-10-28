@@ -805,4 +805,5 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
         public GiveOverwhelmingPower() : base(TargetType.SELF, SpellType.BOOST, PriorityType.LOW) {
         }
     }
+
 }

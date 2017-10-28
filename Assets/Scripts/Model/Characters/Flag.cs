@@ -10,6 +10,7 @@
         GIVES_EXPERIENCE,
         IS_CLONE,
         HERO,
-        PARTNER
+        PARTNER,
+        HAS_SHARK_MINION
     }
 }

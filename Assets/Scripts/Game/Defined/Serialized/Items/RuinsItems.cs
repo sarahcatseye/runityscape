@@ -68,7 +68,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
         public Apple() : base(5, TargetType.ONE_ALLY, "Apple", string.Format("A juicy apple. Restores {0} {1}.", HEALING_AMOUNT, StatType.HEALTH.ColoredName)) {
         }
 
-        public override IList<SpellEffect> GetEffects(Character caster, Character target) {
+        public override IList<SpellEffect> GetEffects(Page current, Character caster, Character target) {
             return new SpellEffect[] { new AddToModStat(target.Stats, StatType.HEALTH, HEALING_AMOUNT)};
 
         }
@@ -80,7 +80,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
             : base(5, TargetType.ANY, "Scroll of Identify", string.Format("Scroll that reveals info about a target.")) {
         }
 
-        public override IList<SpellEffect> GetEffects(Character caster, Character target) {
+        public override IList<SpellEffect> GetEffects(Page current, Character caster, Character target) {
             return new SpellEffect[] { new AddBuff(new Model.Buffs.BuffParams(caster.Stats, caster.Id), target.Buffs, new BasicChecked()) };
         }
     }
@@ -97,7 +97,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
                       StatType.HEALTH.ColoredName)) {
         }
 
-        public override IList<SpellEffect> GetEffects(Character caster, Character target) {
+        public override IList<SpellEffect> GetEffects(Page current, Character caster, Character target) {
             return new SpellEffect[] {
                 new RestoreMissingStatPercent(target.Stats, StatType.HEALTH, HEALTH_RECOVERY_PERCENTAGE)
             };
