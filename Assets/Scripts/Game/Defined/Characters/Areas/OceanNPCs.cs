@@ -186,5 +186,17 @@ namespace Scripts.Game.Defined.Characters {
                 .AddSpells(new EnemyHeal())
                 .AddItem(new Money(), Util.RandomRange(5, 10));
         }
+
+        public static Character SharkBaitDecoy() {
+            return CharacterUtil.StandardEnemy(
+                new Stats(1, 666, 1, 1, 1),
+                new Look(
+                    "Shark Bait",
+                    "food-chain",
+                    "Local sharks just find this irresistable.",
+                    Breed.FISH
+                    ),
+                new DoNothing());
+        }
     }
 }

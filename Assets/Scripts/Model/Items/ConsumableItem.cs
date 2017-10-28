@@ -6,6 +6,7 @@ using System;
 using Scripts.Game.Defined.Spells;
 using Scripts.Game.Defined.Serialized.Spells;
 using Scripts.Model.Characters;
+using Scripts.Model.Pages;
 
 namespace Scripts.Model.Items {
 
@@ -63,6 +64,7 @@ namespace Scripts.Model.Items {
         /// <summary>
         /// Gets the spelleffects of this item.
         /// </summary>
+        /// <param name="page">The page.</param>
         /// <param name="caster">The caster.</param>
         /// <param name="target">The target.</param>
         /// <returns></returns>

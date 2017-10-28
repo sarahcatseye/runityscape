@@ -10,6 +10,14 @@ using System.Linq;
 
 namespace Scripts.Game.Serialized.Brains {
 
+    public class DoNothing : PriorityBrain {
+        protected override IList<Spell> GetPriorityPlays() {
+            return new Spell[] {
+                    CastOnRandom(new Wait())
+                };
+        }
+    }
+
     public class Swarm : PriorityBrain {
         private static readonly Attack ATTACK = new Attack();
         private static readonly EnemyHeal HEAL = new EnemyHeal();
