@@ -17,21 +17,13 @@ namespace Scripts.Game.Defined.Serialized.Items {
 
     public class SharkBait : ConsumableItem {
 
-        public SharkBait() : base("food-chain", 100, TargetType.NONE, "Shark Bait", "Creates a decoy that sharks just can't help but to target!") {
+        public SharkBait() : base("food-chain", 100, TargetType.SELF, "Shark Bait", "Creates a decoy that sharks just can't help but to target!") {
         }
 
-        public override IList<SpellEffect> GetEffects(Character caster, Character target) {
-            if (caster.HasFlag(Model.Characters.Flag.HAS_SHARK_MINION)) {
-                return new SpellEffect[] { };
-            }
-            Page page = null; //TODO: fix this. +
+        public override IList<SpellEffect> GetEffects(Page page, Character caster, Character target) {
             target = caster;
-            caster.AddFlag(Model.Characters.Flag.HAS_SHARK_MINION); //TODO: this should be unflagged when the shark dies. no idea how to do that.
             Func<Character> summonDecoyFunc = () => {
                 Character tentacle = OceanNPCs.SharkBaitDecoy();
-                Interceptor interceptor = new Interceptor();
-                interceptor.Caster = new BuffParams(target.Stats, target.Id);
-                tentacle.Buffs.AddBuff(interceptor);
                 return tentacle;
             };
             return new SpellEffect[] {
@@ -71,7 +63,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
             string.Format("Caster sacrifices {0} {1} to remove all dispellable buffs from a target.", DAMAGE, StatType.HEALTH)) {
         }
 
-        public override IList<SpellEffect> GetEffects(Character caster, Character target) {
+        public override IList<SpellEffect> GetEffects(Page page, Character caster, Character target) {
             return new SpellEffect[] {
                 new DispelAllBuffs(target.Buffs),
                 new AddToModStat(caster.Stats, StatType.HEALTH, -DAMAGE)

@@ -4,6 +4,7 @@ using Scripts.Model.Characters;
 using Scripts.Model.Spells;
 using Scripts.Model.Stats;
 using Scripts.Game.Defined.Spells;
+using Scripts.Model.Pages;
 
 namespace Scripts.Model.Items {
 
@@ -30,7 +31,7 @@ namespace Scripts.Model.Items {
             this.spellToTeach = spellToTeach;
         }
 
-        public override IList<SpellEffect> GetEffects(Character caster, Character target) {
+        public override IList<SpellEffect> GetEffects(Page page, Character caster, Character target) {
             return new SpellEffect[] { new LearnSpellEffect(target.Spells, spellToTeach) };
         }
 

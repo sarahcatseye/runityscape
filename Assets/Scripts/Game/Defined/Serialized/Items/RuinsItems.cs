@@ -9,6 +9,7 @@ using Scripts.Model.Stats;
 using System.Collections.Generic;
 using System;
 using Scripts.Game.Defined.Unserialized.Items;
+using Scripts.Model.Pages;
 
 namespace Scripts.Game.Defined.Serialized.Items {
     // Random drops
@@ -197,7 +198,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
             : base("tied-scroll", 5, TargetType.ANY, "Scroll of Identify", string.Format("Scroll that reveals info about a target.")) {
         }
 
-        public override IList<SpellEffect> GetEffects(Character caster, Character target) {
+        public override IList<SpellEffect> GetEffects(Page page, Character caster, Character target) {
             return new SpellEffect[] { new AddBuff(new Model.Buffs.BuffParams(caster.Stats, caster.Id), target.Buffs, new BasicChecked()) };
         }
     }
@@ -216,7 +217,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
                       StatType.HEALTH.ColoredName)) {
         }
 
-        public override IList<SpellEffect> GetEffects(Character caster, Character target) {
+        public override IList<SpellEffect> GetEffects(Page page, Character caster, Character target) {
             return new SpellEffect[] {
                 new RestoreMissingStatPercent(target.Stats, StatType.HEALTH, HEALTH_RECOVERY_PERCENTAGE)
             };
