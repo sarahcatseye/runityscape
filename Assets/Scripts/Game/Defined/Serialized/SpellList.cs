@@ -819,4 +819,9 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
         public NullifyHealing() : base(TargetType.ONE_FOE, SpellType.OFFENSE, PriorityType.NORMAL) {
         }
     }
+
+    public class SuperBurn : BuffAdder<SuperIgnited> {
+        public SuperBurn() : base(TargetType.ONE_FOE, SpellType.OFFENSE, PriorityType.NORMAL) {
+        }
+    }
 }
