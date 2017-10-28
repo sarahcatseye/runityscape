@@ -21,7 +21,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
 
         }
 
-        public override IList<SpellEffect> GetEffects(Page current, Character caster, Character target) {
+        public override IList<SpellEffect> GetEffects(Character caster, Character target) {
             if(caster.HasFlag(Model.Characters.Flag.HAS_SHARK_MINION)) {
                 return new SpellEffect[] { };
             }
@@ -60,7 +60,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
         public SharkFin() : base(75, TargetType.ONE_ALLY, "Shark fin", string.Format("A delicious. Restores {0} {1}.", HEALING_AMOUNT, StatType.HEALTH.ColoredName)) {
         }
 
-        public override IList<SpellEffect> GetEffects(Page current, Character caster, Character target) {
+        public override IList<SpellEffect> GetEffects(Character caster, Character target) {
             return new SpellEffect[] { new AddToModStat(target.Stats, StatType.HEALTH, HEALING_AMOUNT) };
         }
     }
@@ -71,7 +71,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
         public Cleansing() : base(20, TargetType.ONE_ALLY, "Cleanse", string.Format("Caster takes {0} damage. Removes all dispellable buffs from a target.", DAMAGE)) {
         }
 
-        public override IList<SpellEffect> GetEffects(Page current, Character caster, Character target) {
+        public override IList<SpellEffect> GetEffects(Character caster, Character target) {
             return new SpellEffect[] {
                 new DispelAllBuffs(target.Buffs),
                 new AddToModStat(caster.Stats, StatType.HEALTH, -DAMAGE)
