@@ -60,7 +60,7 @@ namespace Scripts.Game.Defined.Characters {
 
         public static Character Villager() {
             return CharacterUtil.StandardEnemy(
-                new Stats(2, 1, 1, 1, 2),
+                new Stats(2, 1, 1, 1, 1),
                 new Look(
                     "Ghost",
                     "villager",
@@ -75,7 +75,7 @@ namespace Scripts.Game.Defined.Characters {
 
         public static Character Knight() {
             return CharacterUtil.StandardEnemy(
-                new Stats(3, 1, 2, 2, 5),
+                new Stats(3, 2, 2, 2, 5),
                 new Look(
                     "Knight",
                     "knight",
@@ -91,7 +91,7 @@ namespace Scripts.Game.Defined.Characters {
 
         public static Character BigKnight() {
             return CharacterUtil.StandardEnemy(
-                new Stats(3, 10, 2, 2, 15),
+                new Stats(3, 3, 2, 2, 15),
                 new Look(
                     "Big Knight",
                     "big-knight",
@@ -116,7 +116,7 @@ namespace Scripts.Game.Defined.Characters {
 
         public static Character Wizard() {
             return CharacterUtil.StandardEnemy(
-                new Stats(3, 1, 1, 2, 3),
+                new Stats(3, 1, 1, 2, 10),
                 new Look(
                     "Wizard",
                     "wizard",
@@ -194,7 +194,7 @@ namespace Scripts.Game.Defined.Characters {
 
         public static Character Replicant() {
             return CharacterUtil.StandardEnemy(
-                new Stats(5, 5, 5, 10, 30),
+                new Stats(5, 5, 5, 10, 60),
                 ReplicantDisguisedLook(),
                 new Replicant()
                 )
