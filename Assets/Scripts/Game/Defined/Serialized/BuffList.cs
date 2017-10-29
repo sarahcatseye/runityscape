@@ -1,6 +1,7 @@
 ﻿using Scripts.Game.Defined.Serialized.Spells;
 using Scripts.Game.Defined.Spells;
 using Scripts.Game.Defined.Unserialized.Buffs;
+using Scripts.Game.Defined.Unserialized.Spells;
 using Scripts.Model.Buffs;
 using Scripts.Model.Characters;
 using Scripts.Model.Spells;
@@ -10,6 +11,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Scripts.Game.Defined.Serialized.Buffs {
+
+    public class FlamingArmor : PermanentBuff {
+        public const int IGNITION_CHANCE = 25;
+
+        public FlamingArmor()
+            : base(
+                  Util.GetSprite("fire"),
+                  "Flaming armor",
+                  String.Format("Attacks on this unit have a {0}% chance of igniting the attacker", IGNITION_CHANCE)
+                  ) {
+        }
+
+        public override bool IsReact(SingleSpell incomingSpell, Stats ownerOfThisBuff) {
+            return incomingSpell.Target.Stats == ownerOfThisBuff
+                && incomingSpell.SpellBook is Attack
+                && incomingSpell.Result.IsDealDamage
+                && Util.IsChance(IGNITION_CHANCE/100.0f);
+        }
+
+        protected override void ReactHelper(SingleSpell spellCast, Stats ownerOfThisBuff) {
+            spellCast.Result.AddEffect(
+                new AddBuff(new BuffParams(ownerOfThisBuff, spellCast.Target.Id), spellCast.Caster.Buffs, new SuperIgnited()));
+        }
+    }
 
     public class AntiHeal : Buff {
 
@@ -135,6 +160,13 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
 
         public override bool IsReact(SingleSpell spellToReactTo, Stats owner) {
             return spellToReactTo.SpellBook is Attack && spellToReactTo.Target.Stats == owner;
+        }
+    }
+
+    public class SuperIgnited : AbstractIgnited {
+        private const int DURATION = 3;
+
+        public SuperIgnited() : base(DURATION, 5, 40) {
         }
     }
 
@@ -281,6 +313,18 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
     public class RegenerateMana : StatRegen {
 
         public RegenerateMana() : base(StatType.MANA, 2) {
+        }
+    }
+
+    public class RegenerateLotsOfMana : StatRegen {
+
+        public RegenerateLotsOfMana() : base(StatType.MANA, 10) {
+        }
+    }
+
+    public class RegenerateLotsOfSkill : StatRegen {
+
+        public RegenerateLotsOfSkill() : base(StatType.SKILL, 2) {
         }
     }
 
@@ -594,15 +638,29 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
         public const string NAME = "Ignited";
         private static readonly StatType REDUCED_STAT = StatType.STRENGTH;
         private const int STAT_REDUCTION_PERCENT = 20;
-        private const int DAMAGE_PER_TURN = 1;
+        private const int DEFUALT_DAMAGE_PER_TURN = 1;
+        private int damagePerTurn = DEFUALT_DAMAGE_PER_TURN;
+
+        public AbstractIgnited(int duration, int damagePerTurn, int statReductionPercent)
+    : base(duration,
+          Util.GetSprite("fire"),
+          NAME,
+          string.Format("{0} reduced by {2}%. Take {1} damage at end of turn.",
+              REDUCED_STAT.ColoredName,
+              damagePerTurn,
+              statReductionPercent),
+          true) {
+            this.damagePerTurn = damagePerTurn;
+            AddMultiplicativeStatBonus(REDUCED_STAT, -statReductionPercent);
+        }
 
         public AbstractIgnited(int duration)
             : base(duration,
                   Util.GetSprite("fire"),
                   NAME,
-                  string.Format("{0} reduced. Take {1} damage at end of turn.",
+                  string.Format("{0} reduced by 20%. Take {1} damage at end of turn.",
                       REDUCED_STAT.ColoredName,
-                      DAMAGE_PER_TURN),
+                      DEFUALT_DAMAGE_PER_TURN),
                   true) {
             AddMultiplicativeStatBonus(REDUCED_STAT, -STAT_REDUCTION_PERCENT);
         }
@@ -610,15 +668,15 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
         public AbstractIgnited()
             : base(Util.GetSprite("fire"),
                   "Ignited",
-                  string.Format("{0} reduced. Take {1} damage at end of turn.",
+                  string.Format("{0} reduced by 20%. Take {1} damage at end of turn.",
                       REDUCED_STAT.ColoredName,
-                      DAMAGE_PER_TURN),
+                      DEFUALT_DAMAGE_PER_TURN),
                   true) {
         }
 
         protected override IList<SpellEffect> OnEndOfTurnHelper(Stats owner) {
             return new SpellEffect[] {
-                new AddToModStat(owner, StatType.HEALTH, -DAMAGE_PER_TURN)
+                new AddToModStat(owner, StatType.HEALTH, -damagePerTurn)
             };
         }
     }

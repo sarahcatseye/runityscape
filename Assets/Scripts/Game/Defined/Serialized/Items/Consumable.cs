@@ -5,6 +5,7 @@ using Scripts.Model.Spells;
 using Scripts.Game.Defined.Spells;
 using Scripts.Model.Stats;
 using Scripts.Model.Characters;
+using Scripts.Model.Pages;
 
 namespace Scripts.Game.Defined.Unserialized.Items {
 
@@ -34,7 +35,7 @@ namespace Scripts.Game.Defined.Unserialized.Items {
             this.restoreAmount = restoreAmount;
         }
 
-        public sealed override IList<SpellEffect> GetEffects(Character caster, Character target) {
+        public sealed override IList<SpellEffect> GetEffects(Page page, Character caster, Character target) {
             return new SpellEffect[] {
                 new AddToModStat(target.Stats, stat, restoreAmount)
             };

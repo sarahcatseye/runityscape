@@ -29,6 +29,7 @@ namespace Scripts.Game.Defined.Characters {
                     new VitalityTrinket(),
                     new IntellectTrinket(),
                     new StrengthTrinket(),
+                    new SharkBait(),
                     new AgilityTrinket()
                 );
         }
@@ -65,7 +66,7 @@ namespace Scripts.Game.Defined.Characters {
                     "Hatless shark.",
                     Breed.FISH
                     ),
-                new Attacker())
+                new SharkAttacker())
                 .AddBuff(new RoughSkin())
                 .AddItem(new SharkFin(), Util.IsChance(.50f))
                 .AddItem(new Money(), Util.RandomRange(50, 100));
@@ -194,7 +195,7 @@ namespace Scripts.Game.Defined.Characters {
                     "Shark Bait",
                     "food-chain",
                     "Local sharks just find this irresistable.",
-                    Breed.FISH
+                    Breed.SHARK_BAIT    
                     ),
                 new DoNothing());
         }
