@@ -32,6 +32,7 @@ namespace Scripts.Game.Defined.Unserialized.Items {
                       extraText
                       )) {
             this.restoreAmount = restoreAmount;
+            this.stat = stat;
         }
 
         public sealed override IList<SpellEffect> GetEffects(Character caster, Character target) {
