@@ -56,6 +56,8 @@ namespace Scripts.Game.Pages {
                     Get(NEW_GAME),
                     new  CreditsPages(Root),
                     new LoadPages(start),
+                    new Process(),
+                    new Process("Quit", "Leave the system.", () => Application.Quit())
                 };
                 if (Util.IS_DEBUG) {
                     buttons.Add(Get(DEBUGGING));
