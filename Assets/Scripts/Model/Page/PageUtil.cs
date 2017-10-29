@@ -94,7 +94,7 @@ namespace Scripts.Model.Pages {
         /// <returns></returns>
         public static Action<Spell> GetOutOfBattlePlayableHandler(Page page) {
             return (ip) => {
-                Main.Instance.StartCoroutine(PerformInOrder(page, ip, page.OnEnter));
+                Main.Instance.StartCoroutine(PerformInOrder(page, ip, () => { }));
             };
         }
 
@@ -335,18 +335,22 @@ namespace Scripts.Model.Pages {
                 name,
                 string.Format("Manage {0}'s equipment.", owner.Look.DisplayName));
 
-            foreach (EquipType myET in EquipType.AllTypes) {
-                EquipType et = myET;
-                IButtonable ib = null;
-                Equipment eq = owner.Equipment;
-                if (owner.Equipment.Contains(et)) {
-                    CastUnequipItem unequip = new CastUnequipItem(owner.Inventory, owner.Equipment, eq.PeekItem(et));
-                    ib = GetUnequipProcess(current, unequip, owner, grid, spellHandler);
-                } else {
-                    ib = GetEquipGrid(current, owner, et, owner.Inventory, grid, spellHandler);
+            grid.OnEnter = () => {
+                grid.List.Clear();
+                grid.List.Add(GenerateBack(previous));
+                foreach (EquipType myET in EquipType.AllTypes) {
+                    EquipType et = myET;
+                    IButtonable ib = null;
+                    Equipment eq = owner.Equipment;
+                    if (owner.Equipment.Contains(et)) {
+                        CastUnequipItem unequip = new CastUnequipItem(owner.Inventory, owner.Equipment, eq.PeekItem(et));
+                        ib = GetUnequipProcess(current, unequip, owner, grid, spellHandler);
+                    } else {
+                        ib = GetEquipGrid(current, owner, et, owner.Inventory, grid, spellHandler);
+                    }
+                    grid.List.Add(ib);
                 }
-                grid.List.Add(ib);
-            }
+            };
             return grid;
         }
 
@@ -378,19 +382,26 @@ namespace Scripts.Model.Pages {
                     string description) {
             Grid grid = GenerateBackableGrid(previous, sprite, name, description);
 
-            foreach (ISpellable myS in spellCollection) {
-                ISpellable s = myS;
-                if (!s.Equals(excluded)) {
-                    grid.List.Add(GenerateSpellProcess(current, grid, owner, s, addPlay));
+            grid.OnEnter = () => {
+                grid.List.Clear();
+                grid.List.Add(GenerateBack(previous));
+                foreach (ISpellable myS in spellCollection) {
+                    ISpellable s = myS;
+                    if (!s.Equals(excluded)) {
+                        grid.List.Add(GenerateSpellProcess(current, grid, owner, s, addPlay));
+                    }
                 }
-            }
+            };
 
             return grid;
         }
 
         private static Process GenerateSpellProcess(Page current, IButtonable previous, Character owner, ISpellable spellable, Action<Spell> spellHandler) {
             SpellBook sb = spellable.GetSpellBook();
-            return new Process(sb.GetDetailedName(owner), sb.Icon, sb.CreateDescription(owner),
+            return new Process(
+                sb.GetDetailedName(owner),
+                sb.Icon,
+                sb.CreateDescription(owner),
                 () => {
                     if (sb.IsMeetPreTargetRequirements(owner.Stats)) {
                         GenerateTargets(current, previous, owner, spellable, spellHandler).Invoke();
@@ -398,7 +409,13 @@ namespace Scripts.Model.Pages {
                 });
         }
 
-        private static Grid GetEquipGrid(Page current, Character owner, EquipType et, Inventory inv, IButtonable previous, Action<Spell> spellHandler) {
+        private static Grid GetEquipGrid(
+            Page current,
+            Character owner,
+            EquipType et,
+            Inventory inv,
+            IButtonable previous,
+            Action<Spell> spellHandler) {
             Grid grid = GenerateBackableGrid(
                 previous,
                 et.Sprite,
@@ -407,7 +424,7 @@ namespace Scripts.Model.Pages {
                 );
             foreach (EquippableItem ei in inv as IEnumerable<EquippableItem>) {
                 if (ei.Type.Equals(et)) {
-                    grid.List.Add(ei.GetSelfTargetProcess(current, owner, spellHandler));
+                    grid.List.Add(ei.GetSelfTargetProcess(previous, current, owner, spellHandler));
                 }
             }
             return grid;

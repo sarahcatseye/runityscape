@@ -401,7 +401,12 @@ namespace Scripts.Model.Pages {
             }
         }
 
-        private void InBattlePlayHandler(HashSet<Character> playerActionSet, IList<Spell> plays, Character characterAddingPlay, ref bool isActionTaken, Spell playToAdd) {
+        private void InBattlePlayHandler(
+            HashSet<Character> playerActionSet,
+            IList<Spell> plays,
+            Character characterAddingPlay,
+            ref bool isActionTaken,
+            Spell playToAdd) {
             if (!playerActionSet.Contains(characterAddingPlay)) {
                 if (playToAdd.IsSpellCharged) {
                     plays.Add(playToAdd);
