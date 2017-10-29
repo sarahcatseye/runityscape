@@ -127,7 +127,7 @@ namespace Scripts.Model.Characters {
             Brain.Spells = this.Spells;
             Stats.Update(this);
             Equipment.AddBuff = b => Buffs.AddBuff(b);
-            Equipment.RemoveBuff = b => Buffs.RemoveBuff(RemovalType.TIMED_OUT, b);
+            Equipment.RemoveBuff = b => Buffs.RemoveEquipmentBuff(b);
             Stats.InitializeResources();
             Stats.GetFlatEquipmentBonus = f => Equipment.GetFlatStatBonus(f);
             stats.GetMultiplicativeBuffBonus = m => Buffs.GetMultiplicativeStatBonus(m);
@@ -240,6 +240,10 @@ namespace Scripts.Model.Characters {
         /// <param name="flagToAdd">Flag to add</param>
         public void AddFlag(Flag flagToAdd) {
             flags.Add(flagToAdd);
+        }
+
+        public void RemoveFlag(Flag flagToRemove) {
+            flags.Remove(flagToRemove);
         }
 
         /// <summary>

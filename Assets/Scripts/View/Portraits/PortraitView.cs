@@ -114,6 +114,7 @@ namespace Scripts.View.Portraits {
             PortraitText.color = Color.white;
             Image.color = Color.white;
             Image.enabled = true;
+            Image.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
             tip.Reset();
 
             this.StopAllCoroutines();

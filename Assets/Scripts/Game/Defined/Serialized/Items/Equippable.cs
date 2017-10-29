@@ -8,38 +8,45 @@ namespace Scripts.Game.Defined.Serialized.Items {
 
     public class PoisonArmor : EquippableItem {
 
-        public PoisonArmor() : base(EquipType.ARMOR, 10, "Poisoned Armor", "This doesn't look safe.") {
+        public PoisonArmor() : base(EquipType.ARMOR.Sprite, EquipType.ARMOR, 10, "Poisoned Armor", "This doesn't look safe.") {
             AddFlatStatBonus(StatType.VITALITY, 3);
             AddFlatStatBonus(StatType.AGILITY, -1);
         }
 
-        public override Buff CreateBuff() {
+        public override PermanentBuff CreateBuff() {
             return new Poison();
         }
     }
 
     public class Shield : EquippableItem {
 
-        public Shield() : base(Util.GetSprite("round-shield"), EquipType.OFFHAND, 0, "Basic Shield ", "A basic wooden shield.") {
+        public Shield() : base(Util.GetSprite("round-shield"), EquipType.OFFHAND, 1, "Basic Shield ", "A basic wooden shield.") {
             AddFlatStatBonus(StatType.AGILITY, -10);
             AddFlatStatBonus(StatType.VITALITY, 10);
         }
 
-        public override Buff CreateBuff() {
+        public override PermanentBuff CreateBuff() {
             return new DamageResist();
         }
     }
+}
 
-    public class FishHook : EquippableItem {
+namespace Scripts.Game.Defined.Unserialized.Items {
 
-        public FishHook() : base(EquipType.WEAPON, 50, "Fish Hook", "A used fish hook.") {
-            AddFlatStatBonus(StatType.STRENGTH, 5);
-            AddFlatStatBonus(StatType.AGILITY, 1);
-            AddFlatStatBonus(StatType.VITALITY, -1);
-        }
+    public class SingleStatTrinket : EquippableItem {
 
-        public override Buff CreateBuff() {
-            return new FishShook();
+        public SingleStatTrinket(
+            StatType stat,
+            int price,
+            int statIncreaseAmount,
+            string name)
+            : base(
+                  Util.GetSprite("gem-pendant"),
+                  EquipType.TRINKET,
+                  price,
+                  string.Format("Pendant of {0}", name),
+                  string.Format("A magical pendant that boosts {0}.", stat)) {
+            AddFlatStatBonus(stat, statIncreaseAmount);
         }
     }
 }

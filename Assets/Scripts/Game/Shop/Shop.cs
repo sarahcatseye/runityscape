@@ -9,6 +9,7 @@ using Scripts.Model.Processes;
 using Scripts.Model.Spells;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Scripts.Game.Shopkeeper {
@@ -163,8 +164,8 @@ namespace Scripts.Game.Shopkeeper {
                 main.List.Add(SetupSellMenu(main));
                 main.List.Add(SetupBuyMenu(main));
                 main.List.Add(null);
-                main.List.Add(PageUtil.GenerateItemsGrid(false, p, main, party.Default, PageUtil.GetOutOfBattlePlayableHandler(p)));
-                main.List.Add(PageUtil.GenerateGroupEquipmentGrid(main, p, party.Collection, PageUtil.GetOutOfBattlePlayableHandler(p), false));
+                main.List.Add(PageUtil.GenerateGroupItemsGrid(p, main, party, PageUtil.GetOutOfBattlePlayableHandler(p)));
+                main.List.Add(PageUtil.GenerateGroupEquipmentGrid(main, p, party.Collection, PageUtil.GetOutOfBattlePlayableHandler(p)));
                 main.List.Add(null);
                 main.List.Add(PageUtil.GenerateBack(previous));
             };
@@ -177,14 +178,25 @@ namespace Scripts.Game.Shopkeeper {
             Get(ROOT_INDEX).AddText(string.Format("{0}s: {0}", MONEY.Name, party.Shared.GetCount(MONEY)));
         }
 
-        private Grid SetupShopMenu<T>(IButtonable previous, string name, string spriteLoc, string tooltip, IEnumerable<T> items, Func<T, Action, Process> conversion) {
+        private Grid SetupShopMenu<T>(
+            IButtonable previous,
+            string name,
+            string spriteLoc,
+            string tooltip,
+            IEnumerable<T> items,
+            Func<T, Action, Process> conversion,
+            Func<T, int> sorter = null) {
             Grid grid = new Grid(name);
             grid.Icon = Util.GetSprite(spriteLoc);
             grid.Tooltip = tooltip;
+            IEnumerable<T> itemsList = items.ToArray();
+            if (sorter != null) {
+                itemsList = itemsList.OrderBy(sorter);
+            }
             grid.OnEnter = () => {
                 grid.List.Clear();
                 grid.List.Add(PageUtil.GenerateBack(previous));
-                foreach (T item in items) {
+                foreach (T item in itemsList) {
                     grid.List.Add(conversion(item, () => grid.Invoke()));
                 };
             };
@@ -192,7 +204,7 @@ namespace Scripts.Game.Shopkeeper {
         }
 
         private Grid SetupBuyMenu(IButtonable previous) {
-            return SetupShopMenu<Buy>(previous, "Buy", "buy-card", string.Format("Buy items with {0}s.", MONEY.Name), buys, (b, a) => GetBuyProcess(b, a));
+            return SetupShopMenu<Buy>(previous, "Buy", "buy-card", string.Format("Buy items with {0}s.", MONEY.Name), buys, (b, a) => GetBuyProcess(b, a), b => b.BasePrice);
         }
 
         private Process GetBuyProcess(Buy buy, Action postBuy) {

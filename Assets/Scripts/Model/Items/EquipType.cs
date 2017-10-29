@@ -21,7 +21,7 @@ namespace Scripts.Model.Items {
         public static readonly EquipType WEAPON = new EquipType("Weapon", "gladius");
         public static readonly EquipType OFFHAND = new EquipType("Offhand", "round-shield");
         public static readonly EquipType ARMOR = new EquipType("Armor", "shoulder-armor");
-        public static readonly EquipType TRINKET = new EquipType("Trinket", "gem-necklace");
+        public static readonly EquipType TRINKET = new EquipType("Trinket", "gem-pendant");
 
         private static int idCounter;
 
@@ -29,6 +29,7 @@ namespace Scripts.Model.Items {
         /// The name of the equipment slot
         /// </summary>
         public readonly string Name;
+
         /// <summary>
         /// The sprite of the equipment slot
         /// </summary>

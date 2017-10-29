@@ -1,6 +1,8 @@
-﻿using Scripts.Game.Defined.Serialized.Items;
+﻿using Scripts.Game.Defined.Serialized.Buffs;
+using Scripts.Game.Defined.Serialized.Items;
 using Scripts.Game.Defined.Serialized.Spells;
 using Scripts.Game.Defined.Serialized.Statistics;
+using Scripts.Game.Defined.Unserialized.Buffs;
 using Scripts.Game.Defined.Unserialized.Spells;
 using Scripts.Game.Serialized;
 using Scripts.Game.Serialized.Brains;
@@ -20,9 +22,38 @@ namespace Scripts.Game.Defined.Characters {
                 party,
                 0.6f,
                 1f,
-                SharkPirate())
+                Shark())
                 .AddBuys(
-                    new FishHook()
+                    new FishHook(),
+                    new Cleansing(),
+                    new VitalityTrinket(),
+                    new IntellectTrinket(),
+                    new StrengthTrinket(),
+                    new SharkBait(),
+                    new AgilityTrinket()
+                );
+        }
+
+        public static Trainer OceanTrainer(Page previous, Party party) {
+            return new Trainer(
+                previous,
+                party,
+                Siren(),
+                    new PurchasedSpell(100, new Purge()),
+                    new PurchasedSpell(100, new CrushingBlow()),
+                    new PurchasedSpell(200, new MassCheck()),
+                    new PurchasedSpell(200, new Multistrike())
+                );
+        }
+
+        public static InventoryMaster OceanMaster(Page previous, Party party) {
+            return new InventoryMaster(
+                previous,
+                party,
+                Siren(),
+                6,
+                10,
+                200
                 );
         }
 
@@ -35,21 +66,25 @@ namespace Scripts.Game.Defined.Characters {
                     "Hatless shark.",
                     Breed.FISH
                     ),
-                new Attacker())
+                new SharkAttacker())
+                .AddBuff(new RoughSkin())
+                .AddItem(new SharkFin(), Util.IsChance(.50f))
                 .AddItem(new Money(), Util.RandomRange(50, 100));
         }
 
         public static Character SharkPirate() {
             return CharacterUtil.StandardEnemy(
-                new Stats(6, 8, 6, 8, 60),
+                new Stats(10, 8, 6, 8, 40),
                 new Look(
-                    "Cap'n Shark",
+                    "Cap'n Selach",
                     "shark-pirate",
                     "Fierce captain of shark crew.",
                     Breed.FISH
                     ),
-                new Attacker())
-                .AddItem(new Money(), Util.RandomRange(5, 15));
+                new SharkPirate())
+                .AddBuff(new RougherSkin())
+                .AddItem(new SharkFin(), Util.IsChance(.75f))
+                .AddSpells(new SummonSeaCreatures(), new OneShotKill(), new CastDelayedDeath(), new GiveOverwhelmingPower());
         }
 
         public static Character Siren() {
@@ -70,7 +105,7 @@ namespace Scripts.Game.Defined.Characters {
                     new Stats(7, 3, 5, 1, 5),
                     new Look(
                         "Tentacle",
-                        "shark",
+                        "tentacle",
                         "Tentacle belonging to a Kraken.",
                         Breed.FISH
                         ),
@@ -80,16 +115,17 @@ namespace Scripts.Game.Defined.Characters {
 
         public static Character Kraken() {
             return CharacterUtil.StandardEnemy(
-                    new Stats(8, 5, 10, 10, 100),
+                    new Stats(8, 5, 10, 20, 100),
                     new Look(
-                        "Kraken",
-                        "shark",
-                        "Giant squid thing.",
+                        "Kracko",
+                        "kraken",
+                        "Giant squid thing. Commonly mistaken for a cloud.",
                         Breed.FISH
                         ),
                     new Kraken()
                 )
                 .AddSpells(new SpawnTentacles())
+                .AddSpells(new CrushingBlow())
                 .AddStats(new Skill());
         }
 
@@ -107,9 +143,40 @@ namespace Scripts.Game.Defined.Characters {
                 .AddSpells(new SetupCounter());
         }
 
+        public static Character Elemental() {
+            return CharacterUtil.StandardEnemy(
+                new Stats(9, 5, 20, 15, 20),
+                new Look(
+                    "Elemental",
+                    "villager",
+                    "Sea elemental.",
+                    Breed.FISH
+                    ),
+                new Elemental()
+                )
+                .AddStats(new Mana())
+                .AddSpells(new WaterboltSingle(), new WaterboltMulti())
+                .AddBuff(new Insight())
+                .AddItem(new Cleansing(), Util.IsChance(.25f));
+        }
+
+        public static Character DreadSinger() {
+            return CharacterUtil.StandardEnemy(
+                    new Stats(10, 5, 20, 20, 25),
+                    new Look(
+                        "Sea Witch",
+                        "siren",
+                        "Singer of the voices of death.",
+                        Breed.FISH
+                        ),
+                    new DreadSinger())
+                    .AddSpells(new CastDelayedDeath())
+                    .AddItem(new Cleansing(), 1);
+        }
+
         public static Character Swarm() {
             return CharacterUtil.StandardEnemy(
-                new Stats(2, 1, 5, 2, 15),
+                new Stats(5, 3, 10, 2, 15),
                 new Look(
                     "Swarm",
                     "angler-fish",
@@ -117,7 +184,20 @@ namespace Scripts.Game.Defined.Characters {
                     Breed.FISH
                     ),
                 new Swarm())
-                .AddItem(new Money(), Util.RandomRange(0, 1));
+                .AddSpells(new EnemyHeal())
+                .AddItem(new Money(), Util.RandomRange(5, 10));
+        }
+
+        public static Character SharkBaitDecoy() {
+            return CharacterUtil.StandardEnemy(
+                new Stats(1, 666, 1, 1, 1),
+                new Look(
+                    "Shark Bait",
+                    "food-chain",
+                    "Local sharks just find this irresistable.",
+                    Breed.SHARK_BAIT    
+                    ),
+                new DoNothing());
         }
     }
 }

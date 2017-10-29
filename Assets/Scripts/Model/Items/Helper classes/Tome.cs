@@ -4,6 +4,7 @@ using Scripts.Model.Characters;
 using Scripts.Model.Spells;
 using Scripts.Model.Stats;
 using Scripts.Game.Defined.Spells;
+using Scripts.Model.Pages;
 
 namespace Scripts.Model.Items {
 
@@ -16,8 +17,10 @@ namespace Scripts.Model.Items {
         private SpellBook spellToTeach;
 
         public Tome(int levelRequirement, int basePrice, SpellBook spellToTeach)
-            : base(basePrice,
-                  TargetType.SINGLE_ALLY,
+            : base(
+                  "white-book",
+                  basePrice,
+                  TargetType.ONE_ALLY,
                   string.Format("Tome: {0}", spellToTeach.Name),
                   string.Format("<color=grey>Requires level {0}.</color>\nTeaches <color=cyan>{1}</color>\n{2}",
                       levelRequirement,
@@ -28,13 +31,13 @@ namespace Scripts.Model.Items {
             this.spellToTeach = spellToTeach;
         }
 
-        public override IList<SpellEffect> GetEffects(Character caster, Character target) {
+        public override IList<SpellEffect> GetEffects(Page page, Character caster, Character target) {
             return new SpellEffect[] { new LearnSpellEffect(target.Spells, spellToTeach) };
         }
 
         protected override bool IsMeetOtherRequirements(Character caster, Character target) {
             return base.IsMeetOtherRequirements(caster, target)
-                && target.Stats.Level >= levelRequirement && LearnerHasResourcesNeededToCastSpell(target.Stats, spellToTeach);
+                && target.Stats.Level >= levelRequirement && target.Spells.CanLearnSpellBook(target.Stats, this.spellToTeach);
         }
 
         private static bool LearnerHasResourcesNeededToCastSpell(Characters.Stats learner, SpellBook book) {

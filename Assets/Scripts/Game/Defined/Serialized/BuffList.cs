@@ -1,6 +1,7 @@
 ﻿using Scripts.Game.Defined.Serialized.Spells;
 using Scripts.Game.Defined.Spells;
 using Scripts.Game.Defined.Unserialized.Buffs;
+using Scripts.Game.Defined.Unserialized.Spells;
 using Scripts.Model.Buffs;
 using Scripts.Model.Characters;
 using Scripts.Model.Spells;
@@ -11,7 +12,90 @@ using UnityEngine;
 
 namespace Scripts.Game.Defined.Serialized.Buffs {
 
-    public class FishShook : Buff {
+    public class FlamingArmor : PermanentBuff {
+        public const int IGNITION_CHANCE = 25;
+
+        public FlamingArmor()
+            : base(
+                  Util.GetSprite("fire"),
+                  "Flaming armor",
+                  String.Format("Attacks on this unit have a {0}% chance of igniting the attacker", IGNITION_CHANCE)
+                  ) {
+        }
+
+        public override bool IsReact(SingleSpell incomingSpell, Stats ownerOfThisBuff) {
+            return incomingSpell.Target.Stats == ownerOfThisBuff
+                && incomingSpell.SpellBook is Attack
+                && incomingSpell.Result.IsDealDamage
+                && Util.IsChance(IGNITION_CHANCE/100.0f);
+        }
+
+        protected override void ReactHelper(SingleSpell spellCast, Stats ownerOfThisBuff) {
+            spellCast.Result.AddEffect(
+                new AddBuff(new BuffParams(ownerOfThisBuff, spellCast.Target.Id), spellCast.Caster.Buffs, new SuperIgnited()));
+        }
+    }
+
+    public class AntiHeal : Buff {
+
+        public AntiHeal() : base(8, Util.GetSprite("skull-crossed-bones"), "Antiheal", "Healing on this unit is nullified.", false) {
+        }
+
+        public override bool IsReact(SingleSpell spellToReactTo, Stats owner) {
+            return (GetHealingElement(spellToReactTo) != null) && spellToReactTo.Target.Stats == owner;
+        }
+
+        protected override void ReactHelper(SingleSpell spellToReactTo, Stats owner) {
+            SpellEffect healthIncrease = GetHealingElement(spellToReactTo);
+            if (healthIncrease != null) {
+                healthIncrease.Value = 0;
+            }
+        }
+
+        private SpellEffect GetHealingElement(SingleSpell spellToReactTo) {
+            SpellEffect healthIncrease = null;
+            for (int i = 0; (i < spellToReactTo.Result.Effects.Count) && (healthIncrease == null); i++) {
+                SpellEffect se = spellToReactTo.Result.Effects[i];
+                AddToModStat addToModStat = se as AddToModStat;
+                if (addToModStat != null && addToModStat.AffectedStat == StatType.HEALTH && addToModStat.Value > 0) {
+                    healthIncrease = addToModStat;
+                }
+            }
+            return healthIncrease;
+        }
+    }
+
+    public class HealBoost : Buff {
+        private int HEAL_MULTIPLIER = 2;
+
+        public HealBoost() : base(3, Util.GetSprite("health-normal"), "Heal Buff", "Healing targeting this unit is doubled.", false) {
+        }
+
+        public override bool IsReact(SingleSpell spellToReactTo, Stats owner) {
+            return (GetHealingElement(spellToReactTo) != null) && spellToReactTo.Target.Stats == owner;
+        }
+
+        protected override void ReactHelper(SingleSpell spellToReactTo, Stats owner) {
+            SpellEffect healthIncrease = GetHealingElement(spellToReactTo);
+            if (healthIncrease != null) {
+                healthIncrease.Value = (int)(healthIncrease.Value * HEAL_MULTIPLIER);
+            }
+        }
+
+        private SpellEffect GetHealingElement(SingleSpell spellToReactTo) {
+            SpellEffect healthIncrease = null;
+            for (int i = 0; (i < spellToReactTo.Result.Effects.Count) && (healthIncrease == null); i++) {
+                SpellEffect se = spellToReactTo.Result.Effects[i];
+                AddToModStat addToModStat = se as AddToModStat;
+                if (addToModStat != null && addToModStat.AffectedStat == StatType.HEALTH && addToModStat.Value > 0) {
+                    healthIncrease = addToModStat;
+                }
+            }
+            return healthIncrease;
+        }
+    }
+
+    public class FishShook : PermanentBuff {
         private const float FISHY_TARGET_MULTIPLIER = 2;
         private const float OTHER_TARGET_MULTIPLIER = 0.25f;
 
@@ -19,14 +103,14 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
             : base(Util.GetSprite("fish"),
                   "Fish-Shook",
                   string.Format(
-                      "Basic attacks do {0}x damage on fishy targets and {1} damage on non-fish.", FISHY_TARGET_MULTIPLIER, OTHER_TARGET_MULTIPLIER), false) {
+                      "Basic attacks do {0}x damage on fishy targets and {1} damage on non-fish.", FISHY_TARGET_MULTIPLIER, OTHER_TARGET_MULTIPLIER)) {
         }
 
-        public override bool IsReact(Spell spellToReactTo, Stats owner) {
-            return spellToReactTo.Book is Attack && spellToReactTo.Result.IsDealDamage && spellToReactTo.Caster.Stats == owner;
+        public override bool IsReact(SingleSpell spellToReactTo, Stats owner) {
+            return spellToReactTo.SpellBook is Attack && spellToReactTo.Result.IsDealDamage && spellToReactTo.Caster.Stats == owner;
         }
 
-        protected override void ReactHelper(Spell spellToReactTo, Stats owner) {
+        protected override void ReactHelper(SingleSpell spellToReactTo, Stats owner) {
             float localDmgMult = 0;
 
             // is a fish
@@ -50,16 +134,16 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
         }
     }
 
-    public class DamageResist : Buff {
+    public class DamageResist : PermanentBuff {
         private const float DAMAGE_MULTIPLIER = 0.7f;
 
         public DamageResist()
             : base(Util.GetSprite("round-shield"),
                   "Damage Resist",
                   String.Format("Reduces incident damage from basic attacks by {0}%.",
-                      (1 - DAMAGE_MULTIPLIER) * 100), false) { }
+                      (1 - DAMAGE_MULTIPLIER) * 100)) { }
 
-        protected override void ReactHelper(Spell spellToReactTo, Stats owner) {
+        protected override void ReactHelper(SingleSpell spellToReactTo, Stats owner) {
             SpellEffect healthDamage = null;
             for (int i = 0; (i < spellToReactTo.Result.Effects.Count) && (healthDamage == null); i++) {
                 SpellEffect se = spellToReactTo.Result.Effects[i];
@@ -74,58 +158,34 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
             }
         }
 
-        public override bool IsReact(Spell spellToReactTo, Stats owner) {
-            return spellToReactTo.Book is Attack && spellToReactTo.Target.Stats == owner;
+        public override bool IsReact(SingleSpell spellToReactTo, Stats owner) {
+            return spellToReactTo.SpellBook is Attack && spellToReactTo.Target.Stats == owner;
         }
     }
 
-    public class Ignited : Buff {
-        private const int DAMAGE_PER_TURN = 1;
-        private const int DURATION = 5;
+    public class SuperIgnited : AbstractIgnited {
+        private const int DURATION = 3;
 
-        public Ignited()
-            : base(DURATION,
-                  Util.GetSprite("fire"),
-                  "Ignited",
-                  string.Format("Take {0} damage at end of turn.",
-                      DAMAGE_PER_TURN), true) {
-        }
-
-        protected override IList<SpellEffect> OnEndOfTurnHelper(Stats owner) {
-            return new SpellEffect[] {
-                new AddToModStat(owner, StatType.HEALTH, -DAMAGE_PER_TURN)
-            };
+        public SuperIgnited() : base(DURATION, 5, 40) {
         }
     }
 
-    public class StrengthBoost : Buff {
-        public const int STRENGTH_INCREASE_AMOUNT = 50;
+    public class TempIgnited : AbstractIgnited {
+        private const int DURATION = 2;
 
-        public StrengthBoost()
-            : base(Util.GetSprite("fist"),
-                  "Strength boost",
-                  "Increases strength.",
-                  true) {
-            AddMultiplicativeStatBonus(StatType.STRENGTH, STRENGTH_INCREASE_AMOUNT);
+        public TempIgnited() : base(DURATION) {
         }
     }
 
-    public class Insight : Buff {
-        private const int MANA_RECOVERED_PER_TURN = 5;
+    public class PermanantIgnited : AbstractIgnited {
 
-        public Insight() : base(Util.GetSprite("water-drop"), "Insight", string.Format("Regenerating {0}.", StatType.MANA), false) {
-        }
-
-        protected override IList<SpellEffect> OnEndOfTurnHelper(Stats owner) {
-            return new SpellEffect[] {
-                new AddToModStat(owner, StatType.MANA, MANA_RECOVERED_PER_TURN)
-            };
+        public PermanantIgnited() : base() {
         }
     }
 
-    public class Poison : Buff {
+    public class Poison : PermanentBuff {
 
-        public Poison() : base(2, Util.GetSprite("fox-head"), "Poisoned", "Loses health at the end of each turn.", true) {
+        public Poison() : base(Util.GetSprite("fox-head"), "Poisoned", "Loses health at the end of each turn.") {
         }
 
         protected override IList<SpellEffect> OnEndOfTurnHelper(Model.Characters.Stats owner) {
@@ -147,9 +207,30 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
         }
     }
 
-    public class Checked : Buff {
+    public class SuperCheck : Buff {
+        private const int AGILITY_REDUCTION = 10;
 
-        public Checked() : base(5, Util.GetSprite("magnifying-glass"), "Checked", "Resource visibility increased.", true) {
+        public SuperCheck()
+            : base(10,
+                  Util.GetSprite("magnifying-glass"),
+                  "Checked",
+                  string.Format("Resource visibility increased. {0} reduced by {1}%.", StatType.AGILITY, AGILITY_REDUCTION),
+                  true) {
+            AddMultiplicativeStatBonus(StatType.AGILITY, -AGILITY_REDUCTION);
+        }
+
+        protected override IList<SpellEffect> OnApplyHelper(Stats owner) { // TODO UNSTACKABLE
+            return new SpellEffect[] { new AddToResourceVisibility(owner, 1) };
+        }
+
+        protected override IList<SpellEffect> OnTimeOutHelper(Stats owner) {
+            return new SpellEffect[] { new AddToResourceVisibility(owner, -1) };
+        }
+    }
+
+    public class BasicChecked : Buff {
+
+        public BasicChecked() : base(5, Util.GetSprite("magnifying-glass"), "Checked", "Resource visibility increased.", true) {
         }
 
         protected override IList<SpellEffect> OnApplyHelper(Stats owner) { // TODO UNSTACKABLE
@@ -163,7 +244,7 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
 
     public class BlackedOut : Buff {
 
-        public BlackedOut() : base(3, Util.GetSprite("sight-disabled"), "Blackout", "Resource visibility decreased.", true) {
+        public BlackedOut() : base(10, Util.GetSprite("sight-disabled"), "Blackout", "Resource visibility decreased.", true) {
         }
 
         protected override IList<SpellEffect> OnApplyHelper(Stats owner) {
@@ -181,11 +262,11 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
         public Counter() : base(2, Util.GetSprite("round-shield"), "Counter", "Basic <color=yellow>Attack</color>s on this unit are reflected.", false) {
         }
 
-        public override bool IsReact(Spell spellToReactTo, Stats owner) {
-            return spellToReactTo.Book is Attack && spellToReactTo.Target.Stats == owner;
+        public override bool IsReact(SingleSpell spellToReactTo, Stats owner) {
+            return spellToReactTo.SpellBook is Attack && spellToReactTo.Target.Stats == owner;
         }
 
-        protected override void ReactHelper(Spell spellToReactTo, Stats owner) {
+        protected override void ReactHelper(SingleSpell spellToReactTo, Stats owner) {
             spellToReactTo.Result.Effects.Clear();
             spellToReactTo.Result.AddEffect(
                 new AddToModStat(
@@ -196,22 +277,24 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
     }
 
     public class Defend : Buff {
-        private const int DAMAGE_REDUCTION_PERCENT = 50;
-        private const float DAMAGE_REDUCTION = DAMAGE_REDUCTION_PERCENT / 100f;
+        public const string DEFEND_NAME = "Guard";
+        private const int DAMAGE_REDUCTION_PERCENT = 80;
+
+        private const float DAMAGE_REDUCTION = (100 - DAMAGE_REDUCTION_PERCENT) / 100f;
 
         public Defend()
             : base(1,
-                  Util.GetSprite("round-shield"),
-                  "Defend",
-                  string.Format("Reduces damage taken this turn by {0}%", DAMAGE_REDUCTION_PERCENT),
+                  Util.GetSprite("shield"),
+                  DEFEND_NAME,
+                  string.Format("Reduces damage taken from spells this turn by {0}%.", DAMAGE_REDUCTION_PERCENT),
                   false) {
         }
 
-        public override bool IsReact(Spell spellToReactTo, Stats owner) {
+        public override bool IsReact(SingleSpell spellToReactTo, Stats owner) {
             return spellToReactTo.Target.Stats == owner && spellToReactTo.Result.IsDealDamage;
         }
 
-        protected override void ReactHelper(Spell spellToReactTo, Stats owner) {
+        protected override void ReactHelper(SingleSpell spellToReactTo, Stats owner) {
             foreach (SpellEffect se in spellToReactTo.Result.Effects) {
                 AddToModStat addToModStat = se as AddToModStat;
                 if (addToModStat != null && addToModStat.AffectedStat == StatType.HEALTH && addToModStat.Value < 0) {
@@ -230,6 +313,18 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
     public class RegenerateMana : StatRegen {
 
         public RegenerateMana() : base(StatType.MANA, 2) {
+        }
+    }
+
+    public class RegenerateLotsOfMana : StatRegen {
+
+        public RegenerateLotsOfMana() : base(StatType.MANA, 10) {
+        }
+    }
+
+    public class RegenerateLotsOfSkill : StatRegen {
+
+        public RegenerateLotsOfSkill() : base(StatType.SKILL, 2) {
         }
     }
 
@@ -256,9 +351,125 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
         public VitalitySirenSong() : base(StatType.VITALITY, "Melody of Mortality") {
         }
     }
+
+    public class DelayedDeath : DelayedEffectSong {
+        private static readonly StatType AFFECTED_STAT = StatType.HEALTH;
+
+        public DelayedDeath() : base(8, "skull-crack", AFFECTED_STAT, "Curse: Death") {
+        }
+    }
+
+    public class DelayedHyperDeath : DelayedEffectSong {
+        private static readonly StatType AFFECTED_STAT = StatType.VITALITY;
+
+        public DelayedHyperDeath() : base(5, "skull-crossed-bones", AFFECTED_STAT, "Curse: Hyperdeath") {
+        }
+    }
+
+    public class CalmedMind : StatChange {
+        private const int INTELLECT_BOOST = 30;
+
+        public CalmedMind() : base(3, StatType.INTELLECT, INTELLECT_BOOST) {
+        }
+    }
+
+    public class StrengthBoost : Buff {
+        public const int STRENGTH_INCREASE_AMOUNT = 50;
+
+        public StrengthBoost()
+            : base(Util.GetSprite("fist"),
+                  "Strength boost",
+                  "Increases strength.",
+                  true) {
+            AddMultiplicativeStatBonus(StatType.STRENGTH, STRENGTH_INCREASE_AMOUNT);
+        }
+    }
 }
 
 namespace Scripts.Game.Defined.Unserialized.Buffs {
+
+    public class Insight : ManaRegen {
+        public const int MANA_RECOVERED_PER_TURN = 5;
+
+        public Insight() : base(MANA_RECOVERED_PER_TURN) {
+        }
+    }
+
+    public class UnholyInsight : ManaRegen {
+        public const int MANA_RECOVERED_PER_TURN = 10;
+
+        public UnholyInsight() : base(MANA_RECOVERED_PER_TURN) {
+        }
+    }
+
+    public abstract class Thorns : Buff {
+        private readonly int damageToReturn;
+
+        public Thorns(int damageToReturn, string name)
+            : base(
+                  Util.GetSprite("crown-of-thorns"),
+                  name,
+                  string.Format("Successful basic attacks on this unit cause the attacker to take {0} damage.",
+                      damageToReturn
+                      ),
+                  false
+                  ) {
+            this.damageToReturn = damageToReturn;
+        }
+
+        public override bool IsReact(SingleSpell incomingSpell, Stats ownerOfThisBuff) {
+            return incomingSpell.Target.Stats == ownerOfThisBuff
+                && incomingSpell.SpellBook is Attack
+                && incomingSpell.Result.IsDealDamage;
+        }
+
+        protected override void ReactHelper(SingleSpell spellCast, Stats ownerOfThisBuff) {
+            spellCast.Result.AddEffect(
+                new AddToModStat(spellCast.Caster.Stats, StatType.HEALTH, -damageToReturn));
+        }
+    }
+
+    public class Immunity : Buff {
+
+        public Immunity() : base(5, Util.GetSprite("beams-aura"), "Immunity", "Immune to basic attack and spell damage.", true) {
+        }
+
+        public override bool IsReact(SingleSpell incomingSpell, Stats ownerOfThisBuff) {
+            return incomingSpell.Target.Stats == ownerOfThisBuff && incomingSpell.Result.IsDealDamage;
+        }
+
+        protected override void ReactHelper(SingleSpell spellCast, Stats ownerOfThisBuff) {
+            foreach (SpellEffect se in spellCast.Result.Effects) {
+                AddToModStat addToModStat = se as AddToModStat;
+                if (addToModStat != null && addToModStat.AffectedStat == StatType.HEALTH && addToModStat.Value < 0) {
+                    addToModStat.Value = 0;
+                }
+            }
+        }
+    }
+
+    public abstract class DelayedEffectSong : Buff {
+        private readonly StatType affectedStat;
+
+        public DelayedEffectSong(int duration, string spriteLoc, StatType affectedStat, string name)
+            : base(duration,
+                  Util.GetSprite(spriteLoc),
+                  name,
+                  string.Format("On time-out, affected unit loses ALL {0}.", affectedStat.ColoredName),
+                  true) {
+            this.affectedStat = affectedStat;
+        }
+
+        protected override IList<SpellEffect> OnDispellHelper(Stats ownerOfThisBuff) {
+            return new SpellEffect[0];
+        }
+
+        protected override IList<SpellEffect> OnTimeOutHelper(Stats ownerOfThisBuff) {
+            return new SpellEffect[] {
+                new AddToModStat(ownerOfThisBuff, affectedStat, -ownerOfThisBuff.GetStatCount(Stats.Get.TOTAL, affectedStat))
+            };
+        }
+    }
 
     public class SpiritLink : Buff {
 
@@ -268,14 +479,14 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
         /// <summary>
         /// The caster of the buff (the non-clone) is hit by an offensive spell that deals damage.
         /// </summary>
-        public override bool IsReact(Spell spellToReactTo, Stats buffHolder) {
-            return spellToReactTo.Book.SpellType == SpellType.OFFENSE
+        public override bool IsReact(SingleSpell spellToReactTo, Stats buffHolder) {
+            return spellToReactTo.SpellBook.SpellType == SpellType.OFFENSE
                 && spellToReactTo.Target.Stats == this.BuffCaster
                 && spellToReactTo.Result.Type.IsSuccessfulType
                 && spellToReactTo.Result.IsDealDamage;
         }
 
-        protected override void ReactHelper(Spell spellToReactTo, Stats buffHolder) {
+        protected override void ReactHelper(SingleSpell spellToReactTo, Stats buffHolder) {
             SpellEffect healthDamage = null;
             for (int i = 0; (i < spellToReactTo.Result.Effects.Count) && (healthDamage == null); i++) {
                 SpellEffect se = spellToReactTo.Result.Effects[i];
@@ -299,8 +510,8 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
         /// <summary>
         /// The owner of the buff (the clone) is hit by an offensive spell that deals damage.
         /// </summary>
-        public override bool IsReact(Spell spellToReactTo, Stats owner) {
-            return spellToReactTo.Book.SpellType == SpellType.OFFENSE
+        public override bool IsReact(SingleSpell spellToReactTo, Stats owner) {
+            return spellToReactTo.SpellBook.SpellType == SpellType.OFFENSE
                 && spellToReactTo.Target.Stats == owner
                 && spellToReactTo.Result.Type.IsSuccessfulType
                 && spellToReactTo.Result.IsDealDamage;
@@ -309,7 +520,7 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
         /// <summary>
         ///  Add a self damage effect, reflecting the same amount as the attack.
         /// </summary>
-        protected override void ReactHelper(Spell spellToReactTo, Stats owner) {
+        protected override void ReactHelper(SingleSpell spellToReactTo, Stats owner) {
             int damageToReflect = 0;
             foreach (SpellEffect se in spellToReactTo.Result.Effects) {
                 AddToModStat damageHealth = se as AddToModStat;
@@ -330,7 +541,7 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
         // TODO add sprite
         public Interceptor() : base(Util.GetSprite("shark"), "Interceptor", "Unit will intercept attacks on its summoner.", false) { }
 
-        public override bool IsReact(Spell incomingSpell, Stats statsOfTheCharacterTheBuffIsOn) {
+        public override bool IsReact(SingleSpell incomingSpell, Stats statsOfTheCharacterTheBuffIsOn) {
             bool isDealDamageToBuffCaster = false;
 
             // Intercepting adds an add to mod stat, so the spell technically does damage even after we wipe it
@@ -350,18 +561,18 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
             return incomingSpell.Target.Stats == BuffCaster && isDealDamageToBuffCaster;
         }
 
-        protected override void ReactHelper(Spell s, Stats owner) {
+        protected override void ReactHelper(SingleSpell s, Stats owner) {
             s.Result.Effects.Clear();
             s.Result.AddEffect(new AddToModStat(s.Caster.Stats, StatType.HEALTH, -INTERCEPTION_DAMAGE));
         }
     }
 
-    public abstract class StatRegen : Buff {
+    public abstract class StatRegen : PermanentBuff {
         private int amountPerTurn;
         private StatType type;
 
         public StatRegen(StatType type, int amountPerTurn)
-            : base(type.Sprite, string.Format("Restore {0}", type.Name), String.Format("Regenerate {0} {1} each turn.", amountPerTurn, type.ColoredName), false) {
+            : base(type.Sprite, string.Format("Restore {0}", type.Name), String.Format("Regenerate {0} {1} each turn.", amountPerTurn, type.ColoredName)) {
             this.amountPerTurn = amountPerTurn;
             this.type = type;
         }
@@ -374,8 +585,8 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
     }
 
     public abstract class SirenSong : StatChange {
-        private const int STAT_REDUCTION_PERCENT = 20;
-        private const int DURATION = 5;
+        private const int STAT_REDUCTION_PERCENT = 10;
+        private const int DURATION = 3;
 
         public SirenSong(StatType type, string buffName)
             : base(DURATION, type, -STAT_REDUCTION_PERCENT, buffName, Util.GetSprite("g-clef")) { }
@@ -388,9 +599,9 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
                   duration,
                   sprite,
                   buffName,
-                  string.Format("{0} {1} by {2}%.", type.ColoredName, amount < 0 ? "decreased" : "increased", amount),
+                  string.Format("{0} {1} by {2}%.", type.ColoredName, amount < 0 ? "decreased" : "increased", amount < 0 ? -amount : amount),
                   true) {
-            Util.Assert(amount != 0, "Amount must be nonnegative.");
+            Util.Assert(amount != 0, "Amount must be nonzero.");
             AddMultiplicativeStatBonus(type, amount);
         }
 
@@ -401,8 +612,163 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
                       amount,
                       string.Format("{0}{1}", type.Name, amount < 0 ? '-' : '+'),
                       type.Sprite) {
-            Util.Assert(amount != 0, "Amount must be nonnegative.");
-            AddMultiplicativeStatBonus(type, amount);
+        }
+    }
+
+    public class OverwhelmingPower : Buff {
+        private const int STRENGTH_INCREASE = 1337;
+        private const int AGILITY_REDUCTION = 100;
+
+        public OverwhelmingPower()
+            : base(
+                  Util.GetSprite("fist"),
+                  "Overwhelming Power",
+                  string.Format("{0} boosted by {1}%. {2} reduced by {3}%.",
+                      StatType.STRENGTH.ColoredName,
+                      STRENGTH_INCREASE,
+                      StatType.AGILITY.ColoredName,
+                      AGILITY_REDUCTION),
+                  true) {
+            AddMultiplicativeStatBonus(StatType.STRENGTH, STRENGTH_INCREASE);
+            AddMultiplicativeStatBonus(StatType.AGILITY, AGILITY_REDUCTION);
+        }
+    }
+
+    public abstract class AbstractIgnited : Buff {
+        public const string NAME = "Ignited";
+        private static readonly StatType REDUCED_STAT = StatType.STRENGTH;
+        private const int STAT_REDUCTION_PERCENT = 20;
+        private const int DEFUALT_DAMAGE_PER_TURN = 1;
+        private int damagePerTurn = DEFUALT_DAMAGE_PER_TURN;
+
+        public AbstractIgnited(int duration, int damagePerTurn, int statReductionPercent)
+    : base(duration,
+          Util.GetSprite("fire"),
+          NAME,
+          string.Format("{0} reduced by {2}%. Take {1} damage at end of turn.",
+              REDUCED_STAT.ColoredName,
+              damagePerTurn,
+              statReductionPercent),
+          true) {
+            this.damagePerTurn = damagePerTurn;
+            AddMultiplicativeStatBonus(REDUCED_STAT, -statReductionPercent);
+        }
+
+        public AbstractIgnited(int duration)
+            : base(duration,
+                  Util.GetSprite("fire"),
+                  NAME,
+                  string.Format("{0} reduced by 20%. Take {1} damage at end of turn.",
+                      REDUCED_STAT.ColoredName,
+                      DEFUALT_DAMAGE_PER_TURN),
+                  true) {
+            AddMultiplicativeStatBonus(REDUCED_STAT, -STAT_REDUCTION_PERCENT);
+        }
+
+        public AbstractIgnited()
+            : base(Util.GetSprite("fire"),
+                  "Ignited",
+                  string.Format("{0} reduced by 20%. Take {1} damage at end of turn.",
+                      REDUCED_STAT.ColoredName,
+                      DEFUALT_DAMAGE_PER_TURN),
+                  true) {
+        }
+
+        protected override IList<SpellEffect> OnEndOfTurnHelper(Stats owner) {
+            return new SpellEffect[] {
+                new AddToModStat(owner, StatType.HEALTH, -damagePerTurn)
+            };
+        }
+    }
+
+    public class RoughSkin : Thorns {
+
+        public RoughSkin() : base(1, "Rough Skin") {
+        }
+    }
+
+    public class RougherSkin : Thorns {
+
+        public RougherSkin() : base(3, "Rougher Skin") {
+        }
+    }
+
+    public class RoughestSkin : Thorns {
+
+        public RoughestSkin() : base(10, "Roughest Skin") {
+        }
+    }
+
+    public abstract class ManaRegen : Buff {
+        private readonly int manaRecoveryPerTurn;
+
+        public ManaRegen(int manaRecoveryPerTurn) : base(Util.GetSprite("water-drop"), "Insight", string.Format("Regenerating {0} {1} per turn.", manaRecoveryPerTurn, StatType.MANA.ColoredName), false) {
+            this.manaRecoveryPerTurn = manaRecoveryPerTurn;
+        }
+
+        protected override IList<SpellEffect> OnEndOfTurnHelper(Stats owner) {
+            return new SpellEffect[] {
+                new AddToModStat(owner, StatType.MANA, manaRecoveryPerTurn)
+            };
+        }
+    }
+
+    public abstract class Countdown : Buff {
+        private const int STRENGTH_BOOST = 1000;
+
+        public Countdown(int turnsUntilEnrage)
+            : base(
+                  turnsUntilEnrage,
+                  Util.GetSprite("dragon-head"),
+                  "Countdown",
+                  string.Format("On expiration, unit gains {0}% increased {1}.", STRENGTH_BOOST, StatType.STRENGTH),
+                  false) {
+        }
+
+        protected override IList<SpellEffect> OnTimeOutHelper(Stats ownerOfThisBuff) {
+            return new SpellEffect[] {
+                new AddToModStat(ownerOfThisBuff, StatType.STRENGTH, STRENGTH_BOOST)
+            };
+        }
+    }
+
+    public class StandardCountdown : Countdown {
+        private const int STANDARD_DURATION = 20;
+
+        public StandardCountdown() : base(STANDARD_DURATION) {
+        }
+    }
+
+    public abstract class OnlyAffectedByCharacterWithStat : Buff {
+        private readonly StatType statThatCanAffect;
+
+        public OnlyAffectedByCharacterWithStat(StatType statThatCanAffect, string buffName)
+             : base(Util.GetSprite("shield"),
+                    buffName,
+                    string.Format("Only casters with the {0} resource can affect this unit.", statThatCanAffect),
+                    false) {
+            Util.Assert(StatType.RESOURCES.Contains(statThatCanAffect), "Stat is not a resource!");
+            this.statThatCanAffect = statThatCanAffect;
+        }
+
+        public override bool IsReact(SingleSpell incomingSpell, Stats ownerOfThisBuff) {
+            return incomingSpell.Target.Stats == ownerOfThisBuff && !incomingSpell.Caster.Stats.HasStat(statThatCanAffect);
+        }
+
+        protected override void ReactHelper(SingleSpell spellCast, Stats ownerOfThisBuff) {
+            spellCast.Result.Effects.Clear();
+        }
+    }
+
+    public class OnlyAffectedByHero : OnlyAffectedByCharacterWithStat {
+
+        public OnlyAffectedByHero() : base(StatType.MANA, "Magical Affinity") {
+        }
+    }
+
+    public class OnlyAffectedByPartner : OnlyAffectedByCharacterWithStat {
+
+        public OnlyAffectedByPartner() : base(StatType.SKILL, "Heroic Affinity") {
         }
     }
 }

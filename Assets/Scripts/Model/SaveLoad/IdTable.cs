@@ -103,6 +103,14 @@ namespace Scripts.Model.SaveLoad {
             Add<CrushingBlow>("crushingBlow");
             Add<PlayerHeal>("playerHeal");
             Add<SetupDefend>("setupDefend");
+            Add<Purge>("purge");
+            Add<Revive>("revive");
+            Add<Inspire>("inspire");
+            Add<Multistrike>("arraystrike");
+            Add<MagicMissile>("magicMissile");
+            Add<MassCheck>("massCheck");
+            Add<SelfHeal>("selfHeal");
+            Add<QuickAttack>("quickAttack");
         }
 
         private void Items() {
@@ -123,20 +131,41 @@ namespace Scripts.Model.SaveLoad {
             Add<CrushingBlowTome>("crushTome");
             Add<HealTome>("healTome");
             Add<DefendTome>("defendTome");
-            Add<Inventory1x6>("6pack");
+            Add<Cleansing>("cleansing");
+            Add<SharkBait>("sharkBait");
+            Add<SharkFin>("sharkFin");
+            Add<VitalityTrinket>("vitTrinket");
+            Add<AgilityTrinket>("agiTrinket");
+            Add<IntellectTrinket>("intTrinket");
+            Add<StrengthTrinket>("strTrinket");
+            Add<MinorVitalityTrinket>("minVitTrinket");
+            Add<MinorAgilityTrinket>("minAgiTrinket");
+            Add<MinorIntellectTrinket>("minIntTrinket");
+            Add<MinorStrengthTrinket>("minStrTrinket");
+            Add<SpiritRobes>("spiritRobes");
+            Add<IllusionOrb>("illusionOrb");
+            Add<GhastlyDefender>("ghastlyDefender");
+            Add<BigSword>("bigSword");
+            Add<BigArmor>("bigArmor");
+            Add<WornDagger>("wornDagger");
+            Add<RealKnife>("realKnife");
+            Add<UsedBandage>("usedBandage");
+            Add<CleanBandage>("cleanBandage");
+            Add<SpiritOrb>("spiritOrb");
+            Add<SpiritDust>("spiritDust");
+            Add<BetterWand>("betterWand");
+            Add<HorrorEmblem>("horrorEmblem");
         }
 
         private void Buffs() {
             Add<Poison>("poison");
-            Add<Checked>("checkedDebuff");
+            Add<BasicChecked>("checkedDebuff");
             Add<Counter>("counterBuff");
             Add<StrengthScalingPoison>("strengthScalingPoison");
             Add<BlackedOut>("blackoutDebuff");
             Add<DamageResist>("damageResist");
-            Add<Ignited>("ignitedDebuff");
-            Add<Insight>("insight");
+            Add<TempIgnited>("ignitedDebuff");
             Add<RegenerateHealth>("restore");
-            Add<StrengthBoost>("strengthBoost");
             Add<FishShook>("fishShook");
             Add<Defend>("defend");
             Add<RegenerateMana>("regenMana");
@@ -144,6 +173,16 @@ namespace Scripts.Model.SaveLoad {
             Add<AgilitySirenSong>("agilitySong");
             Add<VitalitySirenSong>("vitalitySong");
             Add<IntellectSirenSong>("intellectSong");
+            Add<DelayedDeath>("delayedDeath");
+            Add<DelayedHyperDeath>("delayedHyperdeath");
+            Add<AntiHeal>("antiHeal");
+            Add<HealBoost>("healBoost");
+            Add<PermanantIgnited>("permanantIgnite");
+            Add<SuperCheck>("superCheck");
+            Add<CalmedMind>("calmedMind");
+            Add<StrengthBoost>("strengthBoost");
+            Add<HalfLife>("hl3");
+            Add<InstaKill>("kill");
         }
 
         private void Brains() {

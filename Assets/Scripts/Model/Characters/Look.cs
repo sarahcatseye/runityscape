@@ -13,6 +13,7 @@ namespace Scripts.Model.Characters {
     /// </summary>
     /// <seealso cref="Scripts.Model.SaveLoad.ISaveable{Scripts.Model.SaveLoad.SaveObjects.LookSave}" />
     public class Look : ISaveable<LookSave> {
+
         /// <summary>
         /// Their name
         /// </summary>
@@ -22,10 +23,12 @@ namespace Scripts.Model.Characters {
         /// Their text color
         /// </summary>
         protected Color textColor;
+
         /// <summary>
         /// Their tooltip
         /// </summary>
         protected string tooltip;
+
         /// <summary>
         /// Their breed
         /// </summary>
@@ -35,10 +38,13 @@ namespace Scripts.Model.Characters {
         /// Their suffix
         /// </summary>
         private string suffix;
+
         /// <summary>
         /// Their sprite
         /// </summary>
         private Sprite sprite;
+
+        private string spriteLoc;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Look"/> class.
@@ -53,19 +59,9 @@ namespace Scripts.Model.Characters {
         /// <param name="tooltip">The tooltip.</param>
         /// <param name="breed">The breed.</param>
         /// <param name="textColor">Color of the text.</param>
-        public Look(string name, string spriteLoc, string tooltip, Breed breed, Color textColor) : this(name, Util.GetSprite(spriteLoc), tooltip, breed, textColor) { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Look"/> class.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="sprite">The sprite.</param>
-        /// <param name="tooltip">The tooltip.</param>
-        /// <param name="breed">The breed.</param>
-        /// <param name="textColor">Color of the text.</param>
-        public Look(string name, Sprite sprite, string tooltip, Breed breed, Color textColor) {
+        public Look(string name, string spriteLoc, string tooltip, Breed breed, Color textColor) {
             this.Name = name;
-            this.sprite = sprite;
+            this.SpriteLoc = spriteLoc;
             this.tooltip = tooltip;
             this.breed = breed;
             this.textColor = textColor;
@@ -102,8 +98,15 @@ namespace Scripts.Model.Characters {
             get {
                 return sprite;
             }
-            protected set {
-                this.sprite = value;
+        }
+
+        public string SpriteLoc {
+            get {
+                return spriteLoc;
+            }
+            set {
+                this.spriteLoc = value;
+                this.sprite = Util.GetSprite(value);
             }
         }
 
@@ -194,7 +197,7 @@ namespace Scripts.Model.Characters {
         /// </summary>
         /// <returns></returns>
         public LookSave GetSaveObject() {
-            return new LookSave(Name, sprite, textColor, tooltip, breed);
+            return new LookSave(Name, spriteLoc, textColor, tooltip, breed);
         }
 
         /// <summary>
@@ -203,7 +206,7 @@ namespace Scripts.Model.Characters {
         /// <param name="saveObject">The save object.</param>
         public void InitFromSaveObject(LookSave saveObject) {
             this.Name = saveObject.Name;
-            this.sprite = saveObject.Sprite;
+            this.SpriteLoc = saveObject.SpriteLoc;
             this.textColor = saveObject.TextColor;
             this.tooltip = saveObject.Tooltip;
             this.breed = saveObject.Breed;
