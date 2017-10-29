@@ -1,4 +1,5 @@
-﻿using Scripts.Game.Defined.Serialized.Buffs;
+﻿using Scripts.Game.Defined.Characters;
+using Scripts.Game.Defined.Serialized.Buffs;
 using Scripts.Game.Defined.Serialized.Spells;
 using Scripts.Game.Defined.Unserialized.Spells;
 using Scripts.Model.Characters;
@@ -9,6 +10,17 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Scripts.Game.Serialized.Brains {
+
+    public class SharkAttacker : PriorityBrain {
+        public static readonly Attack ATTACK = new Attack();
+
+        protected override IList<Spell> GetPriorityPlays() {
+            return new Spell[] {
+                CastOnTargetMeetingCondition(ATTACK, c => c.Look.Breed == Breed.SHARK_BAIT),
+                CastOnRandom(ATTACK)
+            };
+        }
+    }
 
     public class DoNothing : PriorityBrain {
         protected override IList<Spell> GetPriorityPlays() {
@@ -170,6 +182,12 @@ namespace Scripts.Game.Serialized.Brains {
             if (!IsFirstPhase && !isAnnounceSecondPhase) {
                 isAnnounceSecondPhase = true;
                 return Util.PickRandom("Enough of this! I'll take you down by myself!/You landlubbers are tougher than I thought. I'll have to improvise!");
+            }
+
+            foreach (Character character in foes) {
+                if (character.Look.Breed == Breed.SHARK_BAIT) {
+                    return "You think I'd fall for a lame trick like that? I see right through your shark bait!";
+                }
             }
             return string.Empty;
         }

@@ -235,8 +235,9 @@ namespace Scripts.Game.Defined.Characters {
                         new Revive(),
                         new PlayerHeal(),
                         new SetupDefend(),
-                        new MagicMissile()
-                    );
+                        new MagicMissile())
+                    .AddEquip(new EvilCloneTrinket(), 1)
+                    .AddEquip(new EvilCloneArmor(), 1);
             }
 
             public static Character PartnerClone() {
@@ -252,7 +253,8 @@ namespace Scripts.Game.Defined.Characters {
                         new Inspire(),
                         new SetupDefend(),
                         new CrushingBlow(),
-                        new Multistrike());
+                        new Multistrike())
+                    .AddEquip(new EvilFriendTrinket(), 1);
             }
         }
     }

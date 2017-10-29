@@ -68,7 +68,7 @@ namespace Scripts.Model.Items {
         /// <param name="caster">The caster.</param>
         /// <param name="target">The target.</param>
         /// <returns></returns>
-        public abstract IList<SpellEffect> GetEffects(Character caster, Character target);
+        public abstract IList<SpellEffect> GetEffects(Page page, Character caster, Character target);
 
         /// <summary>
         /// Determines whether having the caster use an item on a target meets particular requirements.
