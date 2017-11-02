@@ -522,6 +522,9 @@ namespace Scripts.Model.Pages {
             Grid postBattle = new Grid("Main");
             postBattle.OnEnter = () => {
                 postBattle.List.Clear();
+
+                Page pageToContinueTo = null;
+
                 if (status == PlayerPartyStatus.ALIVE || status == PlayerPartyStatus.NOT_FOUND) {
                     if (status == PlayerPartyStatus.ALIVE) {
                         postBattle.List.Add(GetLootButton(postBattle));
@@ -537,10 +540,16 @@ namespace Scripts.Model.Pages {
                     postBattle.List.Add(PageUtil.GenerateGroupSpellBooks(this, postBattle, VictoriousParty));
                     postBattle.List.Add(PageUtil.GenerateGroupItemsGrid(this, postBattle, VictoriousParty, PageUtil.GetOutOfBattlePlayableHandler(this)));
                     postBattle.List.Add(PageUtil.GenerateGroupEquipmentGrid(postBattle, this, VictoriousParty, PageUtil.GetOutOfBattlePlayableHandler(this)));
-                    postBattle.List.Add(new Process("Continue", () => GoToPage(victory)));
+                    pageToContinueTo = victory;
                 } else {
-                    postBattle.List.Add(new Process("Continue", () => GoToPage(defeat)));
+                    pageToContinueTo = defeat;
                 }
+                postBattle.List.Add(
+                    new Process(
+                        "Continue",
+                        Util.GetSprite("walking-boot"),
+                        string.Format("Continue to {0}.",
+                        pageToContinueTo.ButtonText), () => GoToPage(pageToContinueTo)));
                 Actions = postBattle.List;
             };
             postBattle.Invoke();
