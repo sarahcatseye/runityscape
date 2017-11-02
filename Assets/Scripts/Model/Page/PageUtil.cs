@@ -222,7 +222,7 @@ namespace Scripts.Model.Pages {
                         member,
                         null,
                         ((IEnumerable<ISpellable>)member.Spells)
-                            .Where(b => b.GetSpellBook().IsUsableOutOfCombat
+                            .Where(b => b.GetSpellBook().HasFlag(Spells.Flag.USABLE_OUT_OF_COMBAT)
                                     && !b.GetSpellBook().TargetType.IsTargetEnemies),
                         GetOutOfBattlePlayableHandler(current),
                         member.Look.Sprite,

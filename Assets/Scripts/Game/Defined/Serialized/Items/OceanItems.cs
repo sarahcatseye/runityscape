@@ -17,7 +17,8 @@ namespace Scripts.Game.Defined.Serialized.Items {
 
     public class SharkBait : ConsumableItem {
 
-        public SharkBait() : base("food-chain", 100, TargetType.SELF, "Shark Bait", "Creates a decoy that sharks just can't help but to target!") {
+        public SharkBait() : base("food-chain", 100, TargetType.SELF, "Shark Bait", "Creates a very attractive decoy (for sharks). No villagers were harmed in the making of this product.") {
+            this.flags.Remove(Model.Items.Flag.USABLE_OUT_OF_COMBAT);
         }
 
         public override IList<SpellEffect> GetEffects(Page page, Character caster, Character target) {
@@ -73,25 +74,25 @@ namespace Scripts.Game.Defined.Serialized.Items {
 
     public class VitalityTrinket : SingleStatTrinket {
 
-        public VitalityTrinket() : base(StatType.VITALITY, 50, 10, "Life") {
+        public VitalityTrinket() : base(StatType.VITALITY, 50, 4, "Life") {
         }
     }
 
     public class AgilityTrinket : SingleStatTrinket {
 
-        public AgilityTrinket() : base(StatType.AGILITY, 50, 10, "Swiftness") {
+        public AgilityTrinket() : base(StatType.AGILITY, 50, 4, "Swiftness") {
         }
     }
 
     public class IntellectTrinket : SingleStatTrinket {
 
-        public IntellectTrinket() : base(StatType.INTELLECT, 50, 5, "Smarts") {
+        public IntellectTrinket() : base(StatType.INTELLECT, 50, 2, "Smarts") {
         }
     }
 
     public class StrengthTrinket : SingleStatTrinket {
 
-        public StrengthTrinket() : base(StatType.STRENGTH, 50, 5, "Force") {
+        public StrengthTrinket() : base(StatType.STRENGTH, 50, 2, "Force") {
         }
     }
 }

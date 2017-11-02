@@ -49,8 +49,6 @@ namespace Scripts.Model.Spells {
         /// </summary>
         public readonly TargetType TargetType;
 
-        protected bool isUsableOutOfCombat;
-
         /// <summary>
         /// The verb
         /// </summary>
@@ -128,12 +126,6 @@ namespace Scripts.Model.Spells {
         public IDictionary<StatType, int> Costs {
             get {
                 return roCosts ?? (roCosts = new ReadOnlyDictionary<StatType, int>(costs));
-            }
-        }
-
-        public bool IsUsableOutOfCombat {
-            get {
-                return isUsableOutOfCombat;
             }
         }
 

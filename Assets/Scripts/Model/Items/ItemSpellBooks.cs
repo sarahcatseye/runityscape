@@ -110,6 +110,9 @@ namespace Scripts.Model.Items {
 
         public UseItem(ConsumableItem consume) : base(consume, "Use") {
             this.consume = consume;
+            if (consume.HasFlag(Flag.USABLE_OUT_OF_COMBAT)) {
+                this.flags.Add(Spells.Flag.USABLE_OUT_OF_COMBAT);
+            }
         }
 
         protected override IList<SpellEffect> GetHitEffects(Page page, Character caster, Character target) {

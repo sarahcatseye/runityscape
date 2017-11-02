@@ -118,7 +118,7 @@ namespace Scripts.Game.Defined.Serialized.Spells {
 
         public SelfHeal() : base("Meditate", Util.GetSprite("prayer"), TargetType.SELF, SpellType.DEFENSE) {
             AddCost(StatType.SKILL, SKILL_COST);
-            isUsableOutOfCombat = true;
+            flags.Add(Model.Spells.Flag.USABLE_OUT_OF_COMBAT);
         }
 
         protected override string CreateDescriptionHelper() {
@@ -197,7 +197,7 @@ namespace Scripts.Game.Defined.Serialized.Spells {
 
         public Purge() : base("Purge", Util.GetSprite("beams-aura"), TargetType.ANY, SpellType.DEFENSE) {
             AddCost(StatType.MANA, 10);
-            isUsableOutOfCombat = true;
+            flags.Add(Model.Spells.Flag.USABLE_OUT_OF_COMBAT);
         }
 
         protected override string CreateDescriptionHelper() {
@@ -257,7 +257,7 @@ namespace Scripts.Game.Defined.Serialized.Spells {
 
         public Revive() : base("Revive", Util.GetSprite("beams-aura"), TargetType.ONE_ALLY, SpellType.BOOST, PriorityType.LOW, true) {
             AddCost(StatType.MANA, MANA_COST);
-            isUsableOutOfCombat = true;
+            flags.Add(Model.Spells.Flag.USABLE_OUT_OF_COMBAT);
         }
 
         protected override string CreateDescriptionHelper() {
@@ -277,7 +277,7 @@ namespace Scripts.Game.Defined.Serialized.Spells {
 
         public Inspire() : base("Inspire", Util.GetSprite("fire"), TargetType.ONE_ALLY, SpellType.BOOST) {
             AddCost(StatType.SKILL, SKILL_COST);
-            isUsableOutOfCombat = true;
+            flags.Add(Model.Spells.Flag.USABLE_OUT_OF_COMBAT);
         }
 
         protected override string CreateDescriptionHelper() {
@@ -302,7 +302,7 @@ namespace Scripts.Game.Defined.Serialized.Spells {
 
         public PlayerHeal() : base("Heal", Util.GetSprite("health-normal"), TargetType.ONE_ALLY, SpellType.BOOST) {
             AddCost(StatType.MANA, 20);
-            isUsableOutOfCombat = true;
+            flags.Add(Model.Spells.Flag.USABLE_OUT_OF_COMBAT);
         }
 
         protected override string CreateDescriptionHelper() {
@@ -821,6 +821,7 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
     }
 
     public class SuperBurn : BuffAdder<SuperIgnited> {
+
         public SuperBurn() : base(TargetType.ONE_FOE, SpellType.OFFENSE, PriorityType.NORMAL) {
         }
     }
