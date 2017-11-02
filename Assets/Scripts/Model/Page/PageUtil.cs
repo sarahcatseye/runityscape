@@ -307,15 +307,17 @@ namespace Scripts.Model.Pages {
 
             Item item = spellable as Item;
             if (item != null && item.HasFlag(Items.Flag.OCCUPIES_SPACE)) {
+                SpellBook tossItem = new TossItem(item, caster.Inventory);
                 grid.List.Add(
                     new Process(
                         string.Format("Drop"),
                         string.Format("Throw away {0}.", item.Name),
                         () => {
                             spellHandler(
-                                caster.Spells.CreateSpell(current, new TossItem(item, caster.Inventory), caster, caster)
+                                caster.Spells.CreateSpell(current, tossItem, caster, caster)
                                 );
-                        }
+                        },
+                        () => tossItem.IsCastable(caster, new Character[] { caster })
                         ));
             }
             return grid;
