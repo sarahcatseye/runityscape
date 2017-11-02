@@ -51,7 +51,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
     public class BigSword : EquippableItem {
 
         public BigSword() : base("rune-sword", EquipType.WEAPON, 20, "Big Sword", "A massive, hulking sword.") {
-            AddFlatStatBonus(StatType.STRENGTH, 5);
+            AddFlatStatBonus(StatType.STRENGTH, 3);
             AddFlatStatBonus(StatType.AGILITY, -5);
         }
     }
@@ -74,7 +74,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
 
     public class RealKnife : EquippableItem {
 
-        public RealKnife() : base("curvy-knife", EquipType.WEAPON, 20, "Real Knife", "Perfect for killers.") {
+        public RealKnife() : base("curvy-knife", EquipType.WEAPON, 20, "Real Knife", "Only a killer would use this weapon.") {
             AddFlatStatBonus(StatType.STRENGTH, 2);
             AddFlatStatBonus(StatType.AGILITY, 1);
         }
