@@ -97,13 +97,13 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
 
     public class FishShook : PermanentBuff {
         private const float FISHY_TARGET_MULTIPLIER = 2;
-        private const float OTHER_TARGET_MULTIPLIER = 0.25f;
+        private const float OTHER_TARGET_MULTIPLIER = 0.5f;
 
         public FishShook()
             : base(Util.GetSprite("fish"),
                   "Fish-Shook",
                   string.Format(
-                      "Basic attacks do {0}x damage on fishy targets and {1} damage on non-fish.", FISHY_TARGET_MULTIPLIER, OTHER_TARGET_MULTIPLIER)) {
+                      "Basic attacks do {0}x damage on fishy targets and {1}x damage on non-fish.", FISHY_TARGET_MULTIPLIER, OTHER_TARGET_MULTIPLIER)) {
         }
 
         public override bool IsReact(SingleSpell spellToReactTo, Stats owner) {

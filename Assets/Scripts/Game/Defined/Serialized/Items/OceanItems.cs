@@ -51,7 +51,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
 
     public class ShellArmor : EquippableItem {
 
-        public ShellArmor() : base("turtle-shell", EquipType.OFFHAND, 200, "Shell Armor", "Shell from a shelled creature") {
+        public ShellArmor() : base("turtle-shell", EquipType.OFFHAND, 200, "Shell Armor", "Shell from an endangered species.") {
             AddFlatStatBonus(StatType.VITALITY, 10);
             AddFlatStatBonus(StatType.AGILITY, -5);
         }
@@ -261,8 +261,8 @@ namespace Scripts.Game.Defined.Serialized.Items {
     public class FishHook : EquippableItem {
 
         public FishHook() : base("fishing-hook", EquipType.WEAPON, 500, "Fish Hook", "A used fish hook.") {
-            AddFlatStatBonus(StatType.STRENGTH, 5);
-            AddFlatStatBonus(StatType.AGILITY, 1);
+            AddFlatStatBonus(StatType.STRENGTH, 10);
+            AddFlatStatBonus(StatType.AGILITY, 10);
             AddFlatStatBonus(StatType.VITALITY, -1);
         }
 
