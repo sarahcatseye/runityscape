@@ -60,7 +60,7 @@ namespace Scripts.Model.Spells {
         /// <returns>
         ///   <c>true</c> if [is meet other cast requirements] [the specified caster]; otherwise, <c>false</c>.
         /// </returns>
-        protected override bool IsMeetOtherCastRequirements(Character caster, Character target) {
+        protected override sealed bool IsMeetOtherCastRequirements(Character caster, Character target) {
             return item.IsUsable(caster, target) && IsMeetItemCastRequirements(caster, target);
         }
 
