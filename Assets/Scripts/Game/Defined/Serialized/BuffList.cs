@@ -135,7 +135,7 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
     }
 
     public class DamageResist : PermanentBuff {
-        private const float DAMAGE_MULTIPLIER = 0.7f;
+        private const float DAMAGE_MULTIPLIER = 0.8f;
 
         public DamageResist()
             : base(Util.GetSprite("round-shield"),
@@ -384,6 +384,12 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
             AddMultiplicativeStatBonus(StatType.STRENGTH, STRENGTH_INCREASE_AMOUNT);
         }
     }
+
+    public class RoughSkin : Thorns {
+
+        public RoughSkin() : base(1, "Rough Skin") {
+        }
+    }
 }
 
 namespace Scripts.Game.Defined.Unserialized.Buffs {
@@ -402,7 +408,7 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
         }
     }
 
-    public abstract class Thorns : Buff {
+    public abstract class Thorns : PermanentBuff {
         private readonly int damageToReturn;
 
         public Thorns(int damageToReturn, string name)
@@ -411,8 +417,7 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
                   name,
                   string.Format("Successful basic attacks on this unit cause the attacker to take {0} damage.",
                       damageToReturn
-                      ),
-                  false
+                      )
                   ) {
             this.damageToReturn = damageToReturn;
         }
@@ -678,12 +683,6 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
             return new SpellEffect[] {
                 new AddToModStat(owner, StatType.HEALTH, -damagePerTurn)
             };
-        }
-    }
-
-    public class RoughSkin : Thorns {
-
-        public RoughSkin() : base(1, "Rough Skin") {
         }
     }
 

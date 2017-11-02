@@ -209,7 +209,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
         public RevivalSeed()
             : base(
                   "acorn",
-                  500,
+                  200,
                   TargetType.ONE_ALLY,
                   "Revival Seed",
                   string.Format("Use on an ally to restore them by {0}% of their missing {1}. Can be used on fallen allies.",
@@ -254,7 +254,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
 
     public class RegenArmor : EquippableItem {
 
-        public RegenArmor() : base("chain-mail", EquipType.ARMOR, 100, "Flan's Mail", "A soothing mail that heals wounds. Smells like eggs.") {
+        public RegenArmor() : base("chain-mail", EquipType.ARMOR, 200, "Flan's Mail", "A soothing mail that heals wounds. Smells like eggs.") {
             AddFlatStatBonus(StatType.AGILITY, -5);
             AddFlatStatBonus(StatType.VITALITY, 5);
         }
