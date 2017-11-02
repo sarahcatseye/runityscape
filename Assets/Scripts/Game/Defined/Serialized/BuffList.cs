@@ -27,7 +27,7 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
             return incomingSpell.Target.Stats == ownerOfThisBuff
                 && incomingSpell.SpellBook is Attack
                 && incomingSpell.Result.IsDealDamage
-                && Util.IsChance(IGNITION_CHANCE/100.0f);
+                && Util.IsChance(IGNITION_CHANCE / 100.0f);
         }
 
         protected override void ReactHelper(SingleSpell spellCast, Stats ownerOfThisBuff) {
@@ -171,7 +171,7 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
     }
 
     public class TempIgnited : AbstractIgnited {
-        private const int DURATION = 2;
+        private const int DURATION = 5;
 
         public TempIgnited() : base(DURATION) {
         }
