@@ -68,8 +68,6 @@ namespace Scripts.Game.Stages {
                     flags.CurrentArea = nextArea;
                     flags.LastClearedArea = type;
                     flags.LastClearedStage = Flags.NO_STAGES_CLEARED;
-                } else { //last stage in the game
-                    (new Pages.CreditsPages(new Pages.Menus().Root)).Invoke();
                 }
             }
         }

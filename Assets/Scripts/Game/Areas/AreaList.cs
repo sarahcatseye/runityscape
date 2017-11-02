@@ -37,7 +37,7 @@ namespace Scripts.Game.Areas {
                 new Dictionary<AreaType, Sprite>() {
                     { AreaType.RUINS, Util.GetSprite("skull-crack") },
                     { AreaType.SEA_WORLD, Util.GetSprite("at-sea") },
-                    { AreaType.LAB, Util.GetSprite("potion-ball") }
+                    { AreaType.LAB, Util.GetSprite("cube") }
                 });
 
         private static Area CreateRuins(Flags flags, Party party, Page camp, Page quests) {
@@ -221,10 +221,21 @@ namespace Scripts.Game.Areas {
                             new Encounter(Music.FINAL_STAGE, LabNPCs.Final.HeroClone()),
                             new Encounter(Music.FINAL_STAGE, LabNPCs.Final.PartnerClone()),
                             new Encounter(Music.FINAL_BOSS, LabNPCs.Final.HeroClone(), LabNPCs.Final.PartnerClone())
-                        })
+                        }),
+                    Ending()
                 },
                 new PageGroup[] { LabNPCs.Trainer(camp, party) }
                 );
+        }
+
+        private static SceneStage Ending() {
+            Page ending = new Page("An Ending");
+            SceneStage stage = new SceneStage(ending, "Ending",
+                new TextAct("Wow really, this is the ending?"),
+                new TextAct("Umm, okay. Here's the credits."),
+                new PageChangeAct(new CreditsPages(new Menus().Root).Root)
+                );
+            return stage;
         }
     }
 }
