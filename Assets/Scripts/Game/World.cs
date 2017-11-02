@@ -10,10 +10,12 @@ namespace Scripts.Game.Serialized {
     /// </summary>
     /// <seealso cref="Scripts.Model.SaveLoad.ISaveable{Scripts.Model.SaveLoad.SaveObjects.WorldSave}" />
     public class World : ISaveable<WorldSave> {
+
         /// <summary>
         /// The party
         /// </summary>
         public Party Party;
+
         /// <summary>
         /// The flags
         /// </summary>
