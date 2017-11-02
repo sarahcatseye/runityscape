@@ -25,8 +25,6 @@ namespace Scripts.Game.Defined.Characters {
                 0.5f,
                 1f,
                 Villager())
-                .AddTalks(new Talk("Shield", "<a>A fine wooden shield, complete with a steel band around the rim."))
-                .AddTalks(new Talk("Test", "<a>A sturdy fish hook, best for fighting fish."))
                 .AddBuys(
                     new Apple(),
                     new IdentifyScroll(),
@@ -70,7 +68,7 @@ namespace Scripts.Game.Defined.Characters {
                 new Attacker())
                 .AddItem(new WornDagger(), .20f)
                 .AddItem(new RealKnife(), .05f)
-                .AddMoney(5);
+                .AddMoney(3);
         }
 
         public static Character Knight() {
@@ -86,7 +84,7 @@ namespace Scripts.Game.Defined.Characters {
                 .AddEquip(new BrokenSword(), .20f)
                 .AddEquip(new GhostArmor(), .20f)
                 .AddItem(new SilverBoot(), .05f)
-                .AddMoney(10);
+                .AddMoney(5);
         }
 
         public static Character BigKnight() {
@@ -111,7 +109,7 @@ namespace Scripts.Game.Defined.Characters {
                     new MinorIntellectTrinket(),
                     new MinorStrengthTrinket(),
                     new MinorVitalityTrinket()))
-                .AddMoney(20);
+                .AddMoney(10);
         }
 
         public static Character Wizard() {
@@ -131,7 +129,7 @@ namespace Scripts.Game.Defined.Characters {
                 .AddItem(new IdentifyScroll(), .20f)
                 .AddItem(new SpiritDust(), .50f)
                 .AddItem(new SpiritOrb(), .05f)
-                .AddMoney(20);
+                .AddMoney(10);
         }
 
         public static Character Healer() {
@@ -152,7 +150,7 @@ namespace Scripts.Game.Defined.Characters {
                 .AddItem(new RevivalSeed(), .01f)
                 .AddItem(new UsedBandage(), .50f)
                 .AddItem(new CleanBandage(), .20f)
-                .AddMoney(20);
+                .AddMoney(10);
         }
 
         public static Character Illusionist() {
@@ -169,7 +167,7 @@ namespace Scripts.Game.Defined.Characters {
                 .AddEquip(new BetterWand())
                 .AddItem(new SpiritDust())
                 .AddItem(new IdentifyScroll())
-                .AddMoney(40);
+                .AddMoney(15);
         }
 
         public static Look ReplicantLook() {
@@ -201,7 +199,7 @@ namespace Scripts.Game.Defined.Characters {
             .AddFlags(Model.Characters.Flag.PERSISTS_AFTER_DEFEAT)
             .AddSpells(new ReflectiveClone(), new RevealTrueForm())
             .AddItem(new Item[] { new MadnessStaff(), new HorrorEmblem() }.ChooseRandom())
-            .AddMoney(50);
+            .AddMoney(20);
         }
     }
 }
