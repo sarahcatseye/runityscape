@@ -129,6 +129,17 @@ namespace Scripts.Model.Spells {
             }
         }
 
+        public string NameAndDescription {
+            get {
+                return string.Format(
+                    "{0} ({1}) - {2}",
+                        Name,
+                        GetCommaSeparatedCosts(),
+                        CreateDescriptionHelper()
+                    );
+            }
+        }
+
         public int TurnsToCharge {
             get {
                 return turnsToCharge;
