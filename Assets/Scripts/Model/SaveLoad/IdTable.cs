@@ -111,6 +111,8 @@ namespace Scripts.Model.SaveLoad {
             Add<MassCheck>("massCheck");
             Add<SelfHeal>("selfHeal");
             Add<QuickAttack>("quickAttack");
+            Add<HalfLife>("hl3");
+            Add<InstaKill>("kill");
         }
 
         private void Items() {
@@ -155,6 +157,29 @@ namespace Scripts.Model.SaveLoad {
             Add<SpiritDust>("spiritDust");
             Add<BetterWand>("betterWand");
             Add<HorrorEmblem>("horrorEmblem");
+            Add<EvilCloneArmor>("evilCloneArmor");
+            Add<EvilCloneTrinket>("evilCloneTrinket");
+            Add<EvilFriendTrinket>("evilFriendTrinket");
+            Add<SharkSkin>("sharkSkin");
+            Add<FishingPole>("fishingPole");
+            Add<Dynamite>("dynamic");
+            Add<ShellArmor>("shellArmor");
+            Add<SharkTooth>("sharkTooth");
+            Add<CrackedSharkTooth>("crackedSharkTooth");
+            Add<CrackedOrb>("crackedOrb");
+            Add<WaterOrb>("waterOrb");
+            Add<SharkBlood>("sharkBlood");
+            Add<ToothNecklace>("toothNecklace");
+            Add<CrackedToothNecklace>("crackedToothNecklace");
+            Add<OctopusLeg>("octopusLeg");
+            Add<SirenNote>("sirenNote");
+            Add<BlackWater>("blackWater");
+            Add<GrayWater>("grayWater");
+            Add<PureWater>("pureWater");
+            Add<Trident>("trident");
+            Add<Hammer>("salachsMightyHammer");
+            Add<ScaledArmor>("scaledArmor");
+            Add<Rocktail>("rocktail");
         }
 
         private void Buffs() {
@@ -181,8 +206,11 @@ namespace Scripts.Model.SaveLoad {
             Add<SuperCheck>("superCheck");
             Add<CalmedMind>("calmedMind");
             Add<StrengthBoost>("strengthBoost");
-            Add<HalfLife>("hl3");
-            Add<InstaKill>("kill");
+            Add<SuperIgnited>("superIgnited");
+            Add<RegenerateLotsOfMana>("regenerateLotsOfMana");
+            Add<RegenerateLotsOfSkill>("regenerateLotsOfSkill");
+            Add<RoughSkin>("roughSkin");
+            Add<FlamingArmor>("flameBody");
         }
 
         private void Brains() {
