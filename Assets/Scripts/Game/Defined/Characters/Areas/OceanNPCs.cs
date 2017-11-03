@@ -113,7 +113,7 @@ namespace Scripts.Game.Defined.Characters {
 
         public static Character Kraken() {
             return CharacterUtil.StandardEnemy(
-                    new Stats(8, 10, 16, 20, 100),
+                    new Stats(8, 10, 16, 10, 100),
                     new Look(
                         "Krackle",
                         "kraken",
@@ -167,7 +167,7 @@ namespace Scripts.Game.Defined.Characters {
 
         public static Character Elemental() {
             return CharacterUtil.StandardEnemy(
-                new Stats(9, 1, 30, 15, 50),
+                new Stats(9, 1, 30, 10, 50),
                 new Look(
                     "Elemental",
                     "villager",
