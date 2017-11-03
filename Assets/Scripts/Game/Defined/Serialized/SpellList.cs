@@ -700,7 +700,7 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
         private readonly string description;
 
         public WaterboltAbstract(TargetType targetType, string name, string description) : base(name, Util.GetSprite("water-bolt"), targetType, SpellType.OFFENSE) {
-            this.TurnsToCharge = 1;
+            this.TurnsToCharge = 3;
             this.description = description;
         }
 
