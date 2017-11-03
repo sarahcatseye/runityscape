@@ -40,7 +40,7 @@ namespace Scripts.Game.Shopkeeper {
             Root.AddCharacters(Side.RIGHT, trainerPerson);
             Root.Actions = main.List;
             Root.OnEnter = () => {
-                string.Format(party.Shared.WealthText);
+                Root.AddText(string.Format(party.Shared.WealthText));
             };
         }
 
