@@ -126,6 +126,7 @@ namespace Scripts.Model.Pages {
 
             foreach (Character partyMember in party) {
                 if (partyMember.Stats.State == State.ALIVE) {
+                    // Exclude items that cannot be used out of combat
                     grid.List.Add(
                         GenerateItemsGrid(
                             current,
@@ -293,7 +294,13 @@ namespace Scripts.Model.Pages {
         /// <param name="spellable">Spellable to use on target</param>
         /// <param name="spellHandler">Spell handler</param>
         /// <returns></returns>
-        public static Grid GenerateTargets(Page current, IButtonable previous, Character caster, ISpellable spellable, Sprite sprite, Action<Spell> spellHandler) {
+        public static Grid GenerateTargets(
+            Page current,
+            IButtonable previous,
+            Character caster,
+            ISpellable spellable,
+            Sprite sprite,
+            Action<Spell> spellHandler) {
             SpellBook sb = spellable.GetSpellBook();
             ICollection<Character> targets = sb.TargetType.GetTargets(caster, current);
             Grid grid = GenerateBackableGrid(previous, sb.Icon, sb.Name, sb.CreateDescription(caster));
