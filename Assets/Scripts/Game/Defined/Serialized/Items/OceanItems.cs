@@ -39,7 +39,12 @@ namespace Scripts.Game.Defined.Serialized.Items {
     public class Dynamite : ConsumableItem {
         private const int DAMAGE = 5;
 
-        public Dynamite() : base("dynamite", 20, TargetType.ALL_FOE, "Dynamite", "Used for illegal blast fishing. Deals {0} damage to all foes.") {
+        public Dynamite() : base(
+            "dynamite",
+            20,
+            TargetType.ALL_FOE,
+            "Dynamite",
+            string.Format("Used for illegal blast fishing. Deals {0} damage to all foes.", DAMAGE)) {
         }
 
         public override IList<SpellEffect> GetEffects(Page page, Character caster, Character target) {
