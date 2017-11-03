@@ -89,7 +89,7 @@ namespace Scripts.Game.Defined.Characters {
 
         public static Character BigKnight() {
             return CharacterUtil.StandardEnemy(
-                new Stats(3, 3, 2, 2, 15),
+                new Stats(3, 3, 2, 2, 30),
                 new Look(
                     "Big Knight",
                     "big-knight",
@@ -192,7 +192,7 @@ namespace Scripts.Game.Defined.Characters {
 
         public static Character Replicant() {
             return CharacterUtil.StandardEnemy(
-                new Stats(5, 5, 5, 10, 60),
+                new Stats(5, 5, 5, 10, 100),
                 ReplicantDisguisedLook(),
                 new Replicant()
                 )
