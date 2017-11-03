@@ -50,6 +50,16 @@ namespace Scripts.Model.Characters {
             }
         }
 
+        public string SpellTextsDisplay {
+            get {
+                List<string> spells = new List<string>();
+                foreach (SpellBook sb in set) {
+                    spells.Add(sb.Name);
+                }
+                return "Spells:\n" + string.Join(", ", spells.ToArray());
+            }
+        }
+
         /// <summary>
         /// Gets the highest skill cost.
         /// </summary>
