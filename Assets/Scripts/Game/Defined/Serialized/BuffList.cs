@@ -164,14 +164,14 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
     }
 
     public class SuperIgnited : AbstractIgnited {
-        private const int DURATION = 3;
+        private const int DURATION = 5;
 
-        public SuperIgnited() : base(DURATION, 5, 40) {
+        public SuperIgnited() : base(DURATION, 2, 40) {
         }
     }
 
     public class TempIgnited : AbstractIgnited {
-        private const int DURATION = 5;
+        private const int DURATION = 2;
 
         public TempIgnited() : base(DURATION) {
         }
@@ -211,7 +211,7 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
         private const int AGILITY_REDUCTION = 10;
 
         public SuperCheck()
-            : base(10,
+            : base(20,
                   Util.GetSprite("magnifying-glass"),
                   "Checked",
                   string.Format("Resource visibility increased. {0} reduced by {1}%.", StatType.AGILITY, AGILITY_REDUCTION),
@@ -230,7 +230,7 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
 
     public class BasicChecked : Buff {
 
-        public BasicChecked() : base(5, Util.GetSprite("magnifying-glass"), "Checked", "Resource visibility increased.", true) {
+        public BasicChecked() : base(10, Util.GetSprite("magnifying-glass"), "Checked", "Resource visibility increased.", true) {
         }
 
         protected override IList<SpellEffect> OnApplyHelper(Stats owner) { // TODO UNSTACKABLE
