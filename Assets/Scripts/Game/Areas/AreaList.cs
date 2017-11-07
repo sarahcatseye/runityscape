@@ -27,72 +27,215 @@ namespace Scripts.Game.Areas {
         public static readonly ReadOnlyDictionary<AreaType, Func<Flags, Party, Page, Page, Area>> ALL_AREAS
             = new ReadOnlyDictionary<AreaType, Func<Flags, Party, Page, Page, Area>>(
                 new Dictionary<AreaType, Func<Flags, Party, Page, Page, Area>>() {
-                    { AreaType.TINY_WOODS, (flags, party, camp, dungeonPages) => CreateRuins(flags, party, camp, dungeonPages) }
+                    { AreaType.RUINS, (flags, party, camp, dungeonPages) => CreateRuins(flags, party, camp, dungeonPages) },
+                    { AreaType.SEA_WORLD, (flags, party, camp, dungeonPages) => SeaWorld(flags, party, camp, dungeonPages) },
+                    { AreaType.LAB, (flags, party, camp, dungeonPages) => EvilLabs(flags, party, camp, dungeonPages) }
         });
 
+        public static readonly ReadOnlyDictionary<AreaType, Sprite> AREA_SPRITES
+            = new ReadOnlyDictionary<AreaType, Sprite>(
+                new Dictionary<AreaType, Sprite>() {
+                    { AreaType.RUINS, Util.GetSprite("skull-crack") },
+                    { AreaType.SEA_WORLD, Util.GetSprite("at-sea") },
+                    { AreaType.LAB, Util.GetSprite("cube") }
+                });
+
         private static Area CreateRuins(Flags flags, Party party, Page camp, Page quests) {
-            return new Area(AreaType.TINY_WOODS,
+            return new Area(
+                AreaType.RUINS,
                     new Stage[] {
-                        GetSampleScene(party),
                         new BattleStage(
                             "Start of adventure",
                             () => new Encounter[] {
-                                new Encounter(FieldNPCs.Villager()),
-                                new Encounter(FieldNPCs.Villager(), FieldNPCs.Villager())
+                                new Encounter(RuinsNPCs.Villager()),
+                                new Encounter(RuinsNPCs.Villager(), RuinsNPCs.Villager())
                             }),
                         new BattleStage(
                             "Stronger monsters",
                             () => new Encounter[] {
-                                new Encounter(FieldNPCs.Villager(), FieldNPCs.Villager()),
-                                new Encounter(FieldNPCs.Villager(), FieldNPCs.Knight())
+                                new Encounter(RuinsNPCs.Villager(), RuinsNPCs.Villager()),
+                                new Encounter(RuinsNPCs.Villager(), RuinsNPCs.Knight())
                             }),
                         new BattleStage(
                             "Restoration",
                             () => new Encounter[] {
-                                new Encounter(FieldNPCs.Healer(), FieldNPCs.Healer()),
-                                new Encounter(FieldNPCs.Healer(), FieldNPCs.Knight(), FieldNPCs.BlackShuck())
+                                new Encounter(RuinsNPCs.Healer(), RuinsNPCs.Healer()),
+                                new Encounter(RuinsNPCs.Healer(), RuinsNPCs.Knight())
                             }),
                         new BattleStage(
-                            "VS " + FieldNPCs.BigKnight().Look.Name,
+                            "Bigger monsters",
                             () => new Encounter[] {
-                                new Encounter(Music.BOSS, FieldNPCs.Healer(), FieldNPCs.BigKnight(), FieldNPCs.Healer())
+                                new Encounter(Music.BOSS, RuinsNPCs.Healer(), RuinsNPCs.BigKnight(), RuinsNPCs.Healer())
                             }),
                         new BattleStage(
                             "Ancient Magicks",
                             () => new Encounter[] {
-                                new Encounter(FieldNPCs.Wizard()),
-                                new Encounter(FieldNPCs.Wizard(), FieldNPCs.Wizard())
+                                new Encounter(RuinsNPCs.Wizard()),
+                                new Encounter(RuinsNPCs.Wizard(), RuinsNPCs.Wizard())
+                            }),
+                        new BattleStage(
+                            "Wizards' Tower",
+                            () => new Encounter[] {
+                                new Encounter(RuinsNPCs.Wizard(), RuinsNPCs.Wizard()),
+                                new Encounter(
+                                    RuinsNPCs.Wizard(),
+                                    RuinsNPCs.Wizard(),
+                                    RuinsNPCs.Healer(),
+                                    RuinsNPCs.Healer()),
+                                new Encounter(RuinsNPCs.Illusionist())
+                            }),
+                        new BattleStage(
+                            "Premonition",
+                            () => new Encounter[] {
+                                new Encounter(RuinsNPCs.Villager()),
+                                new Encounter(RuinsNPCs.BigKnight(), RuinsNPCs.BigKnight(), RuinsNPCs.Wizard(), RuinsNPCs.Wizard())
                             }),
                         new BattleStage(
                             "The Replicant",
                             () => new Encounter[] {
-                                new Encounter(Music.CREEPY, FieldNPCs.Healer(), FieldNPCs.Replicant(), FieldNPCs.Healer())
+                                new Encounter(Music.CREEPY, RuinsNPCs.Healer(), RuinsNPCs.Replicant(), RuinsNPCs.Healer())
                             }),
                     },
-                    new PageGroup[] { FieldNPCs.AppleDealer(camp, flags, party) }
+                    new PageGroup[] { RuinsNPCs.RuinsShop(camp, flags, party), RuinsNPCs.RuinsTrainer(camp, party), RuinsNPCs.RuinsMaster(camp, party) }
                 );
         }
 
-        private static SceneStage GetSampleScene(Party party) {
-            Character hero = party.GetCharacter(c => c.HasFlag(Flag.HERO));
-            Character partner = party.GetCharacter(c => c.HasFlag(Flag.PARTNER));
-            Page page = new Page("Test Location");
-
-            SceneStage scene = new SceneStage(
-                page,
-                "Scene example",
-                new TextAct(hero, Side.LEFT, "I will now appear on the LEFT side."),
-                new ActionAct(() => page.AddCharacters(Side.LEFT, hero)),
-                new TextAct(hero, Side.LEFT, "Wow! Amazing!!!"),
-                new TextAct(partner, Side.RIGHT, "I will now appear on the RIGHT side."),
-                new ActionAct(() => page.AddCharacters(Side.RIGHT, partner)),
-                new TextAct(partner, Side.RIGHT, "Neato!"),
-                new CoroutineAct(SFX.DoMeleeEffect(hero, partner, 1.0f, "Slash_0")),
-                new TextAct(partner, Side.RIGHT, "Ouch."),
-                new TextAct(hero, Side.LEFT, "<color=lime>Wow</color> <color=red>look</color> <color=magenta>at</color> <color=green>this</color> <color=cyan>colored</color> <color=yellow>text</color>!")
+        private static Area SeaWorld(Flags flags, Party party, Page camp, Page quests) {
+            return new Area(
+                    AreaType.SEA_WORLD,
+                    new Stage[] {
+                        new BattleStage(
+                            "Welcome to the ocean",
+                            () => new Encounter[] {
+                                new Encounter(OceanNPCs.Shark())
+                            }),
+                        new BattleStage(
+                            "Sinister singers",
+                            () => new Encounter[] {
+                                new Encounter(OceanNPCs.Siren()),
+                                new Encounter(OceanNPCs.Siren(), OceanNPCs.Shark())
+                            }),
+                        new BattleStage(
+                            "Insaniquarium",
+                            () => new Encounter[] {
+                                new Encounter(OceanNPCs.Shark(), OceanNPCs.Siren()),
+                                new Encounter(OceanNPCs.Shark(), OceanNPCs.Siren(), OceanNPCs.Shark(), OceanNPCs.Siren())
+                            }),
+                        new BattleStage(
+                            "GitKraken",
+                            () => new Encounter [] {
+                                new Encounter(Music.BOSS, OceanNPCs.Kraken())
+                            }),
+                        new BattleStage(
+                            "Heart of the Swarm",
+                            () => new Encounter[] {
+                                new Encounter(OceanNPCs.Swarm(), OceanNPCs.Swarm()),
+                                new Encounter(OceanNPCs.Swarm(), OceanNPCs.Swarm(), OceanNPCs.Swarm(), OceanNPCs.Swarm()),
+                                new Encounter(OceanNPCs.Swarm(), OceanNPCs.Swarm(), OceanNPCs.Swarm(), OceanNPCs.Swarm(), OceanNPCs.Swarm()),
+                            }),
+                        new BattleStage(
+                            "Nearing the end",
+                            () => new Encounter[] {
+                                new Encounter(OceanNPCs.DreadSinger()),
+                                new Encounter(OceanNPCs.Elemental()),
+                            }),
+                        new BattleStage(
+                            "Final Trench",
+                            () => new Encounter[] {
+                                new Encounter(OceanNPCs.Elemental(), OceanNPCs.DreadSinger()),
+                                new Encounter(OceanNPCs.Elemental(), OceanNPCs.Elemental(), OceanNPCs.DreadSinger()),
+                                new Encounter(OceanNPCs.Elemental(), OceanNPCs.Siren(), OceanNPCs.SharkPirate(), OceanNPCs.DreadSinger()),
+                                new Encounter(OceanNPCs.Swarm(), OceanNPCs.Swarm(), OceanNPCs.Swarm(), OceanNPCs.Elemental(), OceanNPCs.Siren(), OceanNPCs.Shark(), OceanNPCs.DreadSinger())
+                            }),
+                        new BattleStage(
+                            "The Captain",
+                            () => new Encounter[] {
+                                new Encounter(Music.BOSS, OceanNPCs.SharkPirate())
+                            })
+                    },
+                    new PageGroup[] { OceanNPCs.OceanShop(camp, flags, party), OceanNPCs.OceanTrainer(camp, party), OceanNPCs.OceanMaster(camp, party) }
                 );
+        }
 
-            return scene;
+        private static Area EvilLabs(Flags flags, Party party, Page camp, Page quests) {
+            return new Area(AreaType.LAB,
+                new Stage[] {
+                    new BattleStage(
+                        "Adventure's End",
+                        () => new Encounter[] {
+                            new Encounter(LabNPCs.Ruins.Cultist(), LabNPCs.Ruins.Cultist(), LabNPCs.Ruins.Cultist()),
+                            new Encounter(LabNPCs.Ruins.Enforcer()),
+                            new Encounter(LabNPCs.Ruins.Enforcer(), LabNPCs.Ruins.Enforcer(), LabNPCs.Ruins.Enforcer()),
+                            new Encounter(LabNPCs.Ruins.BigKnightA())
+                        }),
+                    new BattleStage(
+                        "Maleficent Magicks",
+                        () => new Encounter[] {
+                            new Encounter(LabNPCs.Ruins.Cleric(), LabNPCs.Ruins.Enforcer()),
+                            new Encounter(LabNPCs.Ruins.Cleric(), LabNPCs.Ruins.Enforcer(), LabNPCs.Ruins.Cleric(), LabNPCs.Ruins.Enforcer()),
+                            new Encounter(LabNPCs.Ruins.Mage()),
+                            new Encounter(LabNPCs.Ruins.Darkener(), LabNPCs.Ruins.Darkener()),
+                            new Encounter(LabNPCs.Ruins.Cleric(), LabNPCs.Ruins.Mage(), LabNPCs.Ruins.Mage(), LabNPCs.Ruins.Cleric()),
+                            new Encounter(LabNPCs.Ruins.BigKnightB())
+                        }),
+                    new BattleStage(
+                        "Determination",
+                        () => new Encounter[] {
+                            new Encounter(Music.BOSS, LabNPCs.Ruins.BigKnightA(), LabNPCs.Ruins.BigKnightB())
+                        }),
+                    new BattleStage(
+                        "Sharp Sea",
+                        () => new Encounter[] {
+                            new Encounter(LabNPCs.Ocean.Shark(), LabNPCs.Ocean.Shark()),
+                            new Encounter(LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm()),
+                            new Encounter(LabNPCs.Ocean.Shark(), LabNPCs.Ocean.Shark(), LabNPCs.Ocean.Shark(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm())
+                        }),
+                    new BattleStage(
+                        "Sirens' Trench",
+                        () => new Encounter[] {
+                            new Encounter(LabNPCs.Ocean.Siren(), LabNPCs.Ocean.Siren()),
+                            new Encounter(LabNPCs.Ocean.DreadSinger()),
+                            new Encounter(LabNPCs.Ocean.Elemental()),
+                            new Encounter(LabNPCs.Ocean.Siren(), LabNPCs.Ocean.Siren(), LabNPCs.Ocean.DreadSinger(), LabNPCs.Ocean.Elemental())
+                        }),
+                    new BattleStage(
+                        "Affinity",
+                        () => new Encounter[] {
+                            new Encounter(LabNPCs.Ocean.Tentacle(), LabNPCs.Ocean.Tentacle()),
+                            new Encounter(Music.BOSS, LabNPCs.Ocean.Kraken())
+                        }),
+                    new BattleStage(
+                        "Premonition II",
+                        () => new Encounter[] {
+                            new Encounter(LabNPCs.Ruins.Cultist(), LabNPCs.Ruins.Cultist(), LabNPCs.Ruins.Cultist()),
+                            new Encounter(LabNPCs.Ruins.Enforcer(), LabNPCs.Ruins.Enforcer(), LabNPCs.Ruins.Enforcer()),
+                            new Encounter(LabNPCs.Ruins.Cleric(), LabNPCs.Ruins.Enforcer(), LabNPCs.Ruins.Cleric(), LabNPCs.Ruins.Enforcer()),
+                            new Encounter(LabNPCs.Ruins.Cleric(), LabNPCs.Ruins.Mage(), LabNPCs.Ruins.Mage(), LabNPCs.Ruins.Cleric()),
+                            new Encounter(LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm()),
+                            new Encounter(LabNPCs.Ocean.Shark(), LabNPCs.Ocean.Shark(), LabNPCs.Ocean.Shark(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm(), LabNPCs.Ocean.Swarm()),
+                            new Encounter(LabNPCs.Ocean.Siren(), LabNPCs.Ocean.Siren(), LabNPCs.Ocean.DreadSinger(), LabNPCs.Ocean.Elemental())
+                        }),
+                    new BattleStage(
+                        "System's Exit",
+                        () => new Encounter[] {
+                            new Encounter(Music.FINAL_STAGE, LabNPCs.Final.HeroClone()),
+                            new Encounter(Music.FINAL_STAGE, LabNPCs.Final.PartnerClone()),
+                            new Encounter(Music.FINAL_BOSS, LabNPCs.Final.HeroClone(), LabNPCs.Final.PartnerClone())
+                        }),
+                    Ending()
+                },
+                new PageGroup[] { LabNPCs.Trainer(camp, party) }
+                );
+        }
+
+        private static SceneStage Ending() {
+            Page ending = new Page("An Ending");
+            SceneStage stage = new SceneStage(ending, "Ending",
+                new TextAct("Wow really, this is the ending?"),
+                new TextAct("Umm, okay. Here's the credits."),
+                new PageChangeAct(new CreditsPages(new Menus().Root).Root)
+                );
+            return stage;
         }
     }
 }

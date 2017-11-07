@@ -97,7 +97,7 @@ namespace Scripts.Game.Pages {
             world.InitFromSaveObject(save);
             party = world.Party;
             camp = new Camp(party, world.Flags);
-            saveName = SaveLoad.GetSaveFileDisplay(world.Flags.LastClearedArea.GetDescription(), world.Flags.LastClearedStage);
+            saveName = world.FileName;
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace Scripts.Game.Pages {
         /// <returns></returns>
         private Process GetDeleteProcess(Page previous, int index) {
             return new Process(
-                "<color=red>Delete</color>",
+                "Delete",
                 "Delete this save file.",
                 () => {
                     SaveLoad.DeleteSave(index);

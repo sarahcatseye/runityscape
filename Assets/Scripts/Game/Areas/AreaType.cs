@@ -11,7 +11,13 @@ namespace Scripts.Game.Areas {
         [Description("None")]
         NONE,
 
-        [Description("Tiny Woods")]
-        TINY_WOODS
+        [Description("Java Crypt")]
+        RUINS,
+
+        [Description("Objective Sea")]
+        SEA_WORLD,
+
+        [Description("MAT Labs")]
+        LAB,
     }
 }

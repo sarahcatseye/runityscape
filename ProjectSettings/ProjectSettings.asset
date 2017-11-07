@@ -144,7 +144,7 @@ PlayerSettings:
   resolutionScalingMode: 0
   applicationIdentifier:
     Android: com.Company.ProductName
-    Standalone: unity.eternity_labs.monsterscape
+    Standalone: game.system.exit
     Tizen: com.Company.ProductName
     iOS: com.Company.ProductName
     tvOS: com.Company.ProductName

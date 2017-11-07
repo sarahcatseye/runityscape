@@ -10,6 +10,9 @@ using Scripts.Game.Defined.Serialized.Spells;
 using Scripts.Model.SaveLoad;
 using Scripts.Model.SaveLoad.SaveObjects;
 using Scripts.Model.Characters;
+using Scripts.Model.Processes;
+using Scripts.Model.Pages;
+using Scripts.Model.Interfaces;
 
 namespace Scripts.Model.Items {
 
@@ -28,7 +31,7 @@ namespace Scripts.Model.Items {
         /// <summary>
         /// The stat bonuses of this item.
         /// </summary>
-        private readonly IDictionary<StatType, int> statBonuses;
+        private readonly IDictionary<StatType, int> flatStatBonuses;
 
         private readonly SpellBook book;
 
@@ -41,10 +44,14 @@ namespace Scripts.Model.Items {
         /// <param name="name">The name.</param>
         /// <param name="description">The description.</param>
         public EquippableItem(Sprite sprite, EquipType type, int basePrice, string name, string description)
-            : base(sprite, basePrice, TargetType.SINGLE_ALLY, name, description) {
+            : base(sprite, basePrice, TargetType.ONE_ALLY, name, description) {
             this.Type = type;
-            this.statBonuses = new SortedDictionary<StatType, int>();
+            this.flatStatBonuses = new SortedDictionary<StatType, int>();
             this.book = new CastEquipItem(this);
+        }
+
+        public EquippableItem(string spriteLoc, EquipType type, int basePrice, string name, string description)
+            : this(Util.GetSprite(spriteLoc), type, basePrice, name, description) {
         }
 
         /// <summary>
@@ -54,24 +61,37 @@ namespace Scripts.Model.Items {
         /// <param name="basePrice">The base price.</param>
         /// <param name="name">The name.</param>
         /// <param name="description">The description.</param>
-        public EquippableItem(EquipType type, int basePrice, string name, string description)
+        private EquippableItem(EquipType type, int basePrice, string name, string description)
             : this(GetDefaultSprite(type), type, basePrice, name, description) { }
 
         public ReadOnlyDictionary<StatType, int> StatBonuses {
             get {
-                return new ReadOnlyDictionary<StatType, int>(statBonuses);
+                return new ReadOnlyDictionary<StatType, int>(flatStatBonuses);
+            }
+        }
+
+        public bool IsHaveBuff {
+            get {
+                return CreateBuff() != null;
             }
         }
 
         protected sealed override string DescriptionHelper {
             get {
-                string[] arr = new string[statBonuses.Count];
+                string[] arr = new string[flatStatBonuses.Count];
 
                 int index = 0;
-                foreach (KeyValuePair<StatType, int> pair in statBonuses) {
+                foreach (KeyValuePair<StatType, int> pair in flatStatBonuses) {
                     arr[index++] = string.Format("{0} {1}", StatUtil.ShowSigns(pair.Value), pair.Key.ColoredName);
                 }
-                return string.Format("{0}\n{1}\n{2}", Type.Name, string.Join("\n", arr), Util.ColorString(Flavor, Color.grey));
+
+                Buff possibleBuff = CreateBuff();
+
+                return string.Format("{0}\n{1}\n{2}{3}",
+                    Type.Name,
+                    string.Join("\n", arr),
+                    possibleBuff == null ? string.Empty : string.Format("<color=lime>On equip:</color> {0}\n", possibleBuff.Description),
+                    Util.ColorString(Flavor, Color.grey));
             }
         }
 
@@ -79,7 +99,7 @@ namespace Scripts.Model.Items {
         /// Creates the buff associated with this equippable item.
         /// </summary>
         /// <returns>A buff, possibly.</returns>
-        public virtual Buff CreateBuff() {
+        public virtual PermanentBuff CreateBuff() {
             return null;
         }
 
@@ -89,6 +109,20 @@ namespace Scripts.Model.Items {
         /// <returns>A spellbook associated with equipping this item.</returns>
         public sealed override SpellBook GetSpellBook() {
             return book;
+        }
+
+        public Process GetSelfTargetProcess(IButtonable previous, Page current, Character caster, Action<Spell> spellHandler) {
+            SpellBook spellbook = this.GetSpellBook();
+            return new Process(
+                spellbook.Name,
+                spellbook.Icon,
+                spellbook.CreateTargetDescription(caster.Look.DisplayName),
+                () => {
+                    spellHandler(caster.Spells.CreateSpell(current, spellbook, caster, caster));
+                    previous.Invoke();
+                },
+                () => this.GetSpellBook().IsCastable(caster, new Character[] { caster })
+                );
         }
 
         /// <summary>
@@ -108,10 +142,11 @@ namespace Scripts.Model.Items {
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="amount">The amount.</param>
-        protected void AddStatBonus(StatType type, int amount) {
+        protected void AddFlatStatBonus(StatType type, int amount) {
             Util.Assert(StatType.ASSIGNABLES.Contains(type), "StatType must be assignable.");
+            Util.Assert(!flatStatBonuses.ContainsKey(type), "Type already included.");
             Util.Assert(amount != 0, "Amount must be nonzero.");
-            statBonuses[type] = amount;
+            flatStatBonuses[type] = amount;
         }
 
         /// <summary>

@@ -203,6 +203,11 @@ namespace Scripts.Model.SaveLoad.SaveObjects {
         public List<StatBonusSave> EquipmentBonuses;
 
         /// <summary>
+        /// The buff bonuses, also used for spoofing.
+        /// </summary>
+        public List<StatBonusSave> BuffBonuses;
+
+        /// <summary>
         /// The level
         /// </summary>
         public int Level;
@@ -226,10 +231,17 @@ namespace Scripts.Model.SaveLoad.SaveObjects {
         /// <param name="baseStats">The stats.</param>
         /// <param name="buffBonus">The stat bonus.</param>
         /// <param name="equipmentBonuses">The equipment bonuses.</param>
-        public CharacterStatsSave(int resourceVisibility, int level, int unassignedStatPoints, List<StatSave> baseStats, List<StatBonusSave> equipmentBonuses) {
+        public CharacterStatsSave(
+            int resourceVisibility,
+            int level,
+            int unassignedStatPoints,
+            List<StatSave> baseStats,
+            List<StatBonusSave> equipmentBonuses,
+            List<StatBonusSave> buffBonuses) {
             this.ResourceVisibility = resourceVisibility;
             this.BaseStats = baseStats;
             this.EquipmentBonuses = equipmentBonuses;
+            this.BuffBonuses = buffBonuses;
             this.Level = level;
             this.UnassignedStatPoints = unassignedStatPoints;
         }
@@ -407,7 +419,7 @@ namespace Scripts.Model.SaveLoad.SaveObjects {
         /// <summary>
         /// The sprite
         /// </summary>
-        public Sprite Sprite;
+        public string SpriteLoc;
 
         /// <summary>
         /// The text color
@@ -428,13 +440,13 @@ namespace Scripts.Model.SaveLoad.SaveObjects {
         /// Initializes a new instance of the <see cref="LookSave"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <param name="sprite">The sprite.</param>
+        /// <param name="spriteLoc">The sprite's location.</param>
         /// <param name="text">The text.</param>
         /// <param name="tooltip">The tooltip.</param>
         /// <param name="breed">The breed.</param>
-        public LookSave(string name, Sprite sprite, Color text, string tooltip, Breed breed) {
+        public LookSave(string name, string spriteLoc, Color text, string tooltip, Breed breed) {
             this.Name = name;
-            this.Sprite = sprite;
+            this.SpriteLoc = spriteLoc;
             this.TextColor = text;
             this.Tooltip = tooltip;
             this.Breed = breed;
@@ -489,31 +501,9 @@ namespace Scripts.Model.SaveLoad.SaveObjects {
         }
 
         /// <summary>
-        ///
-        /// </summary>
-        [Serializable]
-        public class EquipBuff {
-
-            /// <summary>
-            /// The equip type
-            /// </summary>
-            public EquipTypeSave EquipType;
-
-            /// <summary>
-            /// The buff
-            /// </summary>
-            public BuffSave Buff;
-        }
-
-        /// <summary>
         /// The equipped
         /// </summary>
         public List<EquipItemSave> Equipped;
-
-        /// <summary>
-        /// The buffs
-        /// </summary>
-        public List<EquipBuff> Buffs;
 
         /// <summary>
         /// The bonuses
@@ -526,9 +516,8 @@ namespace Scripts.Model.SaveLoad.SaveObjects {
         /// <param name="equipped">The equipped.</param>
         /// <param name="buffs">The buffs.</param>
         /// <param name="bonuses">The bonuses.</param>
-        public EquipmentSave(List<EquipItemSave> equipped, List<EquipBuff> buffs, List<EquipBonus> bonuses) {
+        public EquipmentSave(List<EquipItemSave> equipped, List<EquipBonus> bonuses) {
             this.Equipped = equipped;
-            this.Buffs = buffs;
             this.Bonuses = bonuses;
         }
 
@@ -658,11 +647,17 @@ namespace Scripts.Model.SaveLoad.SaveObjects {
         public List<BuffSave> BuffSaves;
 
         /// <summary>
+        /// The stat bonus saves
+        /// </summary>
+        public List<StatBonusSave> StatBonusSaves;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CharacterBuffsSave"/> class.
         /// </summary>
         /// <param name="buffSaves">The buff saves.</param>
-        public CharacterBuffsSave(List<BuffSave> buffSaves) {
+        public CharacterBuffsSave(List<BuffSave> buffSaves, List<StatBonusSave> statBonusSaves) {
             this.BuffSaves = buffSaves;
+            this.StatBonusSaves = statBonusSaves;
         }
 
         /// <summary>

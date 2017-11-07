@@ -38,7 +38,7 @@ namespace Scripts.Model.Items {
 
         protected override IList<SpellEffect> GetHitEffects(Page page, Character caster, Character target) {
             return new SpellEffect[] {
-                    new EquipItemEffect(new EquipParams(caster.Inventory, target.Equipment, equip), new Buffs.BuffParams(caster.Stats, caster.Id))
+                    new EquipItemEffect(new EquipParams(caster.Inventory, target.Equipment, equip), new Buffs.BuffParams(target.Stats, target.Id))
                 };
         }
     }
@@ -110,10 +110,13 @@ namespace Scripts.Model.Items {
 
         public UseItem(ConsumableItem consume) : base(consume, "Use") {
             this.consume = consume;
+            if (consume.HasFlag(Flag.USABLE_OUT_OF_COMBAT)) {
+                this.flags.Add(Spells.Flag.USABLE_OUT_OF_COMBAT);
+            }
         }
 
         protected override IList<SpellEffect> GetHitEffects(Page page, Character caster, Character target) {
-            IList<SpellEffect> itemEffects = consume.GetEffects(caster, target);
+            IList<SpellEffect> itemEffects = consume.GetEffects(page, caster, target);
             SpellEffect[] allEffects = new SpellEffect[itemEffects.Count + 1];
             allEffects[0] = new ConsumeItemEffect(consume, caster.Inventory);
             for (int i = 0; i < itemEffects.Count; i++) {

@@ -13,9 +13,12 @@ using UnityEngine;
 namespace Scripts.Game.Defined.Characters {
 
     public static class CharacterUtil {
+        private const float MONEY_VARIANCE = .25f;
 
-        public static Character RemoveFlag(this Character c, Model.Characters.Flag flag) {
-            c.RemoveFlag(flag);
+        public static Character RemoveFlags(this Character c, params Model.Characters.Flag[] flags) {
+            foreach (Model.Characters.Flag flag in flags) {
+                c.RemoveFlag(flag);
+            }
             return c;
         }
 
@@ -34,10 +37,22 @@ namespace Scripts.Game.Defined.Characters {
             }
         }
 
+        /// <summary>
+        /// Restores the stats of a target.
+        /// This is to ensure enemies with equipment, resource stats, and buffs
+        /// start out with max stats.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        private static void RestoreStats(this Character target) {
+            target.Stats.Update(target);
+            target.Stats.RestoreResourcesByMissingPercentage(1);
+        }
+
         public static Character StandardEnemy(Stats stats, Look look, Brain brain) {
             Character enemy = new Character(stats, look, brain);
             enemy.AddFlag(Model.Characters.Flag.DROPS_ITEMS);
             enemy.AddFlag(Model.Characters.Flag.GIVES_EXPERIENCE);
+            enemy.RestoreStats();
             return enemy;
         }
 
@@ -45,6 +60,7 @@ namespace Scripts.Game.Defined.Characters {
             foreach (Stat stat in stats) {
                 c.Stats.AddStat(stat);
             }
+            c.RestoreStats();
             return c;
         }
 
@@ -76,6 +92,15 @@ namespace Scripts.Game.Defined.Characters {
             return c;
         }
 
+        public static Character AddItem(this Character c, Item item, float chanceToHave) {
+            return c.AddItem(item, Util.IsChance(chanceToHave));
+        }
+
+        public static Character AddMoney(this Character c, int fuzzyAmount) {
+            c.Inventory.ForceAdd(new Money(), Util.Random(fuzzyAmount, MONEY_VARIANCE));
+            return c;
+        }
+
         public static Character AddItem(this Character c, Item item, bool isAdded = true) {
             return c.AddItem(item, 1, isAdded);
         }
@@ -86,6 +111,7 @@ namespace Scripts.Game.Defined.Characters {
                 dummy.ForceAdd(equip);
                 c.Equipment.AddEquip(dummy, new Model.Buffs.BuffParams(c.Stats, c.Id), equip);
             }
+            c.RestoreStats();
             return c;
         }
 
@@ -95,11 +121,18 @@ namespace Scripts.Game.Defined.Characters {
                 dummy.ForceAdd(equip);
                 c.Equipment.AddEquip(dummy, new Model.Buffs.BuffParams(c.Stats, c.Id), equip);
             }
+            c.RestoreStats();
             return c;
+        }
+
+        public static Character AddEquip(this Character c, EquippableItem equip, float chanceToHave) {
+            c.RestoreStats();
+            return c.AddEquip(equip, Util.IsChance(chanceToHave));
         }
 
         public static Character AddBuff(this Character c, Buff buff) {
             c.Buffs.AddBuff(buff, c);
+            c.RestoreStats();
             return c;
         }
     }
@@ -118,7 +151,6 @@ namespace Scripts.Game.Defined.Characters {
                 new Player())
                 .AddFlags(Model.Characters.Flag.PLAYER, Model.Characters.Flag.PERSISTS_AFTER_DEFEAT, Model.Characters.Flag.HERO)
                 .AddStats(new Experience())
-                .AddSpells(new Check())
                 .AddStats(new Mana());
         }
 
@@ -128,14 +160,13 @@ namespace Scripts.Game.Defined.Characters {
                 new Look(
                     name,
                     "partner",
-                    "Legendary knight, sworn to defeat to dark lord.",
+                    "Legendary knight.",
                     Breed.HUMAN
                     ),
                 new Player())
                 .AddFlags(Model.Characters.Flag.PLAYER, Model.Characters.Flag.PERSISTS_AFTER_DEFEAT, Model.Characters.Flag.PARTNER)
                 .AddStats(new Experience())
-                .AddStats(new Skill())
-                .AddSpells(new CrushingBlow());
+                .AddStats(new Skill());
         }
 
         public static Character TestEnemy() {
@@ -151,7 +182,7 @@ namespace Scripts.Game.Defined.Characters {
                 new Player())
                 .AddItems(new CharacterUtil.ItemCount(new Apple(), 7), new CharacterUtil.ItemCount(new PoisonArmor()), new CharacterUtil.ItemCount(new Money(), 100))
                 .AddFlags(Model.Characters.Flag.DROPS_ITEMS)
-                .AddSpells(new InflictPoison(), new SetupCounter())
+                .AddSpells(new InflictPoison(), new SetupDefend())
                 .AddStats(new Skill());
             return c;
         }

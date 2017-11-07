@@ -13,6 +13,7 @@ namespace Scripts.Model.Items {
     /// </summary>
     /// <seealso cref="Scripts.Model.Items.Item" />
     public abstract class UseableItem : Item {
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UseableItem"/> class.
         /// </summary>
@@ -24,8 +25,7 @@ namespace Scripts.Model.Items {
         public UseableItem(Sprite sprite, int basePrice, TargetType target, string name, string description)
             : base(sprite, basePrice, target, name, description) {
             flags.Add(Flag.OCCUPIES_SPACE);
+            flags.Add(Flag.USABLE_OUT_OF_COMBAT);
         }
     }
-
 }
-

@@ -11,6 +11,36 @@ using Scripts.Presenter;
 
 namespace Scripts.Game.Defined.Spells {
 
+    public class DispelAllBuffs : SpellEffect {
+        private readonly Buffs buffsToDispelFrom;
+
+        public DispelAllBuffs(Buffs buffsToDispelFrom) : base(1) {
+            this.buffsToDispelFrom = buffsToDispelFrom;
+        }
+
+        public override void CauseEffect() {
+            buffsToDispelFrom.DispelAllBuffs();
+        }
+    }
+
+    public class DispelBuff<T> : SpellEffect where T : Buff {
+        private readonly Buffs buffsToDispelFrom;
+
+        public DispelBuff(Buffs buffsToDispelFrom) : base(1) {
+            this.buffsToDispelFrom = buffsToDispelFrom;
+        }
+
+        public override void CauseEffect() {
+            buffsToDispelFrom.DispelBuffsOfType<T>();
+        }
+    }
+
+    public class RestoreMissingStatPercent : AddToModStat {
+
+        public RestoreMissingStatPercent(Stats target, StatType type, int missingHealthRestorationPercent) : base(target, type, (int)(target.GetMissingStatCount(type) * missingHealthRestorationPercent.ConvertToPercent())) {
+        }
+    }
+
     /// <summary>
     /// Adds to a stat's mod value.
     /// </summary>
@@ -47,6 +77,18 @@ namespace Scripts.Game.Defined.Spells {
         public StatType AffectedStat {
             get {
                 return affected;
+            }
+        }
+
+        /// <summary>
+        /// Gets the target.
+        /// </summary>
+        /// <value>
+        /// The target.
+        /// </value>
+        public Stats Target {
+            get {
+                return target;
             }
         }
 
@@ -124,6 +166,20 @@ namespace Scripts.Game.Defined.Spells {
             this.Caster = caster;
             this.Target = target;
             this.Item = item;
+        }
+    }
+
+    public class LearnSpellEffect : SpellEffect {
+        private SpellBook spellToLearn;
+        private SpellBooks learner;
+
+        public LearnSpellEffect(SpellBooks learner, SpellBook spellToLearn) : base(1) {
+            this.spellToLearn = spellToLearn;
+            this.learner = learner;
+        }
+
+        public override void CauseEffect() {
+            learner.AddSpellBook(spellToLearn);
         }
     }
 
@@ -385,6 +441,46 @@ namespace Scripts.Game.Defined.Spells {
         }
     }
 
+    public class SummonEffect : SpellEffect {
+        private readonly Page current;
+        private readonly Func<Character> characterToSpawn;
+        private readonly Side sideToSpawn;
+
+        public SummonEffect(Side sideToSpawn, Page current, Func<Character> characterToSpawn, int numberOfCharactersToSpawn) : base(numberOfCharactersToSpawn) {
+            this.current = current;
+            this.characterToSpawn = characterToSpawn;
+            this.sideToSpawn = sideToSpawn;
+        }
+
+        public override void CauseEffect() {
+            for (int i = 0; i < Value; i++) {
+                current.AddCharacters(sideToSpawn, characterToSpawn());
+            }
+        }
+    }
+
+    /// <summary>
+    /// Increases inventory capacity.
+    /// </summary>
+    /// <seealso cref="Scripts.Model.Spells.SpellEffect" />
+    public class IncreaseInventoryCapacityEffect : SpellEffect {
+        private Inventory target;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IncreaseInventoryCapacityEffect"/> class.
+        /// </summary>
+        /// <param name="target">The target inventory to increases.</param>
+        /// <param name="amountToIncreaseInventoryBy">The amount to increase inventory by.</param>
+        public IncreaseInventoryCapacityEffect(Inventory target, int amountToIncreaseInventoryBy)
+            : base(amountToIncreaseInventoryBy) {
+            this.target = target;
+        }
+
+        public override void CauseEffect() {
+            target.Capacity += Value;
+        }
+    }
+
     /// <summary>
     /// Shuffles a side.
     /// </summary>
@@ -415,9 +511,6 @@ namespace Scripts.Game.Defined.Spells {
         /// Causes the effect.
         /// </summary>
         public override void CauseEffect() {
-            foreach (Character toBeShuffled in page.GetCharacters(side)) {
-                Main.Instance.StartCoroutine(SFX.DoSteamEffect(toBeShuffled));
-            }
             page.Shuffle(side);
         }
     }
