@@ -10,6 +10,9 @@ using Scripts.Game.Defined.Serialized.Spells;
 using Scripts.Model.SaveLoad;
 using Scripts.Model.SaveLoad.SaveObjects;
 using Scripts.Model.Characters;
+using Scripts.Model.Processes;
+using Scripts.Model.Pages;
+using Scripts.Model.Interfaces;
 
 namespace Scripts.Model.Items {
 
@@ -41,10 +44,14 @@ namespace Scripts.Model.Items {
         /// <param name="name">The name.</param>
         /// <param name="description">The description.</param>
         public EquippableItem(Sprite sprite, EquipType type, int basePrice, string name, string description)
-            : base(sprite, basePrice, TargetType.SINGLE_ALLY, name, description) {
+            : base(sprite, basePrice, TargetType.ONE_ALLY, name, description) {
             this.Type = type;
             this.flatStatBonuses = new SortedDictionary<StatType, int>();
             this.book = new CastEquipItem(this);
+        }
+
+        public EquippableItem(string spriteLoc, EquipType type, int basePrice, string name, string description)
+            : this(Util.GetSprite(spriteLoc), type, basePrice, name, description) {
         }
 
         /// <summary>
@@ -54,12 +61,18 @@ namespace Scripts.Model.Items {
         /// <param name="basePrice">The base price.</param>
         /// <param name="name">The name.</param>
         /// <param name="description">The description.</param>
-        public EquippableItem(EquipType type, int basePrice, string name, string description)
+        private EquippableItem(EquipType type, int basePrice, string name, string description)
             : this(GetDefaultSprite(type), type, basePrice, name, description) { }
 
         public ReadOnlyDictionary<StatType, int> StatBonuses {
             get {
                 return new ReadOnlyDictionary<StatType, int>(flatStatBonuses);
+            }
+        }
+
+        public bool IsHaveBuff {
+            get {
+                return CreateBuff() != null;
             }
         }
 
@@ -86,7 +99,7 @@ namespace Scripts.Model.Items {
         /// Creates the buff associated with this equippable item.
         /// </summary>
         /// <returns>A buff, possibly.</returns>
-        public virtual Buff CreateBuff() {
+        public virtual PermanentBuff CreateBuff() {
             return null;
         }
 
@@ -96,6 +109,20 @@ namespace Scripts.Model.Items {
         /// <returns>A spellbook associated with equipping this item.</returns>
         public sealed override SpellBook GetSpellBook() {
             return book;
+        }
+
+        public Process GetSelfTargetProcess(IButtonable previous, Page current, Character caster, Action<Spell> spellHandler) {
+            SpellBook spellbook = this.GetSpellBook();
+            return new Process(
+                spellbook.Name,
+                spellbook.Icon,
+                spellbook.CreateTargetDescription(caster.Look.DisplayName),
+                () => {
+                    spellHandler(caster.Spells.CreateSpell(current, spellbook, caster, caster));
+                    previous.Invoke();
+                },
+                () => this.GetSpellBook().IsCastable(caster, new Character[] { caster })
+                );
         }
 
         /// <summary>

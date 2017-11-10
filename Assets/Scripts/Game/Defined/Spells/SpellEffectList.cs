@@ -11,6 +11,36 @@ using Scripts.Presenter;
 
 namespace Scripts.Game.Defined.Spells {
 
+    public class DispelAllBuffs : SpellEffect {
+        private readonly Buffs buffsToDispelFrom;
+
+        public DispelAllBuffs(Buffs buffsToDispelFrom) : base(1) {
+            this.buffsToDispelFrom = buffsToDispelFrom;
+        }
+
+        public override void CauseEffect() {
+            buffsToDispelFrom.DispelAllBuffs();
+        }
+    }
+
+    public class DispelBuff<T> : SpellEffect where T : Buff {
+        private readonly Buffs buffsToDispelFrom;
+
+        public DispelBuff(Buffs buffsToDispelFrom) : base(1) {
+            this.buffsToDispelFrom = buffsToDispelFrom;
+        }
+
+        public override void CauseEffect() {
+            buffsToDispelFrom.DispelBuffsOfType<T>();
+        }
+    }
+
+    public class RestoreMissingStatPercent : AddToModStat {
+
+        public RestoreMissingStatPercent(Stats target, StatType type, int missingHealthRestorationPercent) : base(target, type, (int)(target.GetMissingStatCount(type) * missingHealthRestorationPercent.ConvertToPercent())) {
+        }
+    }
+
     /// <summary>
     /// Adds to a stat's mod value.
     /// </summary>
@@ -481,9 +511,6 @@ namespace Scripts.Game.Defined.Spells {
         /// Causes the effect.
         /// </summary>
         public override void CauseEffect() {
-            foreach (Character toBeShuffled in page.GetCharacters(side)) {
-                Main.Instance.StartCoroutine(SFX.DoSteamEffect(toBeShuffled));
-            }
             page.Shuffle(side);
         }
     }
