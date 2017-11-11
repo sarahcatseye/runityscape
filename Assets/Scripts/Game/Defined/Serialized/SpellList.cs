@@ -808,9 +808,9 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
         }
     }
 
-    public class GiveOverwhelmingPower : BuffAdder<Evasion> {
+    public class GiveEvasion : BuffAdder<Evasion> {
 
-        public GiveOverwhelmingPower() : base(TargetType.SELF, SpellType.BOOST, PriorityType.LOW) {
+        public GiveEvasion() : base(TargetType.SELF, SpellType.BOOST, PriorityType.LOW) {
         }
     }
 

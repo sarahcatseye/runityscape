@@ -215,7 +215,7 @@ namespace Scripts.Game.Defined.Characters {
 
         public static Character SharkPirate() {
             return CharacterUtil.StandardEnemy(
-                new Stats(10, 10, 5, 18, 200),
+                new Stats(10, 10, 5, 18, 150),
                 new Look(
                     "Cap'n Selach",
                     "shark-pirate",
@@ -228,8 +228,9 @@ namespace Scripts.Game.Defined.Characters {
                 .AddSpells(
                     new SummonSeaCreatures(),
                     new OneShotKill(),
-                    new CastDelayedDeath(),
-                    new GiveOverwhelmingPower())
+                    new CastDelayedEternalDeath(),
+                    new GiveEvasion(),
+                    new SetupCounter())
                 .AddItem(new SharkFin())
                 .AddItem(new SharkBlood())
                 .AddItem(new ToothNecklace(), .25f)
