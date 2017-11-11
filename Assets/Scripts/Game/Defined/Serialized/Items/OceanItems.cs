@@ -207,7 +207,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
     public class SharkFin : HealingItem {
         private const int HEALING_AMOUNT = 25;
 
-        public SharkFin() : base("Shark Fin", "shark-fin", "A delicious and illegal fin from a shark.", 50, HEALING_AMOUNT) {
+        public SharkFin() : base("Shark Fin", "shark-fin", "An expensive and illegal fin from a shark.", 100, HEALING_AMOUNT) {
         }
     }
 
@@ -245,17 +245,17 @@ namespace Scripts.Game.Defined.Serialized.Items {
 
         public SharkBait() : base(
             "food-chain",
-            50,
+            20,
             TargetType.SELF,
-            "Shark Bait", "Creates a very attractive decoy (for sharks) that is good for one battle.") {
+            "Shark Bait", "Creates a very fragile shark attractant that is good for one battle.") {
             this.flags.Remove(Model.Items.Flag.USABLE_OUT_OF_COMBAT);
         }
 
         public override IList<SpellEffect> GetEffects(Page page, Character caster, Character target) {
             target = caster;
             Func<Character> summonDecoyFunc = () => {
-                Character tentacle = OceanNPCs.SharkBaitDecoy();
-                return tentacle;
+                Character sharkBait = OceanNPCs.SharkBaitDecoy();
+                return sharkBait;
             };
             return new SpellEffect[] {
                 new SummonEffect(page.GetSide(target), page, summonDecoyFunc, 1)
@@ -277,7 +277,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
     }
 
     public class Rocktail : HealingItem {
-        private const int HEALING_AMOUNT = 12;
+        private const int HEALING_AMOUNT = 15;
 
         public Rocktail() : base("Rocktail", "angler-fish", "A fish made of living rock. Somehow edible.", 25, HEALING_AMOUNT, false) {
         }

@@ -126,8 +126,9 @@ namespace Scripts.Game.Defined.SFXs {
             ev.Color = color;
             portrait.ParentToEffects(ev.gameObject);
             yield return new WaitUntil(() => portrait.RectTransform != null);
-            Main.Instance.StartCoroutine(Shake(portrait.RectTransform, 100, 0.5f));
-            yield return new WaitUntil(() => ev.IsDone);
+            bool isShakeDone = false;
+            Main.Instance.StartCoroutine(Shake(portrait.RectTransform, 100, 0.5f, () => isShakeDone = true));
+            yield return new WaitUntil(() => ev.IsDone && isShakeDone);
             ObjectPoolManager.Instance.Return(ev);
         }
 
@@ -169,7 +170,8 @@ namespace Scripts.Game.Defined.SFXs {
         /// <param name="maxIntensity">The maximum intensity.</param>
         /// <param name="duration">The duration.</param>
         /// <returns></returns>
-        private static IEnumerator Shake(Transform item, float maxIntensity, float duration) {
+        private static IEnumerator Shake(Transform item, float maxIntensity, float duration, Action callback = null) {
+            callback = callback ?? (() => { });
             Vector2 original = item.position;
             float timer = 0;
             while ((timer += Time.deltaTime) < duration) {
@@ -178,6 +180,7 @@ namespace Scripts.Game.Defined.SFXs {
                 yield return null;
             }
             item.position = original;
+            callback();
         }
 
         /// <summary>

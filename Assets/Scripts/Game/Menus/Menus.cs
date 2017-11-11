@@ -19,6 +19,7 @@ using Scripts.Game.Defined.Serialized.Statistics;
 using Scripts.Game.Serialized;
 using Scripts.Game.Serialization;
 using Scripts.Model.SaveLoad;
+using UnityEngine.SceneManagement;
 
 namespace Scripts.Game.Pages {
 
@@ -54,10 +55,8 @@ namespace Scripts.Game.Pages {
             start.OnEnter = () => {
                 List<IButtonable> buttons = new List<IButtonable>() {
                     Get(NEW_GAME),
-                    new  CreditsPages(Root),
                     new LoadPages(start),
-                    new Process(),
-                    new Process("Quit", "Leave the system.", () => Application.Quit())
+                    new Process("Back", "Return to Start Page.", () => SceneManager.LoadScene("Start"))
                 };
                 if (Util.IS_DEBUG) {
                     buttons.Add(Get(DEBUGGING));
@@ -68,8 +67,8 @@ namespace Scripts.Game.Pages {
 
         private void DebugPage() {
             Page debug = Get(DEBUGGING);
-            Grid submenu = new Grid("Go to submenu");
-            Grid mainDebug = new Grid("Return to main menu");
+            SubGrid submenu = new SubGrid("Go to submenu");
+            SubGrid mainDebug = new SubGrid("Return to main menu");
 
             Character kitsune = CharacterList.TestEnemy();
             debug.AddCharacters(Side.LEFT, kitsune);

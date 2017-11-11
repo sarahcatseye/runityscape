@@ -179,7 +179,6 @@ namespace Scripts.Game.Defined.Characters {
                 .AddStats(new Mana())
                 .AddSpells(new WaterboltSingle(),
                     new WaterboltMulti())
-                .AddBuff(new Insight())
                 .AddItem(new Cleansing(), Util.IsChance(.50f))
                 .AddItem(new PureWater(), .20f)
                 .AddMoney(50);
@@ -204,10 +203,10 @@ namespace Scripts.Game.Defined.Characters {
 
         public static Character SharkBaitDecoy() {
             return CharacterUtil.StandardEnemy(
-                new Stats(1, 666, 1, 1, 1),
+                new Stats(1, 0, 0, 0, 1),
                 new Look(
                     "Shark Bait",
-                    "food-chain",
+                    "villager",
                     "No villagers were harmed in the making of this product.",
                     Breed.SHARK_BAIT
                     ),

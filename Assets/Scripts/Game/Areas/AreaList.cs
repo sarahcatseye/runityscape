@@ -144,7 +144,7 @@ namespace Scripts.Game.Areas {
                             () => new Encounter[] {
                                 new Encounter(OceanNPCs.Elemental(), OceanNPCs.DreadSinger()),
                                 new Encounter(OceanNPCs.Elemental(), OceanNPCs.Elemental(), OceanNPCs.DreadSinger()),
-                                new Encounter(OceanNPCs.Elemental(), OceanNPCs.Siren(), OceanNPCs.SharkPirate(), OceanNPCs.DreadSinger()),
+                                new Encounter(OceanNPCs.Elemental(), OceanNPCs.Siren(), OceanNPCs.Shark(), OceanNPCs.DreadSinger()),
                                 new Encounter(OceanNPCs.Swarm(), OceanNPCs.Swarm(), OceanNPCs.Swarm(), OceanNPCs.Elemental(), OceanNPCs.Siren(), OceanNPCs.Shark(), OceanNPCs.DreadSinger())
                             }),
                         new BattleStage(

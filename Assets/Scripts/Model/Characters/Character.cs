@@ -105,6 +105,9 @@ namespace Scripts.Model.Characters {
         /// </summary>
         private Queue<GameObject> effectsQueue;
 
+        private Vector2 originalPosition;
+        private bool isOriginalPositionSet;
+
         /// <summary>
         /// Main constructor
         /// </summary>

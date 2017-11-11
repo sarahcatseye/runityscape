@@ -214,7 +214,7 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
             : base(20,
                   Util.GetSprite("magnifying-glass"),
                   "Checked",
-                  string.Format("Resource visibility increased. {0} reduced by {1}%.", StatType.AGILITY, AGILITY_REDUCTION),
+                  string.Format("Resource bar visibility increased. {0} reduced by {1}%.", StatType.AGILITY, AGILITY_REDUCTION),
                   true) {
             AddMultiplicativeStatBonus(StatType.AGILITY, -AGILITY_REDUCTION);
         }
@@ -230,7 +230,7 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
 
     public class BasicChecked : Buff {
 
-        public BasicChecked() : base(10, Util.GetSprite("magnifying-glass"), "Checked", "Resource visibility increased.", true) {
+        public BasicChecked() : base(10, Util.GetSprite("magnifying-glass"), "Checked", "Resource bar visibility increased.", true) {
         }
 
         protected override IList<SpellEffect> OnApplyHelper(Stats owner) { // TODO UNSTACKABLE
@@ -544,7 +544,7 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
         private const int INTERCEPTION_DAMAGE = 2;
 
         // TODO add sprite
-        public Interceptor() : base(Util.GetSprite("shark"), "Interceptor", "Unit will intercept attacks on its summoner.", false) { }
+        public Interceptor() : base(Util.GetSprite("suckered-tentacle"), "Interceptor", "Unit will intercept attacks on its summoner.", false) { }
 
         public override bool IsReact(SingleSpell incomingSpell, Stats statsOfTheCharacterTheBuffIsOn) {
             bool isDealDamageToBuffCaster = false;

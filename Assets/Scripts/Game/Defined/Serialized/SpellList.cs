@@ -122,7 +122,7 @@ namespace Scripts.Game.Defined.Serialized.Spells {
         }
 
         protected override string CreateDescriptionHelper() {
-            return string.Format("Restore {0} of your missing {1}.", MISSING_HEALTH_HEAL_AMOUNT, StatType.HEALTH);
+            return string.Format("Restore {0}% of your missing {1}.", MISSING_HEALTH_HEAL_AMOUNT, StatType.HEALTH);
         }
 
         protected override IList<SpellEffect> GetHitEffects(Page page, Character caster, Character target) {
@@ -685,7 +685,7 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
     }
 
     public class WaterboltMulti : WaterboltAbstract {
-        private const int MANA_COST = 10;
+        private const int MANA_COST = 25;
         private const string MULTI_TARGET_DESCRIPTION = "Bursts of boiling water that have a chance to inflict\n<color=cyan>{0}</color>\n{1}";
 
         public WaterboltMulti() : base(TargetType.ALL_FOE, "Multi Scald", MULTI_TARGET_DESCRIPTION) {
@@ -694,7 +694,7 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
     }
 
     public abstract class WaterboltAbstract : BasicSpellbook {
-        private const float CHANCE_OF_CRITICAL = 0.30f;
+        private const float CHANCE_OF_CRITICAL = 0.50f;
         private static readonly Buff IGNITE_BUFF = new TempIgnited();
 
         private readonly string description;

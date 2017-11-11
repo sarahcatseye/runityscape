@@ -37,8 +37,8 @@ namespace Scripts.Model.Pages {
         /// <param name="tooltip">Tooltip of this grid</param>
         /// <param name="confirmationQuestion">Question to ask when grid is entered.</param>
         /// <returns></returns>
-        public static Grid GetConfirmationGrid(Page current, IButtonable previous, Process confirm, string name, string tooltip, string confirmationQuestion) {
-            Grid g = new Grid(name);
+        public static SubGrid GetConfirmationGrid(Page current, IButtonable previous, Process confirm, string name, string tooltip, string confirmationQuestion) {
+            SubGrid g = new SubGrid(name);
             g.Tooltip = tooltip;
             g.OnEnter += () => {
                 current.AddText(confirmationQuestion);
@@ -106,8 +106,8 @@ namespace Scripts.Model.Pages {
         /// <param name="name">Name on the button leading to this submenu</param>
         /// <param name="tooltip">Description on the button leading to this submenu</param>
         /// <returns></returns>
-        private static Grid GenerateBackableGrid(IButtonable previous, Sprite icon, string name, string tooltip) {
-            Grid grid = new Grid(name);
+        private static SubGrid GenerateBackableGrid(IButtonable previous, Sprite icon, string name, string tooltip) {
+            SubGrid grid = new SubGrid(name);
             grid.Icon = icon;
             grid.Tooltip = tooltip;
             List<IButtonable> buttons = new List<IButtonable>();
@@ -116,13 +116,13 @@ namespace Scripts.Model.Pages {
             return grid;
         }
 
-        public static Grid GenerateGroupItemsGrid(
+        public static SubGrid GenerateGroupItemsGrid(
             Page current,
             IButtonable previous,
             IEnumerable<Character> party,
             Action<Spell> addPlay
             ) {
-            Grid grid = GenerateBackableGrid(previous, INVENTORY, party.FirstOrDefault().Inventory.DetailedName, party.FirstOrDefault().Inventory.DetailedDescription);
+            SubGrid grid = GenerateBackableGrid(previous, INVENTORY, party.FirstOrDefault().Inventory.DetailedName, party.FirstOrDefault().Inventory.DetailedDescription);
 
             foreach (Character partyMember in party) {
                 if (partyMember.Stats.State == State.ALIVE) {
@@ -153,7 +153,7 @@ namespace Scripts.Model.Pages {
         /// <param name="owner">Owner of the inventory</param>
         /// <param name="addPlay">IPlayable handler</param>
         /// <returns></returns>
-        public static Grid GenerateItemsGrid(
+        public static SubGrid GenerateItemsGrid(
                     Page current,
                     IButtonable previous,
                     Character owner,
@@ -186,7 +186,7 @@ namespace Scripts.Model.Pages {
         /// <param name="spellCollection">SpellBooks owned by Owner</param>
         /// <param name="addPlay">Chosen action handler</param>
         /// <returns></returns>
-        public static Grid GenerateSpellBooks(
+        public static SubGrid GenerateSpellBooks(
             Page current,
             IButtonable previous,
             Character owner,
@@ -205,12 +205,12 @@ namespace Scripts.Model.Pages {
                 "Cast a spell.");
         }
 
-        public static Grid GenerateGroupSpellBooks(
+        public static SubGrid GenerateGroupSpellBooks(
             Page current,
             IButtonable previous,
             ICollection<Character> party
             ) {
-            Grid grid = new Grid("Spells");
+            SubGrid grid = new SubGrid("Spells");
             grid.Tooltip = "Cast spells out of combat.";
             grid.Icon = SPELLBOOK;
             grid.List.Add(PageUtil.GenerateBack(previous));
@@ -248,7 +248,7 @@ namespace Scripts.Model.Pages {
         /// <param name="concat">The spells to add alongside the spellbook's.</param>
         /// <param name="playHandler">The play handler.</param>
         /// <returns></returns>
-        public static Grid GenerateActions(
+        public static SubGrid GenerateActions(
             Page current,
             IButtonable previous,
             Character owner,
@@ -280,7 +280,7 @@ namespace Scripts.Model.Pages {
         /// <param name="spellable">Spellable to use on target</param>
         /// <param name="spellHandler">Spell handler</param>
         /// <returns></returns>
-        public static Grid GenerateTargets(Page current, IButtonable previous, Character owner, ISpellable spellable, Action<Spell> spellHandler) {
+        public static SubGrid GenerateTargets(Page current, IButtonable previous, Character owner, ISpellable spellable, Action<Spell> spellHandler) {
             return GenerateTargets(current, previous, owner, spellable, spellable.GetSpellBook().Icon, spellHandler);
         }
 
@@ -294,7 +294,7 @@ namespace Scripts.Model.Pages {
         /// <param name="spellable">Spellable to use on target</param>
         /// <param name="spellHandler">Spell handler</param>
         /// <returns></returns>
-        public static Grid GenerateTargets(
+        public static SubGrid GenerateTargets(
             Page current,
             IButtonable previous,
             Character caster,
@@ -303,13 +303,14 @@ namespace Scripts.Model.Pages {
             Action<Spell> spellHandler) {
             SpellBook sb = spellable.GetSpellBook();
             ICollection<Character> targets = sb.TargetType.GetTargets(caster, current);
-            Grid grid = GenerateBackableGrid(previous, sb.Icon, sb.Name, sb.CreateDescription(caster));
+            SubGrid grid = GenerateBackableGrid(previous, sb.Icon, sb.Name, sb.CreateDescription(caster));
 
             grid.Icon = sprite;
 
             ICollection<Process> targetProcesses = spellable.GetSpellBook().TargetType.GetTargetProcesses(current, spellable, caster, spellHandler);
             foreach (Process targetProcess in targetProcesses) {
-                grid.List.Add(targetProcess);
+                grid.List.Add(targetProcess
+                    .AddDisabledText("This unit cannot be targeted because either the caster is dead or they fail to meet the castable's requirements."));
             }
 
             Item item = spellable as Item;
@@ -337,8 +338,8 @@ namespace Scripts.Model.Pages {
         /// <param name="owner">Owner of the equipment</param>
         /// <param name="spellHandler">Playable handler</param>
         /// <returns></returns>
-        public static Grid GenerateEquipmentGrid(Page current, IButtonable previous, Character owner, Action<Spell> spellHandler, Sprite sprite, string name) {
-            Grid grid = GenerateBackableGrid(
+        public static SubGrid GenerateEquipmentGrid(Page current, IButtonable previous, Character owner, Action<Spell> spellHandler, Sprite sprite, string name) {
+            SubGrid grid = GenerateBackableGrid(
                 previous,
                 sprite,
                 name,
@@ -363,8 +364,8 @@ namespace Scripts.Model.Pages {
             return grid;
         }
 
-        public static Grid GenerateGroupEquipmentGrid(IButtonable previous, Page current, ICollection<Character> party, Action<Spell> spellHandler) {
-            Grid grid = new Grid("Equipment");
+        public static SubGrid GenerateGroupEquipmentGrid(IButtonable previous, Page current, ICollection<Character> party, Action<Spell> spellHandler) {
+            SubGrid grid = new SubGrid("Equipment");
             grid.Icon = EQUIPMENT;
             grid.List.Add(GenerateBack(previous));
 
@@ -379,7 +380,7 @@ namespace Scripts.Model.Pages {
             return grid;
         }
 
-        private static Grid GenerateSpellableGrid(
+        private static SubGrid GenerateSpellableGrid(
                     Page current,
                     IButtonable previous,
                     Character owner,
@@ -389,7 +390,7 @@ namespace Scripts.Model.Pages {
                     Sprite sprite,
                     string name,
                     string description) {
-            Grid grid = GenerateBackableGrid(previous, sprite, name, description);
+            SubGrid grid = GenerateBackableGrid(previous, sprite, name, description);
 
             grid.OnEnter = () => {
                 grid.List.Clear();
@@ -418,14 +419,14 @@ namespace Scripts.Model.Pages {
                 });
         }
 
-        private static Grid GetEquipGrid(
+        private static SubGrid GetEquipGrid(
             Page current,
             Character owner,
             EquipType et,
             Inventory inv,
             IButtonable previous,
             Action<Spell> spellHandler) {
-            Grid grid = GenerateBackableGrid(
+            SubGrid grid = GenerateBackableGrid(
                 previous,
                 et.Sprite,
                 Util.ColorString(et.Name, Color.grey),
