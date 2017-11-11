@@ -29,7 +29,7 @@ namespace Scripts.Game.Defined.Characters {
 
             public static Character Cultist() {
                 return CharacterUtil.StandardEnemy(
-                    new Stats(10, 8, 5, 1, 25),
+                    new Stats(20, 8, 5, 1, 50),
                     new Look("Spectre",
                              "villager",
                              "A not-so-innocent villager.",
@@ -40,7 +40,7 @@ namespace Scripts.Game.Defined.Characters {
 
             public static Character Enforcer() {
                 return CharacterUtil.StandardEnemy(
-                    new Stats(12, 12, 8, 5, 80),
+                    new Stats(12, 12, 8, 5, 75),
                     new Look("Enforcer",
                              "knight",
                              "Augmented knight.",
@@ -69,7 +69,7 @@ namespace Scripts.Game.Defined.Characters {
 
             public static Character Mage() {
                 return CharacterUtil.StandardEnemy(
-                        new Stats(12, 4, 20, 20, 40),
+                        new Stats(12, 4, 20, 20, 80),
                         new Look("Warlock",
                                  "wizard",
                                  "Hello",
