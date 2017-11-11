@@ -17,7 +17,7 @@ namespace Scripts.Model.Stats {
 
         private static readonly IDictionary<BoundType, Bounds> attributeBounds = new Dictionary<BoundType, Bounds>() {
             { BoundType.RESOURCE, new Bounds(0, int.MaxValue) },
-            { BoundType.ASSIGNABLE, new Bounds(0, 100) },
+            { BoundType.ASSIGNABLE, new Bounds(0, 9999) },
         };
 
         public static readonly StatType STRENGTH = new StatType(
