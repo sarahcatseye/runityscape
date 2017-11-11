@@ -230,7 +230,8 @@ namespace Scripts.Game.Defined.Characters {
                     new OneShotKill(),
                     new CastDelayedEternalDeath(),
                     new GiveEvasion(),
-                    new SetupCounter())
+                    new SetupCounter(),
+                    new ReflectiveClone())
                 .AddItem(new SharkFin())
                 .AddItem(new SharkBlood())
                 .AddItem(new ToothNecklace(), .25f)

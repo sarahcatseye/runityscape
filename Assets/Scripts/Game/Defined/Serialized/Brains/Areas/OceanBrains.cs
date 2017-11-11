@@ -159,13 +159,15 @@ namespace Scripts.Game.Serialized.Brains {
         private static readonly SpellBook DEATH_CURSE = new CastDelayedEternalDeath();
         private static readonly SpellBook EVASION_BUFF = new GiveEvasion();
         private static readonly SpellBook COUNTER = new SetupCounter();
+        private static readonly SpellBook CLONE = new ReflectiveClone();
         private static readonly SpellBook ATTACK = new Attack();
 
         private static readonly SpellBook[] PHASE_TWO_SPELLS = new SpellBook[] {
             ONE_SHOT_KILL,
             DEATH_CURSE,
             EVASION_BUFF,
-            COUNTER
+            COUNTER,
+            CLONE
         };
 
         private bool isAnnounceSecondPhase;
