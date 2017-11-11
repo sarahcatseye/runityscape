@@ -620,22 +620,19 @@ namespace Scripts.Game.Defined.Unserialized.Buffs {
         }
     }
 
-    public class OverwhelmingPower : Buff {
-        private const int STRENGTH_INCREASE = 1337;
-        private const int AGILITY_REDUCTION = 100;
+    public class Evasion : Buff {
+        private const int AGILITY_INCREASE = 1337;
 
-        public OverwhelmingPower()
+        public Evasion()
             : base(
-                  Util.GetSprite("fist"),
-                  "Overwhelming Power",
-                  string.Format("{0} boosted by {1}%. {2} reduced by {3}%.",
-                      StatType.STRENGTH.ColoredName,
-                      STRENGTH_INCREASE,
-                      StatType.AGILITY.ColoredName,
-                      AGILITY_REDUCTION),
+                  10,
+                  Util.GetSprite("power-lightning"),
+                  "Evasion",
+                  string.Format("{0} boosted by {1}%.",
+                      StatType.AGILITY,
+                      AGILITY_INCREASE),
                   true) {
-            AddMultiplicativeStatBonus(StatType.STRENGTH, STRENGTH_INCREASE);
-            AddMultiplicativeStatBonus(StatType.AGILITY, AGILITY_REDUCTION);
+            AddMultiplicativeStatBonus(StatType.STRENGTH, AGILITY_INCREASE);
         }
     }
 
