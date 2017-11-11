@@ -789,7 +789,7 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
     public class OneShotKill : BasicSpellbook {
         private const int HIGH_DAMAGE = 1337;
 
-        public OneShotKill() : base("Death Strike", Util.GetSprite("skull-crack"), TargetType.ONE_ALLY, SpellType.OFFENSE) {
+        public OneShotKill() : base("Death Strike", Util.GetSprite("skull-crack"), TargetType.ONE_FOE, SpellType.OFFENSE) {
             this.TurnsToCharge = 1;
         }
 
@@ -808,7 +808,7 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
         }
     }
 
-    public class GiveOverwhelmingPower : BuffAdder<OverwhelmingPower> {
+    public class GiveOverwhelmingPower : BuffAdder<Evasion> {
 
         public GiveOverwhelmingPower() : base(TargetType.SELF, SpellType.BOOST, PriorityType.LOW) {
         }
