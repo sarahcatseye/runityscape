@@ -150,7 +150,7 @@ namespace Scripts.Model.Pages {
             return new Process(
                         Util.ColorString(partyMember.Look.DisplayName, false),
                         partyMember.Look.Sprite,
-                        "This unit is dead and is unable to be a caster for any item.");
+                        "This unit is dead and is unable to be a caster.");
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace Scripts.Model.Pages {
                         "This unit will be casting spells."
                         );
                 } else {
-                    itemToAdd = new Process(Util.ColorString(member.Look.DisplayName, false), "This unit is dead and cannot cast any spells.");
+                    itemToAdd = GetDeadCharacterProcess(member);
                 }
                 grid.List.Add(itemToAdd);
             }

@@ -531,13 +531,6 @@ namespace Scripts.Model.Pages {
                             GiveExperienceToVictors();
                         }
                     }
-                    Character anyoneLivingFromVictoriousParty = VictoriousParty
-                        .Where(c => c.Stats.State == State.ALIVE)
-                        .FirstOrDefault(); // Must be living for drop function to work!
-
-                    if (anyoneLivingFromVictoriousParty == null) {
-                        anyoneLivingFromVictoriousParty = VictoriousParty.FirstOrDefault();
-                    }
 
                     postBattle.List.Add(PageUtil.GenerateGroupSpellBooks(this, postBattle, VictoriousParty));
                     postBattle.List.Add(PageUtil.GenerateGroupItemsGrid(this, postBattle, VictoriousParty, PageUtil.GetOutOfBattlePlayableHandler(this)));

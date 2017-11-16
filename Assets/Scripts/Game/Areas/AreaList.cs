@@ -44,6 +44,7 @@ namespace Scripts.Game.Areas {
             return new Area(
                 AreaType.RUINS,
                     new Stage[] {
+                        SceneList.Example(party),
                         new BattleStage(
                             "Start of adventure",
                             () => new Encounter[] {
