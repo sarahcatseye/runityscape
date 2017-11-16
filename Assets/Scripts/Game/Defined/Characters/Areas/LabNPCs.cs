@@ -242,8 +242,8 @@ namespace Scripts.Game.Defined.Characters {
                 return CharacterUtil.StandardEnemy(
                     new Stats(2, 1, 5, 2, 15),
                     new Look(
-                        "Swarm",
-                        "angler-fish",
+                        "Myriad",
+                        "swarm lab",
                         "Questionable member of the sea that travels in schools.",
                         Breed.FISH
                         ),
