@@ -180,6 +180,19 @@ namespace Scripts.Model.SaveLoad {
             Add<Hammer>("salachsMightyHammer");
             Add<ScaledArmor>("scaledArmor");
             Add<Rocktail>("rocktail");
+            Add<HealingPotion>("healingPotion");
+            Add<LifeGem>("lifeGem");
+            Add<ManaPotion>("manaPotion");
+            Add<ManaGem>("manaGem");
+            Add<FinalSword>("finalSword");
+            Add<FinalMeleeArmor>("finalMeleeArmor");
+            Add<FinalMeleeTrinket>("finalMeleeTrinket");
+            Add<FinalOffhand>("finalOffhand");
+            Add<FinalStaff>("finalStaff");
+            Add<FinalCasterArmor>("finalCasterArmor");
+            Add<FinalCasterOffhand>("finalCasterOffHand");
+            Add<FinalCasterTrinket>("finalCasterTrinket");
+            Add<Spear>("spearOfJustIce");
         }
 
         private void Buffs() {
