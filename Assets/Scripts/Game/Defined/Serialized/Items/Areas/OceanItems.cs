@@ -229,7 +229,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
 
     public class ScaledArmor : EquippableItem {
 
-        public ScaledArmor() : base("layered-armor", EquipType.ARMOR, 100, "Salach's Armor", "Made from Salach's own skin.") {
+        public ScaledArmor() : base("layered-armor", EquipType.ARMOR, 100, "Salach's Armor", "Made from Salach's own skin. Gross.") {
             AddFlatStatBonus(StatType.VITALITY, 15);
             AddFlatStatBonus(StatType.AGILITY, 5);
         }
@@ -247,7 +247,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
             "food-chain",
             20,
             TargetType.SELF,
-            "Shark Bait", "Creates a very fragile shark attractant that is good for one battle.") {
+            "Shark Bait", "Creates an IMMOBILE fragile shark attractant. Fishy Market is not responsible for wasteful uses of this item outside of combat.") {
             this.flags.Remove(Model.Items.Flag.USABLE_OUT_OF_COMBAT);
         }
 
