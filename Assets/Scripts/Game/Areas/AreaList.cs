@@ -44,6 +44,7 @@ namespace Scripts.Game.Areas {
             return new Area(
                 AreaType.RUINS,
                     new Stage[] {
+                        SceneList.Example(party),
                         new BattleStage(
                             "Start of adventure",
                             () => new Encounter[] {
@@ -136,16 +137,16 @@ namespace Scripts.Game.Areas {
                         new BattleStage(
                             "Nearing the end",
                             () => new Encounter[] {
-                                new Encounter(OceanNPCs.DreadSinger()),
+                                new Encounter(OceanNPCs.Shuck()),
                                 new Encounter(OceanNPCs.Elemental()),
                             }),
                         new BattleStage(
                             "Final Trench",
                             () => new Encounter[] {
-                                new Encounter(OceanNPCs.Elemental(), OceanNPCs.DreadSinger()),
-                                new Encounter(OceanNPCs.Elemental(), OceanNPCs.Elemental(), OceanNPCs.DreadSinger()),
-                                new Encounter(OceanNPCs.Elemental(), OceanNPCs.Siren(), OceanNPCs.SharkPirate(), OceanNPCs.DreadSinger()),
-                                new Encounter(OceanNPCs.Swarm(), OceanNPCs.Swarm(), OceanNPCs.Swarm(), OceanNPCs.Elemental(), OceanNPCs.Siren(), OceanNPCs.Shark(), OceanNPCs.DreadSinger())
+                                new Encounter(OceanNPCs.Elemental(), OceanNPCs.Shuck()),
+                                new Encounter(OceanNPCs.Elemental(), OceanNPCs.Elemental(), OceanNPCs.Shuck()),
+                                new Encounter(OceanNPCs.Elemental(), OceanNPCs.Siren(), OceanNPCs.Shark(), OceanNPCs.Shuck()),
+                                new Encounter(OceanNPCs.Swarm(), OceanNPCs.Swarm(), OceanNPCs.Swarm(), OceanNPCs.Elemental(), OceanNPCs.Siren(), OceanNPCs.Shark(), OceanNPCs.Shuck())
                             }),
                         new BattleStage(
                             "The Captain",
@@ -163,7 +164,7 @@ namespace Scripts.Game.Areas {
                     new BattleStage(
                         "Adventure's End",
                         () => new Encounter[] {
-                            new Encounter(LabNPCs.Ruins.Cultist(), LabNPCs.Ruins.Cultist(), LabNPCs.Ruins.Cultist()),
+                            new Encounter(LabNPCs.Ruins.Villager(), LabNPCs.Ruins.Villager(), LabNPCs.Ruins.Villager()),
                             new Encounter(LabNPCs.Ruins.Enforcer()),
                             new Encounter(LabNPCs.Ruins.Enforcer(), LabNPCs.Ruins.Enforcer(), LabNPCs.Ruins.Enforcer()),
                             new Encounter(LabNPCs.Ruins.BigKnightA())
@@ -207,7 +208,7 @@ namespace Scripts.Game.Areas {
                     new BattleStage(
                         "Premonition II",
                         () => new Encounter[] {
-                            new Encounter(LabNPCs.Ruins.Cultist(), LabNPCs.Ruins.Cultist(), LabNPCs.Ruins.Cultist()),
+                            new Encounter(LabNPCs.Ruins.Villager(), LabNPCs.Ruins.Villager(), LabNPCs.Ruins.Villager()),
                             new Encounter(LabNPCs.Ruins.Enforcer(), LabNPCs.Ruins.Enforcer(), LabNPCs.Ruins.Enforcer()),
                             new Encounter(LabNPCs.Ruins.Cleric(), LabNPCs.Ruins.Enforcer(), LabNPCs.Ruins.Cleric(), LabNPCs.Ruins.Enforcer()),
                             new Encounter(LabNPCs.Ruins.Cleric(), LabNPCs.Ruins.Mage(), LabNPCs.Ruins.Mage(), LabNPCs.Ruins.Cleric()),

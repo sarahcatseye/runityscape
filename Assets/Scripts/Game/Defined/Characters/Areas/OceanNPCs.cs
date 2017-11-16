@@ -53,7 +53,7 @@ namespace Scripts.Game.Defined.Characters {
                 party,
                 Siren(),
                 6,
-                10,
+                8,
                 200
                 );
         }
@@ -141,7 +141,7 @@ namespace Scripts.Game.Defined.Characters {
                 new Stats(9, 3, 50, 2, 5),
                 new Look(
                     "Swarm",
-                    "angler-fish",
+                    "swarm",
                     "Questionable member of the sea that travels in schools.",
                     Breed.FISH
                     ),
@@ -170,7 +170,7 @@ namespace Scripts.Game.Defined.Characters {
                 new Stats(9, 1, 30, 10, 50),
                 new Look(
                     "Elemental",
-                    "villager",
+                    "elemental",
                     "Sea elemental.",
                     Breed.FISH
                     ),
@@ -179,19 +179,18 @@ namespace Scripts.Game.Defined.Characters {
                 .AddStats(new Mana())
                 .AddSpells(new WaterboltSingle(),
                     new WaterboltMulti())
-                .AddBuff(new Insight())
                 .AddItem(new Cleansing(), Util.IsChance(.50f))
                 .AddItem(new PureWater(), .20f)
                 .AddMoney(50);
         }
 
-        public static Character DreadSinger() {
+        public static Character Shuck() {
             return CharacterUtil.StandardEnemy(
                     new Stats(9, 5, 20, 20, 30),
                     new Look(
-                        "C. Witch",
-                        "siren",
-                        "Singer of the voices of death.",
+                        "Shuck",
+                        "shuck",
+                        "Cursed coastal canine.",
                         Breed.FISH
                         ),
                     new DreadSinger())
@@ -199,15 +198,16 @@ namespace Scripts.Game.Defined.Characters {
                     .AddItem(new GrayWater(), .50f)
                     .AddItem(new Cleansing(), 1)
                     .AddItem(new WaterOrb(), .05f)
+                    .AddEquip(new Spear(), .10f)
                     .AddMoney(20);
         }
 
         public static Character SharkBaitDecoy() {
             return CharacterUtil.StandardEnemy(
-                new Stats(1, 666, 1, 1, 1),
+                new Stats(1, 0, 0, 0, 1),
                 new Look(
                     "Shark Bait",
-                    "food-chain",
+                    "villager",
                     "No villagers were harmed in the making of this product.",
                     Breed.SHARK_BAIT
                     ),
@@ -216,7 +216,7 @@ namespace Scripts.Game.Defined.Characters {
 
         public static Character SharkPirate() {
             return CharacterUtil.StandardEnemy(
-                new Stats(10, 10, 5, 18, 200),
+                new Stats(10, 10, 5, 18, 150),
                 new Look(
                     "Cap'n Selach",
                     "shark-pirate",
@@ -229,8 +229,10 @@ namespace Scripts.Game.Defined.Characters {
                 .AddSpells(
                     new SummonSeaCreatures(),
                     new OneShotKill(),
-                    new CastDelayedDeath(),
-                    new GiveOverwhelmingPower())
+                    new CastDelayedEternalDeath(),
+                    new GiveEvasion(),
+                    new SetupCounter(),
+                    new ReflectiveClone())
                 .AddItem(new SharkFin())
                 .AddItem(new SharkBlood())
                 .AddItem(new ToothNecklace(), .25f)

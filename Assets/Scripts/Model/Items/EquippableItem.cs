@@ -121,7 +121,7 @@ namespace Scripts.Model.Items {
                     spellHandler(caster.Spells.CreateSpell(current, spellbook, caster, caster));
                     previous.Invoke();
                 },
-                () => this.GetSpellBook().IsCastable(caster, new Character[] { caster })
+                () => this.GetSpellBook().IsCastable(current, caster, new Character[] { caster })
                 );
         }
 

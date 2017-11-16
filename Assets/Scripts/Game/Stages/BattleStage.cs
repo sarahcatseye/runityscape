@@ -39,7 +39,7 @@ namespace Scripts.Game.Stages {
                     camp,
                     StageName,
                     string.Format("Selected stage {0} of {1}:\n{2}.\n\nEnter?",
-                        (int)type,
+                        dungeonIndex,
                         type.GetDescription(),
                         StageName
                         ),

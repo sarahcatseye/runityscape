@@ -71,6 +71,8 @@ namespace Scripts.Model.Pages {
 
         private IDictionary<Character, Spell> charactersChargingSpells;
 
+        private Side victoriousSide;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -123,6 +125,12 @@ namespace Scripts.Model.Pages {
         public int TurnCount {
             get {
                 return turnCount;
+            }
+        }
+
+        public override bool IsInBattle {
+            get {
+                return !IsResolved;
             }
         }
 
@@ -203,11 +211,7 @@ namespace Scripts.Model.Pages {
 
         private Side VictoriousSide {
             get {
-                if (Left.Any(c => c.Stats.State == State.ALIVE)) {
-                    return Side.LEFT;
-                } else {
-                    return Side.RIGHT;
-                }
+                return victoriousSide;
             }
         }
 
@@ -256,7 +260,7 @@ namespace Scripts.Model.Pages {
             loot[item] += count;
         }
 
-        private static Process GetItemStackProcess(Page current, Grid previousGrid, Grid lootGrid, IDictionary<Item, int> loot, Item item, Inventory victorInventory) {
+        private static Process GetItemStackProcess(Page current, SubGrid previousGrid, SubGrid lootGrid, IDictionary<Item, int> loot, Item item, Inventory victorInventory) {
             return new Process(
                     string.Format("{0}({1})", item.Name, loot[item]),
                     item.Icon,
@@ -277,8 +281,8 @@ namespace Scripts.Model.Pages {
                 ));
         }
 
-        private static Grid GetLootGrid(Page current, Grid previous, IDictionary<Item, int> loot, ICollection<Character> victoriousSide) {
-            Grid lootGrid = new Grid("Loot");
+        private static SubGrid GetLootGrid(Page current, SubGrid previous, IDictionary<Item, int> loot, ICollection<Character> victoriousSide) {
+            SubGrid lootGrid = new SubGrid("Loot");
             lootGrid.Tooltip = "Pick up dropped items.";
             lootGrid.Icon = Util.GetSprite("swap-bag");
             lootGrid.Condition = () => (loot.Count > 0);
@@ -424,7 +428,7 @@ namespace Scripts.Model.Pages {
             turnCount++;
         }
 
-        private IButtonable GetLootButton(Grid previous) {
+        private IButtonable GetLootButton(SubGrid previous) {
             ICollection<Character> graveyardToLoot = null;
             ICollection<Character> sideToLoot = null;
             if (VictoriousSide == Side.RIGHT) {
@@ -519,7 +523,7 @@ namespace Scripts.Model.Pages {
         }
 
         private void PostBattle(PlayerPartyStatus status) {
-            Grid postBattle = new Grid("Main");
+            SubGrid postBattle = new SubGrid("Main");
             postBattle.OnEnter = () => {
                 postBattle.List.Clear();
 
@@ -533,9 +537,6 @@ namespace Scripts.Model.Pages {
                             GiveExperienceToVictors();
                         }
                     }
-                    Character anyoneLivingFromVictoriousParty = VictoriousParty
-                        .Where(c => c.Stats.State == State.ALIVE)
-                        .FirstOrDefault(); // Must be living for drop function to work!
 
                     postBattle.List.Add(PageUtil.GenerateGroupSpellBooks(this, postBattle, VictoriousParty));
                     postBattle.List.Add(PageUtil.GenerateGroupItemsGrid(this, postBattle, VictoriousParty, PageUtil.GetOutOfBattlePlayableHandler(this)));
@@ -583,13 +584,13 @@ namespace Scripts.Model.Pages {
         }
 
         /// <summary>
-        /// Exp earned = Defeated.Level - Earner.Level
+        /// Exp earned = Defeated.Level
         /// </summary>
         /// <param name="earner">Whoever is earning the experience</param>
         /// <param name="defeated">Defeated character to do calculation for</param>
         /// <returns>Calculated experience earner should recieve</returns>
         private int CalculateExperience(Characters.Stats earner, Characters.Stats defeated) {
-            return Mathf.Max(0, defeated.Level - earner.Level);
+            return defeated.Level;
         }
 
         private IEnumerator startBattle() {
@@ -608,6 +609,10 @@ namespace Scripts.Model.Pages {
             } else { // Didn't find party
                 message = "...";
             }
+
+            victoriousSide = Left.Any(c => c.Stats.State == State.ALIVE)
+                ? Side.LEFT
+                : Side.RIGHT;
 
             AddText(message);
             PostBattle(result);
