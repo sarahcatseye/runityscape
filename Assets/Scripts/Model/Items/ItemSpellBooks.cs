@@ -21,7 +21,7 @@ namespace Scripts.Model.Items {
         /// Initializes a new instance of the <see cref="CastEquipItem"/> class.
         /// </summary>
         /// <param name="itemToEquip">The item to equip.</param>
-        public CastEquipItem(EquippableItem itemToEquip) : base(itemToEquip, "Equip") {
+        public CastEquipItem(EquippableItem itemToEquip) : base(itemToEquip, itemToEquip.Target, itemToEquip.Name, "Equip") {
             this.equip = itemToEquip;
         }
 
@@ -59,7 +59,7 @@ namespace Scripts.Model.Items {
         /// <param name="caster">The caster.</param>
         /// <param name="targetEquipment">The target's equipment.</param>
         /// <param name="item">The item.</param>
-        public CastUnequipItem(Inventory caster, Equipment targetEquipment, EquippableItem item) : base(item, "Unequip") {
+        public CastUnequipItem(Inventory caster, Equipment targetEquipment, EquippableItem item) : base(item, item.Target, item.Name, "Unequip") {
             this.caster = caster;
             this.targetEquipment = targetEquipment;
             this.item = item;
@@ -90,7 +90,7 @@ namespace Scripts.Model.Items {
     /// <seealso cref="Scripts.Model.Spells.ItemSpellBook" />
     public class Dummy : ItemSpellBook {
 
-        public Dummy(BasicItem basic) : base(basic, string.Empty) {
+        public Dummy(BasicItem basic) : base(basic, basic.Target, string.Empty, string.Empty) {
         }
 
         protected override string CreateDescriptionHelper() {
@@ -109,7 +109,7 @@ namespace Scripts.Model.Items {
     public class UseItem : ItemSpellBook {
         private readonly ConsumableItem consume;
 
-        public UseItem(ConsumableItem consume) : base(consume, "Use") {
+        public UseItem(ConsumableItem consume) : base(consume, consume.Target, consume.Name, "Use") {
             this.consume = consume;
             if (consume.HasFlag(Flag.USABLE_OUT_OF_COMBAT)) {
                 this.flags.Add(Spells.Flag.USABLE_OUT_OF_COMBAT);
@@ -133,7 +133,7 @@ namespace Scripts.Model.Items {
     public class TossItem : ItemSpellBook {
         private readonly Inventory inventory;
 
-        public TossItem(Item item, Inventory inventory) : base(item, "Dispose") {
+        public TossItem(Item item, Inventory inventory) : base(item, TargetType.SELF, item.Name, "Dispose") {
             this.inventory = inventory;
         }
 

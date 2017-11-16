@@ -17,16 +17,9 @@ namespace Scripts.Model.Spells {
         /// Initializes a new instance of the <see cref="ItemSpellBook"/> class.
         /// </summary>
         /// <param name="item">The item.</param>
-        /// <param name="verb">The verb. Caster [Verb] ItemName on Target!</param>
-        public ItemSpellBook(Item item, string verb) : this(item, item.Name, verb) { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemSpellBook"/> class.
-        /// </summary>
-        /// <param name="item">The item.</param>
         /// <param name="name">The item name.</param>
         /// <param name="verb">The verb. Caster [Verb] ItemName on Target!</param>
-        public ItemSpellBook(Item item, string name, string verb) : base(name, item.Icon, item.Target, SpellType.ITEM, PriorityType.ITEM, verb) {
+        public ItemSpellBook(Item item, TargetType target, string name, string verb) : base(name, item.Icon, target, SpellType.ITEM, PriorityType.ITEM, verb) {
             this.item = item;
             flags.Remove(Flag.CASTER_REQUIRES_SPELL);
         }
