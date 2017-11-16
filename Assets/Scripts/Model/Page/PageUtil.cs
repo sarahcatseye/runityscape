@@ -319,7 +319,7 @@ namespace Scripts.Model.Pages {
             ICollection<Process> targetProcesses = spellable.GetSpellBook().TargetType.GetTargetProcesses(current, spellable, caster, spellHandler);
             foreach (Process targetProcess in targetProcesses) {
                 grid.List.Add(targetProcess
-                    .AddDisabledText("This unit cannot be targeted because either the caster is dead or they fail to meet the castable's requirements."));
+                    .AddDisabledText("This unit cannot be targeted because the castable's requirements have not been met."));
             }
 
             Item item = spellable as Item;

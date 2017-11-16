@@ -229,7 +229,7 @@ namespace Scripts.Game.Defined.Characters {
                             "Black Shuck",
                             "shuck",
                             "Cursed lab canine.",
-                            Breed.FISH
+                            Breed.BEAST
                             ),
                         new DreadSinger())
                         .AddSpells(new NullifyHealing())

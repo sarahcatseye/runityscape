@@ -32,6 +32,14 @@ namespace Scripts.Game.Areas {
                     { AreaType.LAB, (flags, party, camp, dungeonPages) => EvilLabs(flags, party, camp, dungeonPages) }
         });
 
+        public static readonly ReadOnlyDictionary<AreaType, Music> AREA_MUSIC
+            = new ReadOnlyDictionary<AreaType, Music>(
+                new Dictionary<AreaType, Music>() {
+                            { AreaType.RUINS, Music.RUINS },
+                            { AreaType.SEA_WORLD, Music.WATER },
+                            { AreaType.LAB, Music.LAB }
+        });
+
         public static readonly ReadOnlyDictionary<AreaType, Sprite> AREA_SPRITES
             = new ReadOnlyDictionary<AreaType, Sprite>(
                 new Dictionary<AreaType, Sprite>() {
