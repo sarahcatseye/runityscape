@@ -138,10 +138,19 @@ namespace Scripts.Model.Pages {
                             string.Format("{0} will be the item's caster.",
                             partyMember.Look.DisplayName)));
                 } else {
-                    grid.List.Add(new Process(Util.ColorString(partyMember.Look.DisplayName, false), partyMember.Look.Sprite, "This unit is dead and is unable to be a caster for any item."));
+                    grid.List.Add(
+                        GetDeadCharacterProcess(partyMember)
+                    );
                 }
             }
             return grid;
+        }
+
+        private static Process GetDeadCharacterProcess(Character partyMember) {
+            return new Process(
+                        Util.ColorString(partyMember.Look.DisplayName, false),
+                        partyMember.Look.Sprite,
+                        "This unit is dead and is unable to be a caster for any item.");
         }
 
         /// <summary>
@@ -373,7 +382,9 @@ namespace Scripts.Model.Pages {
                 if (partyMember.Stats.State == State.ALIVE) {
                     grid.List.Add(GenerateEquipmentGrid(current, grid, partyMember, spellHandler, partyMember.Look.Sprite, partyMember.Look.DisplayName));
                 } else {
-                    grid.List.Add(new Process(partyMember.Look.DisplayName, partyMember.Look.Sprite, "This unit is dead and is unable to manage its equipment."));
+                    grid.List.Add(
+                        GetDeadCharacterProcess(partyMember)
+                    );
                 }
             }
 
