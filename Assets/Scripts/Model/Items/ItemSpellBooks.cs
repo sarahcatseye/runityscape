@@ -23,6 +23,7 @@ namespace Scripts.Model.Items {
         /// <param name="itemToEquip">The item to equip.</param>
         public CastEquipItem(EquippableItem itemToEquip) : base(itemToEquip, itemToEquip.Target, itemToEquip.Name, "Equip") {
             this.equip = itemToEquip;
+            this.flags.Add(Spells.Flag.USABLE_OUT_OF_COMBAT);
         }
 
         /// <summary>
@@ -63,6 +64,7 @@ namespace Scripts.Model.Items {
             this.caster = caster;
             this.targetEquipment = targetEquipment;
             this.item = item;
+            this.flags.Add(Spells.Flag.USABLE_OUT_OF_COMBAT);
         }
 
         /// <summary>
@@ -113,6 +115,8 @@ namespace Scripts.Model.Items {
             this.consume = consume;
             if (consume.HasFlag(Flag.USABLE_OUT_OF_COMBAT)) {
                 this.flags.Add(Spells.Flag.USABLE_OUT_OF_COMBAT);
+            } else {
+                this.flags.Remove(Spells.Flag.USABLE_OUT_OF_COMBAT);
             }
             AddCost(consume, 1);
         }
@@ -134,6 +138,7 @@ namespace Scripts.Model.Items {
         private readonly Inventory inventory;
 
         public TossItem(Item item, Inventory inventory) : base(item, TargetType.SELF, item.Name, "Dispose") {
+            flags.Add(Spells.Flag.USABLE_OUT_OF_COMBAT);
             this.inventory = inventory;
         }
 

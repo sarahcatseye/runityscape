@@ -18,7 +18,7 @@ namespace Scripts.Game.Defined.Characters {
             return new Trainer(
                     previous,
                     party,
-                    Ruins.Cultist(),
+                    Ruins.Villager(),
                     new PurchasedSpell(200, new Revive()),
                     new PurchasedSpell(200, new Inspire()),
                     new PurchasedSpell(500, new MagicMissile()),
@@ -51,11 +51,11 @@ namespace Scripts.Game.Defined.Characters {
 
         public static class Ruins {
 
-            public static Character Cultist() {
+            public static Character Villager() {
                 return CharacterUtil.StandardEnemy(
                     new Stats(20, 8, 5, 1, 50),
                     new Look("Spectre",
-                             "villager",
+                             "villager lab",
                              "A not-so-innocent villager.",
                              Breed.SPIRIT),
                     new Attacker()
@@ -67,7 +67,7 @@ namespace Scripts.Game.Defined.Characters {
                 return CharacterUtil.StandardEnemy(
                     new Stats(12, 12, 8, 5, 75),
                     new Look("Enforcer",
-                             "knight",
+                             "knight lab",
                              "Augmented knight.",
                              Breed.SPIRIT),
                     new LabKnight()
@@ -79,7 +79,7 @@ namespace Scripts.Game.Defined.Characters {
             public static Character Darkener() {
                 return CharacterUtil.StandardEnemy(
                     new Stats(12, 5, 20, 15, 50),
-                    new Look("Darkener", "illusionist", "Powerful illusionist.", Breed.SPIRIT),
+                    new Look("Darkener", "illusionist lab", "Powerful illusionist.", Breed.SPIRIT),
                     new Illusionist()
                     )
                     .AddSpells(new Blackout())
@@ -87,19 +87,19 @@ namespace Scripts.Game.Defined.Characters {
             }
 
             public static Character BigKnightA() {
-                return BigKnight("Perse");
+                return BigKnight("Perse", "big-knight-a");
             }
 
             public static Character BigKnightB() {
-                return BigKnight("Verance");
+                return BigKnight("Verance", "big-knight-b");
             }
 
             public static Character Mage() {
                 return CharacterUtil.StandardEnemy(
                         new Stats(12, 4, 20, 20, 80),
                         new Look("Warlock",
-                                 "wizard",
-                                 "Hello",
+                                 "wizard lab",
+                                 "Magical madman.",
                                  Breed.SPIRIT),
                         new Warlock()
                     ).AddSpells(new Inferno())
@@ -110,9 +110,9 @@ namespace Scripts.Game.Defined.Characters {
             public static Character Cleric() {
                 return CharacterUtil.StandardEnemy(
                         new Stats(12, 4, 20, 20, 40),
-                        new Look("Cleric",
-                                 "white-mage",
-                                 "Hello",
+                        new Look("Cultist",
+                                 "white-mage lab",
+                                 "Healer from Hell.",
                                  Breed.SPIRIT),
                         new Cleric()
                     ).AddSpells(new SetupDefend(), new PlayerHeal())
@@ -120,12 +120,12 @@ namespace Scripts.Game.Defined.Characters {
                     .AddMoney(75);
             }
 
-            private static Character BigKnight(string name) {
+            private static Character BigKnight(string name, string sprite) {
                 return CharacterUtil.StandardEnemy(
                     new Stats(15, 15, 10, 10, 120),
                     new Look(
                         name,
-                        "big-knight",
+                        sprite,
                         "One of a pair of knights known for their determination.",
                         Breed.SPIRIT
                         ),
@@ -144,7 +144,7 @@ namespace Scripts.Game.Defined.Characters {
                     new Stats(5, 5, 6, 8, 60),
                     new Look(
                         "Razor Shark",
-                        "shark",
+                        "shark lab",
                         "Shark who needs lotion.",
                         Breed.FISH
                         ),
@@ -159,7 +159,7 @@ namespace Scripts.Game.Defined.Characters {
                         new Stats(6, 4, 10, 10, 40),
                         new Look(
                             "Enthraller",
-                            "siren",
+                            "siren lab",
                             "Sings a mean tune.",
                             Breed.FISH
                         ),
@@ -173,7 +173,7 @@ namespace Scripts.Game.Defined.Characters {
                         new Stats(7, 3, 25, 1, 20),
                         new Look(
                             "Lasher",
-                            "tentacle",
+                            "tentacle lab",
                             "Tentacle belonging to a Leviathan.",
                             Breed.FISH
                             ),
@@ -193,7 +193,7 @@ namespace Scripts.Game.Defined.Characters {
                         new Stats(8, 10, 10, 20, 200),
                         new Look(
                             "Leviathan",
-                            "kraken",
+                            "kraken lab",
                             "Even bigger squid thing.",
                             Breed.FISH
                             ),
@@ -211,7 +211,7 @@ namespace Scripts.Game.Defined.Characters {
                     new Stats(9, 5, 20, 15, 20),
                     new Look(
                         "Undine",
-                        "villager",
+                        "elemental",
                         "Sea elemental.",
                         Breed.FISH
                         ),
@@ -226,9 +226,9 @@ namespace Scripts.Game.Defined.Characters {
                 return CharacterUtil.StandardEnemy(
                         new Stats(10, 5, 20, 20, 25),
                         new Look(
-                            "Sea Witch",
-                            "siren",
-                            "Singer of the voices of eternal death.",
+                            "Black Shuck",
+                            "shuck",
+                            "Cursed lab canine.",
                             Breed.FISH
                             ),
                         new DreadSinger())
@@ -263,7 +263,7 @@ namespace Scripts.Game.Defined.Characters {
             public static Character HeroClone() {
                 return PlayerClone(
                     new Stats(15, 5, 20, 20, 150),
-                    new Look("Anomaly H", "player", "An anomaly in a familiar form.", Breed.PROGRAMMER),
+                    new Look("Memory H", "player evil", "A corrupted memory in a familiar form.", Breed.PROGRAMMER),
                     new Hero()
                     )
                     .AddStats(new Mana())
@@ -279,7 +279,7 @@ namespace Scripts.Game.Defined.Characters {
             public static Character PartnerClone() {
                 return PlayerClone(
                     new Stats(15, 10, 20, 10, 150),
-                    new Look("Anomaly P", "partner", "An anomaly in a familiar form.", Breed.HUMAN),
+                    new Look("Memory P", "partner evil", "A corrupted memory in a familiar form.", Breed.HUMAN),
                     new Partner()
                     )
                     .AddStats(new Skill())

@@ -126,7 +126,7 @@ namespace Scripts.Model.Pages {
 
             foreach (Character partyMember in party) {
                 if (partyMember.Stats.State == State.ALIVE) {
-                    // Exclude items that cannot be used out of combat
+                    // TODO Exclude items that cannot be used out of combat
                     grid.List.Add(
                         GenerateItemsGrid(
                             current,
@@ -334,7 +334,7 @@ namespace Scripts.Model.Pages {
                                 caster.Spells.CreateSpell(current, tossItem, caster, caster)
                                 );
                         },
-                        () => tossItem.IsCastable(caster, new Character[] { caster })
+                        () => tossItem.IsCastable(current, caster, new Character[] { caster })
                         ));
             }
             return grid;
@@ -457,7 +457,7 @@ namespace Scripts.Model.Pages {
                             spellHandler(owner.Spells.CreateSpell(current, unequipSpell, owner, owner));
                             previous.Invoke();
                         },
-                        () => unequipSpell.IsCastable(owner, new Character[] { owner })
+                        () => unequipSpell.IsCastable(current, owner, new Character[] { owner })
                         );
         }
 

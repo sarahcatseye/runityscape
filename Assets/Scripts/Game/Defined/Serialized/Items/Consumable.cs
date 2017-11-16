@@ -41,6 +41,16 @@ namespace Scripts.Game.Defined.Unserialized.Items {
                 new AddToModStat(target.Stats, stat, restoreAmount)
             };
         }
+
+        protected sealed override bool IsMeetOtherRequirements(Character caster, Character target) {
+            return target.Stats.HasStat(stat)
+                && target.Stats.GetMissingStatCount(stat) > 0
+                && IsMeetRequirements(caster, target);
+        }
+
+        protected virtual bool IsMeetRequirements(Character caster, Character target) {
+            return true;
+        }
     }
 
     public abstract class HealingItem : RestoreItem {
@@ -66,7 +76,7 @@ namespace Scripts.Game.Defined.Unserialized.Items {
             this.canRevive = canRevive;
         }
 
-        protected sealed override bool IsMeetOtherRequirements(Character caster, Character target) {
+        protected sealed override bool IsMeetRequirements(Character caster, Character target) {
             return canRevive || target.Stats.State == State.ALIVE;
         }
     }

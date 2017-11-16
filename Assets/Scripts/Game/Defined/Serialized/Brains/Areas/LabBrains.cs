@@ -54,7 +54,7 @@ namespace Scripts.Game.Serialized.Brains {
                 return Util.PickRandom("You will go no further!/Stop right there!");
             }
             if (DeadPartner != null
-                && REVIVE.IsCastable(brainOwner, new Character[] { DeadPartner })
+                && REVIVE.IsCastable(currentBattle, brainOwner, new Character[] { DeadPartner })
                 && !currentBattle.IsChargingSpell(brainOwner)) {
                 return string.Format("{0}! It is not yet your time!", DeadPartner.Look.Name);
             }

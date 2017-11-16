@@ -16,7 +16,7 @@ namespace Scripts.Model.Pages {
     /// A page is the basic "scene" of this game.
     /// </summary>
     /// <seealso cref="Scripts.Model.Interfaces.IButtonable" />
-    public class Page : IButtonable {
+    public class Page : IButtonable, IPage {
 
         /// <summary>
         /// The change page function
@@ -213,6 +213,12 @@ namespace Scripts.Model.Pages {
         public Sprite Sprite {
             get {
                 return Icon;
+            }
+        }
+
+        public virtual bool IsInBattle {
+            get {
+                return false;
             }
         }
 

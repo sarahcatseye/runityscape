@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Scripts.Model.Characters;
+using Scripts.Model.Interfaces;
 
 namespace Scripts.Model.Spells {
 
@@ -53,8 +54,10 @@ namespace Scripts.Model.Spells {
         /// <returns>
         ///   <c>true</c> if [is meet other cast requirements] [the specified caster]; otherwise, <c>false</c>.
         /// </returns>
-        protected override sealed bool IsMeetOtherCastRequirements(Character caster, Character target) {
-            return item.IsUsable(caster, target) && IsMeetItemCastRequirements(caster, target);
+        protected override sealed bool IsMeetOtherCastRequirements(IPage current, Character caster, Character target) {
+            return
+                item.IsUsable(caster, target)
+                && IsMeetItemCastRequirements(caster, target);
         }
 
         /// <summary>

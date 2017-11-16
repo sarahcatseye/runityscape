@@ -179,12 +179,12 @@ namespace Scripts.Model.Spells {
         /// <returns></returns>
         public Spell BuildSpell(Page page, Character caster, ICollection<Character> targets) {
             Util.Assert(
-                IsCastable(caster, targets),
+                IsCastable(page, caster, targets),
                 string.Format(
                 "Attempted to cast {0} without requirements fulfilled. Resources={1}, OtherRequirements={2}.",
                 this.Name,
                 CasterHasResources(caster),
-                targets.Any(target => IsMeetOtherCastRequirements(caster, target))
+                targets.Any(target => IsMeetOtherCastRequirements(page, caster, target))
                 ));
 
             // Consume resources
@@ -343,16 +343,16 @@ namespace Scripts.Model.Spells {
         /// <returns>
         ///   <c>true</c> if the specified caster is castable; otherwise, <c>false</c>.
         /// </returns>
-        public bool IsCastable(Character caster, ICollection<Character> targets) {
+        public bool IsCastable(IPage page, Character caster, ICollection<Character> targets) {
             return
                 CasterHasResources(caster)
-                && IsCastableIgnoreResources(caster, targets);
+                && IsCastableIgnoreResources(page, caster, targets);
         }
 
-        public bool IsCastableIgnoreResources(Character caster, ICollection<Character> targets) {
+        public bool IsCastableIgnoreResources(IPage page, Character caster, ICollection<Character> targets) {
             return
                 IsNumberOfTargetsValid(targets.Count)
-                && targets.Any(t => IsCastableIgnoreResources(caster, t));
+                && targets.Any(t => IsCastableIgnoreResources(page, caster, t));
         }
 
         /// <summary>
@@ -487,7 +487,7 @@ namespace Scripts.Model.Spells {
         /// <returns>
         ///   <c>true</c> if [is meet other cast requirements] [the specified caster]; otherwise, <c>false</c>.
         /// </returns>
-        protected virtual bool IsMeetOtherCastRequirements(Character caster, Character target) {
+        protected virtual bool IsMeetOtherCastRequirements(IPage current, Character caster, Character target) {
             return true;
         }
 
@@ -542,7 +542,7 @@ namespace Scripts.Model.Spells {
                 res.AddEffects(GetMissEffects(current, caster, target));
             }
 
-            return new SingleSpell(this, res, caster, target);
+            return new SingleSpell(this, res, caster, target, current);
         }
 
         /// <summary>
@@ -570,9 +570,11 @@ namespace Scripts.Model.Spells {
         /// <returns>
         ///   <c>true</c> if [is castable ignore resources] [the specified caster]; otherwise, <c>false</c>.
         /// </returns>
-        private bool IsCastableIgnoreResources(Character caster, Character target) {
-            return caster.Stats.State == State.ALIVE
-                && IsMeetOtherCastRequirements(caster, target)
+        private bool IsCastableIgnoreResources(IPage page, Character caster, Character target) {
+            return
+                caster.Stats.State == State.ALIVE
+                && (page.IsInBattle || HasFlag(Flag.USABLE_OUT_OF_COMBAT))
+                && IsMeetOtherCastRequirements(page, caster, target)
                 && (caster.Spells.HasSpellBook(this) || !flags.Contains(Flag.CASTER_REQUIRES_SPELL));
         }
     }

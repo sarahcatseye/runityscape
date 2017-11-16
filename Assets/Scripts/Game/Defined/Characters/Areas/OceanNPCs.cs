@@ -141,7 +141,7 @@ namespace Scripts.Game.Defined.Characters {
                 new Stats(9, 3, 50, 2, 5),
                 new Look(
                     "Swarm",
-                    "angler-fish",
+                    "swarm",
                     "Questionable member of the sea that travels in schools.",
                     Breed.FISH
                     ),
@@ -170,7 +170,7 @@ namespace Scripts.Game.Defined.Characters {
                 new Stats(9, 1, 30, 10, 50),
                 new Look(
                     "Elemental",
-                    "villager",
+                    "elemental",
                     "Sea elemental.",
                     Breed.FISH
                     ),
@@ -184,13 +184,13 @@ namespace Scripts.Game.Defined.Characters {
                 .AddMoney(50);
         }
 
-        public static Character DreadSinger() {
+        public static Character Shuck() {
             return CharacterUtil.StandardEnemy(
                     new Stats(9, 5, 20, 20, 30),
                     new Look(
-                        "C. Witch",
-                        "siren",
-                        "Singer of the voices of death.",
+                        "Shuck",
+                        "shuck",
+                        "Cursed coastal canine.",
                         Breed.FISH
                         ),
                     new DreadSinger())

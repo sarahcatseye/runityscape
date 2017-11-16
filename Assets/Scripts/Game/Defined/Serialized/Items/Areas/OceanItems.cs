@@ -12,6 +12,7 @@ using Scripts.Game.Defined.Unserialized.Spells;
 using Scripts.Game.Defined.Unserialized.Buffs;
 using Scripts.Game.Defined.Characters;
 using Scripts.Model.Pages;
+using System.Linq;
 
 namespace Scripts.Game.Defined.Serialized.Items {
     // Drops
@@ -45,6 +46,8 @@ namespace Scripts.Game.Defined.Serialized.Items {
             TargetType.ALL_FOE,
             "Dynamite",
             string.Format("Used for illegal blast fishing. Deals {0} damage to all foes.", DAMAGE)) {
+            Util.Log("removing usable");
+            this.flags.Remove(Model.Items.Flag.USABLE_OUT_OF_COMBAT);
         }
 
         public override IList<SpellEffect> GetEffects(Page page, Character caster, Character target) {
@@ -293,7 +296,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
         public Cleansing() : base(
             "hospital-cross",
             20,
-            TargetType.ONE_ALLY,
+            TargetType.ANY,
             "Cleansing",
             string.Format("Caster sacrifices {0} {1} to remove all dispellable buffs from a target.", DAMAGE, StatType.HEALTH)) {
         }
@@ -303,6 +306,10 @@ namespace Scripts.Game.Defined.Serialized.Items {
                 new DispelAllBuffs(target.Buffs),
                 new AddToModStat(caster.Stats, StatType.HEALTH, -DAMAGE)
             };
+        }
+
+        protected override bool IsMeetOtherRequirements(Character caster, Character target) {
+            return target.Buffs.Count(b => b.IsDispellable) > 0;
         }
     }
 }

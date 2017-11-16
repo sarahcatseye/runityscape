@@ -196,6 +196,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
 
         public IdentifyScroll()
             : base("tied-scroll", 5, TargetType.ANY, "Scroll of Identify", string.Format("Scroll that reveals info about a target.")) {
+            flags.Remove(Model.Items.Flag.USABLE_OUT_OF_COMBAT);
         }
 
         public override IList<SpellEffect> GetEffects(Page page, Character caster, Character target) {

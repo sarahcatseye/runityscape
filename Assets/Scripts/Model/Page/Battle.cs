@@ -128,6 +128,12 @@ namespace Scripts.Model.Pages {
             }
         }
 
+        public override bool IsInBattle {
+            get {
+                return !IsResolved;
+            }
+        }
+
         /// <summary>
         /// Adds in the Flee spell, which requires
         /// a page to be constructed.

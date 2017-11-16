@@ -754,7 +754,7 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
         private int NUMBER_OF_SUMMON_PICKS = 2;
 
         private static readonly IDictionary<Func<Character>, int> POSSIBLE_SUMMONS = new Dictionary<Func<Character>, int> {
-            { () => OceanNPCs.DreadSinger(), 1 },
+            { () => OceanNPCs.Shuck(), 1 },
             { () => OceanNPCs.Elemental(), 1 },
             { () => OceanNPCs.Shark(), 2 },
             { () => OceanNPCs.Siren(), 1 },

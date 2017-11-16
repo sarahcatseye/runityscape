@@ -20,7 +20,7 @@ namespace Scripts.Model.Items {
         /// <summary>
         /// Item spellbook associated with this item.
         /// </summary>
-        private readonly SpellBook book;
+        private SpellBook book;
 
         /// <summary>
         /// The default sprite if one is not used
@@ -37,7 +37,6 @@ namespace Scripts.Model.Items {
         /// <param name="description">The description of this item.</param>
         public ConsumableItem(Sprite sprite, int basePrice, TargetType target, string name, string description)
             : base(sprite, basePrice, target, name, description) {
-            this.book = new UseItem(this);
         }
 
         public ConsumableItem(string spriteLoc, int basePrice, TargetType target, string name, string description)
@@ -59,6 +58,9 @@ namespace Scripts.Model.Items {
         /// </summary>
         /// <returns></returns>
         public sealed override SpellBook GetSpellBook() {
+            if (book == null) {
+                book = new UseItem(this);
+            }
             return book;
         }
 
