@@ -34,7 +34,7 @@ namespace Scripts.Game.Defined.Characters {
                 party,
                 .7f,
                 1,
-                Ocean.Elemental()
+                Ruins.Villager()
                 );
         }
 
@@ -42,7 +42,7 @@ namespace Scripts.Game.Defined.Characters {
             return new InventoryMaster(
                 previous,
                 party,
-                Ocean.Elemental(),
+                Ruins.Villager(),
                 8,
                 10,
                 500
@@ -211,7 +211,7 @@ namespace Scripts.Game.Defined.Characters {
                     new Stats(9, 5, 20, 15, 20),
                     new Look(
                         "Undine",
-                        "elemental",
+                        "elemental lab",
                         "Sea elemental.",
                         Breed.FISH
                         ),
@@ -226,8 +226,8 @@ namespace Scripts.Game.Defined.Characters {
                 return CharacterUtil.StandardEnemy(
                         new Stats(10, 5, 20, 20, 25),
                         new Look(
-                            "Black Shuck",
-                            "shuck",
+                            "Hellhound",
+                            "shuck lab",
                             "Cursed lab canine.",
                             Breed.BEAST
                             ),
