@@ -59,7 +59,8 @@ namespace Scripts.Game.Defined.Characters {
                              "A not-so-innocent villager.",
                              Breed.SPIRIT),
                     new Attacker()
-                    );
+                    )
+                    .AddMoney(50);
             }
 
             public static Character Enforcer() {
@@ -71,7 +72,8 @@ namespace Scripts.Game.Defined.Characters {
                              Breed.SPIRIT),
                     new LabKnight()
                     )
-                    .AddSpells(new CrushingBlow());
+                    .AddSpells(new CrushingBlow())
+                    .AddMoney(50);
             }
 
             public static Character Darkener() {
@@ -80,7 +82,8 @@ namespace Scripts.Game.Defined.Characters {
                     new Look("Darkener", "illusionist", "Powerful illusionist.", Breed.SPIRIT),
                     new Illusionist()
                     )
-                    .AddSpells(new Blackout());
+                    .AddSpells(new Blackout())
+                    .AddMoney(50);
             }
 
             public static Character BigKnightA() {
@@ -100,7 +103,8 @@ namespace Scripts.Game.Defined.Characters {
                                  Breed.SPIRIT),
                         new Warlock()
                     ).AddSpells(new Inferno())
-                    .AddBuff(new UnholyInsight());
+                    .AddBuff(new UnholyInsight())
+                    .AddMoney(75);
             }
 
             public static Character Cleric() {
@@ -112,7 +116,8 @@ namespace Scripts.Game.Defined.Characters {
                                  Breed.SPIRIT),
                         new Cleric()
                     ).AddSpells(new SetupDefend(), new PlayerHeal())
-                    .AddBuff(new UnholyInsight());
+                    .AddBuff(new UnholyInsight())
+                    .AddMoney(75);
             }
 
             private static Character BigKnight(string name) {
@@ -127,7 +132,8 @@ namespace Scripts.Game.Defined.Characters {
                     new LabBigKnight()
                     ).AddFlags(Flag.PERSISTS_AFTER_DEFEAT)
                     .AddBuff(new StandardCountdown())
-                    .AddSpells(new UnholyRevival());
+                    .AddSpells(new UnholyRevival())
+                    .AddMoney(100);
             }
         }
 
@@ -144,7 +150,8 @@ namespace Scripts.Game.Defined.Characters {
                         ),
                     new Attacker())
                     .AddBuff(new RougherSkin())
-                    .AddItem(new Money(), Util.RandomRange(50, 100));
+                    .AddItem(new Money(), Util.RandomRange(50, 100))
+                    .AddMoney(150);
             }
 
             public static Character Siren() {
@@ -157,7 +164,8 @@ namespace Scripts.Game.Defined.Characters {
                             Breed.FISH
                         ),
                         new Siren()
-                    ).AddSpells(Game.Serialized.Brains.Siren.DEBUFF_LIST);
+                    ).AddSpells(Game.Serialized.Brains.Siren.DEBUFF_LIST)
+                    .AddMoney(150);
             }
 
             public static Character Tentacle() {
@@ -170,7 +178,8 @@ namespace Scripts.Game.Defined.Characters {
                             Breed.FISH
                             ),
                         new Attacker()
-                    );
+                    )
+                    .AddItem(new OctopusLeg());
                 if (Util.IsChance(.50)) {
                     c.AddBuff(new OnlyAffectedByHero());
                 } else {
@@ -193,7 +202,8 @@ namespace Scripts.Game.Defined.Characters {
                     .AddSpells(new SpawnLashers())
                     .AddSpells(new CrushingBlow())
                     .AddBuff(new StandardCountdown())
-                    .AddStats(new Skill());
+                    .AddStats(new Skill())
+                    .AddMoney(200);
             }
 
             public static Character Elemental() {
@@ -208,7 +218,8 @@ namespace Scripts.Game.Defined.Characters {
                     new Elemental())
                     .AddStats(new Mana())
                     .AddSpells(new WaterboltSingle(), new WaterboltMulti())
-                    .AddBuff(new UnholyInsight());
+                    .AddBuff(new UnholyInsight())
+                    .AddMoney(150);
             }
 
             public static Character DreadSinger() {
@@ -223,7 +234,8 @@ namespace Scripts.Game.Defined.Characters {
                         new DreadSinger())
                         .AddSpells(new NullifyHealing())
                         .AddSpells(new CastDelayedEternalDeath())
-                        .AddItem(new Cleansing(), 1);
+                        .AddItem(new Cleansing(), 1)
+                        .AddMoney(150);
             }
 
             public static Character Swarm() {
@@ -236,7 +248,7 @@ namespace Scripts.Game.Defined.Characters {
                         Breed.FISH
                         ),
                     new Swarm())
-                    .AddItem(new Money(), Util.RandomRange(5, 10));
+                    .AddMoney(20);
             }
         }
 
