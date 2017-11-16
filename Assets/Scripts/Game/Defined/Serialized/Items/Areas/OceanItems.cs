@@ -58,7 +58,6 @@ namespace Scripts.Game.Defined.Serialized.Items {
 
         public ShellArmor() : base("turtle-shell", EquipType.OFFHAND, 200, "Shell Armor", "Shell from an endangered species.") {
             AddFlatStatBonus(StatType.VITALITY, 10);
-            AddFlatStatBonus(StatType.AGILITY, -5);
         }
 
         public override PermanentBuff CreateBuff() {
@@ -118,8 +117,6 @@ namespace Scripts.Game.Defined.Serialized.Items {
         public ToothNecklace() : base("saber-tooth", EquipType.TRINKET, 40, "Sharktooth Necklace", "Pretend you're a surfer.") {
             AddFlatStatBonus(StatType.AGILITY, 5);
             AddFlatStatBonus(StatType.STRENGTH, 5);
-            AddFlatStatBonus(StatType.INTELLECT, -5);
-            AddFlatStatBonus(StatType.VITALITY, -5);
         }
     }
 
@@ -128,8 +125,6 @@ namespace Scripts.Game.Defined.Serialized.Items {
         public CrackedToothNecklace() : base("saber-tooth", EquipType.TRINKET, 10, "Cracked Necklace", "It's missing some teeth.") {
             AddFlatStatBonus(StatType.AGILITY, 2);
             AddFlatStatBonus(StatType.STRENGTH, 2);
-            AddFlatStatBonus(StatType.INTELLECT, -8);
-            AddFlatStatBonus(StatType.VITALITY, -8);
         }
     }
 
@@ -207,7 +202,16 @@ namespace Scripts.Game.Defined.Serialized.Items {
     public class SharkFin : HealingItem {
         private const int HEALING_AMOUNT = 25;
 
-        public SharkFin() : base("Shark Fin", "shark-fin", "An expensive and illegal fin from a shark.", 100, HEALING_AMOUNT) {
+        public SharkFin() : base("Shark Fin", "shark-fin", "An expensive and illegal fin from a shark.", 200, HEALING_AMOUNT) {
+        }
+    }
+
+    public class Spear : EquippableItem {
+
+        public Spear() : base("ice-spear", EquipType.WEAPON, 80, "Spear of Just Ice", "The ice refuses to melt.") {
+            AddFlatStatBonus(StatType.STRENGTH, 5);
+            AddFlatStatBonus(StatType.AGILITY, 5);
+            AddFlatStatBonus(StatType.VITALITY, 5);
         }
     }
 

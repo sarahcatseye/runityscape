@@ -198,6 +198,7 @@ namespace Scripts.Game.Defined.Characters {
                     .AddItem(new GrayWater(), .50f)
                     .AddItem(new Cleansing(), 1)
                     .AddItem(new WaterOrb(), .05f)
+                    .AddEquip(new Spear(), .10f)
                     .AddMoney(20);
         }
 
