@@ -41,7 +41,7 @@ namespace Scripts.Model.Spells {
             int count = caster.Inventory.GetCount(item);
 
             Color color = Color.white;
-            if (!IsMeetPreTargetRequirements(caster.Stats)) {
+            if (!IsMeetPreTargetRequirements(caster)) {
                 color = Color.grey;
             }
 

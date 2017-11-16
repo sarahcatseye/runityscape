@@ -87,10 +87,10 @@ namespace Scripts.Game.Defined.Serialized.Spells {
     }
 
     public class MagicMissile : BasicSpellbook {
-        private const float INTELLECT_RATIO = 1.5f;
+        private const float INTELLECT_RATIO = 1f;
 
         public MagicMissile() : base("Magic Missile", Util.GetSprite("water-bolt"), TargetType.ONE_FOE, SpellType.OFFENSE) {
-            AddCost(StatType.MANA, 5);
+            AddCost(StatType.MANA, 10);
         }
 
         protected override string CreateDescriptionHelper() {

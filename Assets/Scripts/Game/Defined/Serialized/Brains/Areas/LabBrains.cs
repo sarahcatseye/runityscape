@@ -17,7 +17,7 @@ namespace Scripts.Game.Serialized.Brains {
         private static readonly SpellBook DEFEND = new SetupDefend();
 
         public override string StartOfRoundDialogue() {
-            if (CRUSHING_BLOW.IsMeetPreTargetRequirements(brainOwner.Stats)) {
+            if (CRUSHING_BLOW.IsMeetPreTargetRequirements(brainOwner)) {
                 return Util.PickRandom("Now it's over!/Taste vengeance!/Power!/Eliminate!");
             }
             return string.Empty;

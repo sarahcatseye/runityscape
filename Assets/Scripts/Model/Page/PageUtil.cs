@@ -413,7 +413,7 @@ namespace Scripts.Model.Pages {
                 sb.Icon,
                 sb.CreateDescription(owner),
                 () => {
-                    if (sb.IsMeetPreTargetRequirements(owner.Stats)) {
+                    if (sb.IsMeetPreTargetRequirements(owner)) {
                         GenerateTargets(current, previous, owner, spellable, spellHandler).Invoke();
                     }
                 });

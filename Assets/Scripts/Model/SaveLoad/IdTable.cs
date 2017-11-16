@@ -207,8 +207,8 @@ namespace Scripts.Model.SaveLoad {
             Add<CalmedMind>("calmedMind");
             Add<StrengthBoost>("strengthBoost");
             Add<SuperIgnited>("superIgnited");
-            Add<RegenerateLotsOfMana>("regenerateLotsOfMana");
-            Add<RegenerateLotsOfSkill>("regenerateLotsOfSkill");
+            Add<HighManaRegeneration>("regenerateLotsOfMana");
+            Add<SkillRegeneration>("regenerateLotsOfSkill");
             Add<RoughSkin>("roughSkin");
             Add<FlamingArmor>("flameBody");
         }

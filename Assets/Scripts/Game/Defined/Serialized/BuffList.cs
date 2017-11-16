@@ -18,8 +18,8 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
         public FlamingArmor()
             : base(
                   Util.GetSprite("fire"),
-                  "Flaming armor",
-                  String.Format("Attacks on this unit have a {0}% chance of igniting the attacker", IGNITION_CHANCE)
+                  "Flame Body",
+                  String.Format("Basic attacks on this unit have a {0}% chance of igniting the attacker", IGNITION_CHANCE)
                   ) {
         }
 
@@ -316,15 +316,15 @@ namespace Scripts.Game.Defined.Serialized.Buffs {
         }
     }
 
-    public class RegenerateLotsOfMana : StatRegen {
+    public class HighManaRegeneration : StatRegen {
 
-        public RegenerateLotsOfMana() : base(StatType.MANA, 10) {
+        public HighManaRegeneration() : base(StatType.MANA, 5) {
         }
     }
 
-    public class RegenerateLotsOfSkill : StatRegen {
+    public class SkillRegeneration : StatRegen {
 
-        public RegenerateLotsOfSkill() : base(StatType.SKILL, 2) {
+        public SkillRegeneration() : base(StatType.SKILL, 1) {
         }
     }
 

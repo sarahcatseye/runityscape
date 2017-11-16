@@ -207,6 +207,15 @@ namespace Scripts.Model.Characters {
             }
         }
 
+        public bool CanAffordCost(ICostable cost, int amount) {
+            return cost.CanAfford(amount, this);
+        }
+
+        public void ConsumeCosts(ICostable cost, int amount) {
+            Util.Assert(CanAffordCost(cost, amount));
+            cost.DeductCostFromCharacter(amount, this);
+        }
+
         /// <summary>
         /// Stats are updated each tick to ensure dependent stats
         /// are updated

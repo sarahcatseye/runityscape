@@ -6,6 +6,7 @@ using Scripts.View.Portraits;
 using System.Collections;
 using Scripts.Game.Defined.SFXs;
 using Scripts.Model.Pages;
+using System;
 
 namespace Scripts.Model.Items {
 
@@ -113,20 +114,11 @@ namespace Scripts.Model.Items {
             if (consume.HasFlag(Flag.USABLE_OUT_OF_COMBAT)) {
                 this.flags.Add(Spells.Flag.USABLE_OUT_OF_COMBAT);
             }
+            AddCost(consume, 1);
         }
 
         protected override IList<SpellEffect> GetHitEffects(Page page, Character caster, Character target) {
-            IList<SpellEffect> itemEffects = consume.GetEffects(page, caster, target);
-            SpellEffect[] allEffects = new SpellEffect[itemEffects.Count + 1];
-            allEffects[0] = new ConsumeItemEffect(consume, caster.Inventory);
-            for (int i = 0; i < itemEffects.Count; i++) {
-                allEffects[i + 1] = itemEffects[i];
-            }
-            return allEffects;
-        }
-
-        protected override bool IsMeetItemCastRequirements(Character caster, Character target) {
-            return caster.Inventory.HasItem(consume);
+            return consume.GetEffects(page, caster, target);
         }
 
         protected override IList<IEnumerator> GetHitSFX(Character caster, Character target) {
@@ -139,20 +131,20 @@ namespace Scripts.Model.Items {
     /// </summary>
     /// <seealso cref="Scripts.Model.Spells.ItemSpellBook" />
     public class TossItem : ItemSpellBook {
-        private Inventory inventory;
+        private readonly Inventory inventory;
 
         public TossItem(Item item, Inventory inventory) : base(item, "Dispose") {
             this.inventory = inventory;
         }
 
-        protected override bool IsMeetItemCastRequirements(Character caster, Character target) {
-            return caster.Inventory.HasItem(item);
-        }
-
         protected override IList<SpellEffect> GetHitEffects(Page page, Character caster, Character target) {
             return new SpellEffect[] {
-                new ConsumeItemEffect(item, inventory)
+                new RemoveItemEffect(item, target.Inventory)
             };
+        }
+
+        protected override bool IsMeetItemCastRequirements(Character caster, Character target) {
+            return caster.Inventory.HasItem(item);
         }
     }
 }

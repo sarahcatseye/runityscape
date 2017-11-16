@@ -7,6 +7,7 @@ using Scripts.Game.Defined.Spells;
 using Scripts.Game.Defined.Serialized.Spells;
 using Scripts.Model.Characters;
 using Scripts.Model.Pages;
+using Scripts.Model.Interfaces;
 
 namespace Scripts.Model.Items {
 
@@ -14,7 +15,7 @@ namespace Scripts.Model.Items {
     /// Items that are used up when used.
     /// </summary>
     /// <seealso cref="Scripts.Model.Items.UseableItem" />
-    public abstract class ConsumableItem : UseableItem {
+    public abstract class ConsumableItem : UseableItem, ICostable {
 
         /// <summary>
         /// Item spellbook associated with this item.
@@ -80,6 +81,20 @@ namespace Scripts.Model.Items {
         /// </returns>
         protected override bool IsMeetOtherRequirements(Character caster, Character target) {
             return target.Stats.State == State.ALIVE;
+        }
+
+        public string GetName() {
+            return this.Name;
+        }
+
+        public bool CanAfford(int amount, Character characterToCheck) {
+            Util.Assert(amount > 0, "Amount must be nonnegative.");
+            return characterToCheck.Inventory.HasItem(this, amount);
+        }
+
+        public void DeductCostFromCharacter(int amount, Character unitToDeductFrom) {
+            Util.Assert(CanAfford(amount, unitToDeductFrom));
+            unitToDeductFrom.Inventory.Remove(this, amount);
         }
 
         protected sealed override string DescriptionHelper {

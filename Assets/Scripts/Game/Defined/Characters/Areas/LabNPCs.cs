@@ -226,7 +226,7 @@ namespace Scripts.Game.Defined.Characters {
 
             public static Character HeroClone() {
                 return PlayerClone(
-                    new Stats(15, 15, 30, 30, 30),
+                    new Stats(15, 5, 20, 20, 150),
                     new Look("Anomaly H", "player", "An anomaly in a familiar form.", Breed.PROGRAMMER),
                     new Hero()
                     )
@@ -242,7 +242,7 @@ namespace Scripts.Game.Defined.Characters {
 
             public static Character PartnerClone() {
                 return PlayerClone(
-                    new Stats(15, 20, 30, 20, 35),
+                    new Stats(15, 10, 20, 10, 150),
                     new Look("Anomaly P", "partner", "An anomaly in a familiar form.", Breed.HUMAN),
                     new Partner()
                     )
