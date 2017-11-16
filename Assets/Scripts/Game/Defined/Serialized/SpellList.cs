@@ -678,30 +678,27 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
     }
 
     public class WaterboltSingle : WaterboltAbstract {
-        private const string SINGLE_TARGET_DESCRIPTION = "A burst of boiling water that has a chance to inflict\n<color=cyan>{0}</color>\n{1}";
 
-        public WaterboltSingle() : base(TargetType.ONE_FOE, "Scald", SINGLE_TARGET_DESCRIPTION) {
+        public WaterboltSingle() : base(TargetType.ONE_FOE, "Scald") {
         }
     }
 
     public class WaterboltMulti : WaterboltAbstract {
         private const int MANA_COST = 25;
-        private const string MULTI_TARGET_DESCRIPTION = "Bursts of boiling water that have a chance to inflict\n<color=cyan>{0}</color>\n{1}";
 
-        public WaterboltMulti() : base(TargetType.ALL_FOE, "Multi Scald", MULTI_TARGET_DESCRIPTION) {
+        public WaterboltMulti() : base(TargetType.ALL_FOE, "Multi Scald") {
             AddCost(StatType.MANA, MANA_COST);
         }
     }
 
     public abstract class WaterboltAbstract : BasicSpellbook {
-        private const float CHANCE_OF_CRITICAL = 0.50f;
         private static readonly Buff IGNITE_BUFF = new TempIgnited();
 
         private readonly string description;
 
-        public WaterboltAbstract(TargetType targetType, string name, string description) : base(name, Util.GetSprite("water-bolt"), targetType, SpellType.OFFENSE) {
+        public WaterboltAbstract(TargetType targetType, string name) : base(name, Util.GetSprite("water-bolt"), targetType, SpellType.OFFENSE) {
             this.TurnsToCharge = 3;
-            this.description = description;
+            this.description = "A blast of boiling water. If target is not Guarding, inflicts <color=cyan<{0}</color>\n{1}";
         }
 
         protected override string CreateDescriptionHelper() {
@@ -712,7 +709,7 @@ namespace Scripts.Game.Defined.Unserialized.Spells {
         }
 
         protected override bool IsCritical(Character caster, Character target) {
-            return Util.IsChance(CHANCE_OF_CRITICAL);
+            return !target.Buffs.HasBuff<Defend>();
         }
 
         protected override IList<SpellEffect> GetCriticalEffects(Page page, Character caster, Character target) {

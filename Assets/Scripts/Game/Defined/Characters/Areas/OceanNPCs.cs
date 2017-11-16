@@ -53,7 +53,7 @@ namespace Scripts.Game.Defined.Characters {
                 party,
                 Siren(),
                 6,
-                10,
+                8,
                 200
                 );
         }

@@ -4,6 +4,7 @@ using Scripts.Game.Defined.Serialized.Spells;
 using Scripts.Game.Defined.Serialized.Statistics;
 using Scripts.Game.Defined.Unserialized.Buffs;
 using Scripts.Game.Defined.Unserialized.Spells;
+using Scripts.Game.Serialized;
 using Scripts.Game.Serialized.Brains;
 using Scripts.Game.Shopkeeper;
 using Scripts.Model.Characters;
@@ -22,6 +23,29 @@ namespace Scripts.Game.Defined.Characters {
                     new PurchasedSpell(200, new Inspire()),
                     new PurchasedSpell(500, new MagicMissile()),
                     new PurchasedSpell(500, new SelfHeal())
+                );
+        }
+
+        public static Shop Shop(Page previous, Flags flags, Party party) {
+            return new Shop(
+                previous,
+                "Gift Shop",
+                flags,
+                party,
+                .7f,
+                1,
+                Ocean.Elemental()
+                );
+        }
+
+        public static InventoryMaster LabMaster(Page previous, Party party) {
+            return new InventoryMaster(
+                previous,
+                party,
+                Ocean.Elemental(),
+                8,
+                10,
+                500
                 );
         }
 
