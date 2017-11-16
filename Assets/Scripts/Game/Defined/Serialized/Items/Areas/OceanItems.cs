@@ -247,7 +247,7 @@ namespace Scripts.Game.Defined.Serialized.Items {
             "food-chain",
             20,
             TargetType.SELF,
-            "Shark Bait", "Creates an IMMOBILE fragile shark attractant. Fishy Market is not responsible for wasteful uses of this item outside of combat.") {
+            "Shark Bait", "Creates a fragile shark attractant. <color=red>Fishy Market is not responsible for wasteful uses of this item outside of combat.</color>") {
             this.flags.Remove(Model.Items.Flag.USABLE_OUT_OF_COMBAT);
         }
 
