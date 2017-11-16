@@ -585,13 +585,13 @@ namespace Scripts.Model.Pages {
         }
 
         /// <summary>
-        /// Exp earned = Defeated.Level - Earner.Level
+        /// Exp earned = Defeated.Level
         /// </summary>
         /// <param name="earner">Whoever is earning the experience</param>
         /// <param name="defeated">Defeated character to do calculation for</param>
         /// <returns>Calculated experience earner should recieve</returns>
         private int CalculateExperience(Characters.Stats earner, Characters.Stats defeated) {
-            return Mathf.Max(0, defeated.Level - earner.Level);
+            return defeated.Level;
         }
 
         private IEnumerator startBattle() {
